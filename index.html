@@ -10,31 +10,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery (مطلوب لتأثير تموجات الماء) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- jQuery Ripples Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
 
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #030712;
+            background-color: #1a0f13;
             overflow-x: hidden;
         }
 
-        /* Ambient Glowing Orbs Animation */
-        @keyframes floatOrb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -40px) scale(1.1); }
+        /* خلفية الصورة مع تظليل خفيف لدمج التصميم */
+        #water-background {
+            position: fixed;
+            inset: 0;
+            background-image: url('image.png'); /* رابط الصورة المرسلة */
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
         }
-        .orb-1 { animation: floatOrb 12s ease-in-out infinite; }
-        .orb-2 { animation: floatOrb 15s ease-in-out infinite reverse; }
-        .orb-3 { animation: floatOrb 10s ease-in-out infinite 2s; }
+
+        /* طبقة إضاءة لامعة متحركة فوق الخلفية */
+        .shimmer-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.15), rgba(0, 0, 0, 0.65));
+            pointer-events: none;
+            z-index: 1;
+        }
 
         /* Glassmorphism Card Style */
         .glass-card {
-            background: rgba(18, 18, 30, 0.45);
+            background: rgba(30, 15, 22, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
-                        inset 0 0 20px rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 192, 203, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                        inset 0 0 20px rgba(255, 255, 255, 0.03);
         }
 
         /* Floating Card Animation */
@@ -51,21 +65,21 @@
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(3, 7, 18, 0.5);
+            background: rgba(20, 10, 15, 0.5);
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 192, 203, 0.2);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 192, 203, 0.4);
         }
 
         /* Blinking Cursor for Typing Effect */
         .typing-cursor::after {
             content: '|';
             animation: blink 0.8s infinite;
-            color: #a78bfa;
+            color: #f472b6;
             margin-right: 2px;
         }
         @keyframes blink {
@@ -92,59 +106,90 @@
             color: #f43f5e;
             pointer-events: none;
             animation: floatUp 1.2s forwards ease-out;
+            z-index: 30;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake {
+            animation: shake 0.4s ease-in-out;
         }
     </style>
 </head>
 <body class="min-h-screen text-slate-100 flex items-center justify-center relative p-4 sm:p-6 lg:p-8">
 
-    <!-- خلفية تدرجات ليلية عميقة وأضواء ضبابية متحركة (Ambient Glowing Orbs) -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-indigo-900/30 via-purple-900/20 to-transparent blur-[120px] orb-1"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-tl from-teal-900/20 via-blue-900/20 to-transparent blur-[140px] orb-2"></div>
-        <div class="absolute top-[30%] right-[20%] w-[35vw] h-[35vw] rounded-full bg-gradient-to-r from-violet-900/15 to-fuchsia-900/15 blur-[100px] orb-3"></div>
-    </div>
+    <!-- خلفية الصورة مع تأثير الماء (Water Ripple Target) -->
+    <div id="water-background"></div>
+    <!-- طبقة إضاءة وتوهج لامع فوق الخلفية -->
+    <div class="shimmer-overlay"></div>
 
-    <!-- زر التحكم بالموسيقى الهادئة في الخلفية (اختياري) -->
+    <!-- زر التحكم بالموسيقى الهادئة في الخلفية -->
     <div class="absolute top-6 left-6 z-20">
         <button id="musicToggle" class="glass-card px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition-all cursor-pointer shadow-lg group">
-            <i class="fa-solid fa-music text-purple-400 group-hover:scale-110 transition-transform"></i>
+            <i class="fa-solid fa-music text-pink-400 group-hover:scale-110 transition-transform"></i>
             <span id="musicText">تشغيل أجواء هادئة</span>
         </button>
-        <!-- صوت وهمي محاكي للأجواء (مدمج بتدفق نغمات خفيفة عبر Web Audio API لضمان عمله دون روابط خارجية تالفة) -->
     </div>
 
     <!-- الحاوية الرئيسية للبطاقة الزجاجية -->
-    <main class="relative z-10 w-full max-w-2xl mx-auto floating-container my-8">
-        <div class="glass-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-white/10" id="mainCard">
+    <main class="relative z-20 w-full max-w-2xl mx-auto floating-container my-8">
+        
+        <!-- شاشة اللغز وقفل الرسالة -->
+        <div id="lockScreen" class="glass-card rounded-3xl p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-white/10 transition-all duration-500">
+            <div class="w-16 h-16 bg-pink-500/10 border border-pink-500/20 rounded-2xl mx-auto flex items-center justify-center text-pink-400 text-2xl mb-6 shadow-inner">
+                <i class="fa-solid fa-lock" id="lockIcon"></i>
+            </div>
             
-            <!-- تأثير ضوء الماوس التفاعلي على البطاقة (Spotlight) -->
-            <div id="spotlight" class="absolute pointer-events-none transition-opacity duration-300 opacity-0 -inset-px rounded-3xl z-0" style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(167, 139, 250, 0.08), transparent 40%);"></div>
+            <span class="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">رسالة محمية بالعزلة</span>
+            <h2 class="text-2xl sm:text-3xl font-black mt-4 mb-2 text-white">إلى علويتي</h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-md mx-auto mb-8 font-light leading-relaxed">
+                لكي تفتح هذه الرسالة المقدسة، يرجى حل اللغز التالي:<br>
+                <span class="text-pink-300 font-medium block mt-2">"من هي التي سكنت قلب مؤتمن سامي وأصبحت ملاذه وعزويته؟ (اسم مكون من 4 أحرف)"</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="puzzleForm">
+                <input type="text" id="puzzleInput" placeholder="اكتب الإجابة هنا..." class="flex-1 glass-card bg-black/40 border border-white/15 px-4 py-3 rounded-2xl text-white placeholder-slate-400 text-sm focus:outline-none focus:border-pink-400 transition-all text-center sm:text-right">
+                <button id="unlockBtn" class="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-medium px-6 py-3 rounded-2xl shadow-lg shadow-pink-500/25 transition-all transform hover:scale-105 active:scale-95 cursor-pointer text-sm">
+                    افتح الرسالة <i class="fa-solid fa-key mr-1"></i>
+                </button>
+            </div>
+            <p id="errorMsg" class="text-rose-400 text-xs mt-3 hidden"></p>
+        </div>
+
+        <!-- محتوى الرسالة الفعلية (مخفي لحين حل اللغز) -->
+        <div class="glass-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-white/10 hidden opacity-0 transition-all duration-700" id="mainCard">
+            
+            <!-- تأثير ضوء الماوس التفاعلي على البطاقة -->
+            <div id="spotlight" class="absolute pointer-events-none transition-opacity duration-300 opacity-0 -inset-px rounded-3xl z-0" style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(244, 114, 182, 0.1), transparent 40%);"></div>
 
             <!-- رأس الرسالة (Metadata) -->
             <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-6 mb-6 gap-4">
                 <div>
-                    <span class="text-xs uppercase tracking-widest text-purple-400 font-semibold bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">رسالة خاصة وعزلة مقدسة</span>
-                    <h1 class="text-2xl sm:text-3xl font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-purple-200">
+                    <span class="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">رسالة خاصة وعزلة مقدسة</span>
+                    <h1 class="text-2xl sm:text-3xl font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-pink-200">
                         إلى علويتي رتاج
                     </h1>
                 </div>
                 <div class="text-left sm:text-right">
                     <span class="text-xs text-slate-400 block">المرسل:</span>
-                    <span class="text-sm font-bold text-teal-300 tracking-wide">مؤتمن سامي</span>
+                    <span class="text-sm font-bold text-pink-300 tracking-wide">مؤتمن سامي</span>
                 </div>
             </div>
 
             <!-- محتوى الرسالة مع تأثير الكتابة السينمائية -->
             <div class="relative z-10 min-h-[220px] sm:min-h-[200px] mb-8">
                 <div id="messageText" class="text-slate-200 text-base sm:text-lg leading-relaxed font-light whitespace-pre-line typing-cursor">
-                    <!-- سيتم حقن النص هنا عبر الجافاسكريبت -->
+                    <!-- سيتم حقن النص هنا بعد حل اللغز -->
                 </div>
             </div>
 
             <!-- لوحة التحكم السفلية (أزرار التفاعل) -->
             <div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
                 
-                <!-- زر إعادة تشغيل النص أو إيقافه مؤقتاً -->
+                <!-- زر إعادة تشغيل النص -->
                 <div class="flex items-center gap-2">
                     <button id="replayBtn" title="إعادة قراءة الرسالة" class="glass-card w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/15 transition-all cursor-pointer">
                         <i class="fa-solid fa-rotate-right text-xs"></i>
@@ -159,7 +204,6 @@
                         <span class="text-sm tracking-wide">نبضة حب لروحك</span>
                         <span id="likeCount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs font-bold">14</span>
                     </button>
-                    <!-- حاوية تناثر القلوب الصغيرة -->
                     <div id="heartsContainer" class="absolute inset-0 pointer-events-none overflow-visible"></div>
                 </div>
 
@@ -168,19 +212,33 @@
         </div>
     </main>
 
-    <!-- حقوق الطبع والنشر والتوقيع الهادئ -->
-    <footer class="fixed bottom-3 right-0 left-0 text-center z-10 pointer-events-none">
-        <p class="text-[11px] text-slate-500 tracking-wider">صُنِع بحب وعزلة لأجل رتاج بواسطة مؤتمن سامي © 2026</p>
+    <!-- حقوق الطبع والنشر -->
+    <footer class="fixed bottom-3 right-0 left-0 text-center z-20 pointer-events-none">
+        <p class="text-[11px] text-pink-300/60 tracking-wider">صُنِع بحب وعزلة لأجل رتاج بواسطة مؤتمن سامي © 2026</p>
     </footer>
 
     <!-- ملف الجافاسكريبت التفاعلي -->
     <script>
-        // نص الرسالة العميقة والعصرية الموجهة لعلويتي رتاج
+        // تفعيل تأثير تموجات الماء على الخلفية باستخدام مكتبة jQuery Ripples
+        $(document).ready(function() {$('#water-background').ripples({
+                resolution: 512,
+                dropRadius: 20,
+                perturbance: 0.04,
+            });
+        });
+
         const messageContent = `في خضم صخب هذا العالم وضوضائه، حيث تتسارع الأيام وتتكدس الوجوه، أجد في عزلي معكِ -رغم المسافات أو تفاصيل الحضور- وطناً خالصاً لا يشبهه مكان. 
 
 أنتِ لستِ فقط حضوراً عابراً في أيامي، بل إشراقة هادئة تُعيد ترتيب فوضى روحي. فيكِ أكتشف معنى السكينة الحقيقية؛ عزلتي معكِ هي امتلاء لا نقص فيه، خلوة مقدسة أهرب فيها من ضجيج الكون لأستقر في عمق عينيْكِ ودفء روحكِ.
 
 يا علويتي رتاج، دمتِ لي الملاذ، والنبض الذي يمنح لكل تفصيل صغير في حياتي طعماً آخر، أعمق وأجمل.`;
+
+        const lockScreen = document.getElementById('lockScreen');
+        const mainCard = document.getElementById('mainCard');
+        const puzzleInput = document.getElementById('puzzleInput');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const lockIcon = document.getElementById('lockIcon');
 
         const messageEl = document.getElementById('messageText');
         const replayBtn = document.getElementById('replayBtn');
@@ -188,12 +246,50 @@
         const heartIcon = document.getElementById('heartIcon');
         const likeCountEl = document.getElementById('likeCount');
         const heartsContainer = document.getElementById('heartsContainer');
-        const mainCard = document.getElementById('mainCard');
         const spotlight = document.getElementById('spotlight');
 
         let charIndex = 0;
         let isTyping = false;
         let typingTimeout = null;
+
+        // التحقق من حل اللغز
+        function checkPuzzle() {
+            const userAnswer = puzzleInput.value.trim().toLowerCase();
+            const correctAnswers = ['رتاج', 'ريتاج'];
+
+            if (correctAnswers.includes(userAnswer)) {
+                lockIcon.classList.remove('fa-lock');
+                lockIcon.classList.add('fa-unlock', 'text-emerald-400');
+                
+                lockScreen.style.transform = 'scale(0.95)';
+                lockScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainCard.classList.remove('hidden');
+                    setTimeout(() => {
+                        mainCard.style.opacity = '1';
+                        startTyping();
+                    }, 50);
+                }, 400);
+
+            } else {
+                puzzleInput.classList.add('shake', 'border-rose-500');
+                errorMsg.textContent = 'إجابة غير صحيحة، ركزي قليلاً يا علويتي!';
+                errorMsg.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    puzzleInput.classList.remove('shake');
+                }, 400);
+            }
+        }
+
+        unlockBtn.addEventListener('click', checkPuzzle);
+        puzzleInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPuzzle();
+            }
+        });
 
         // دالة الكتابة السينمائية حرفاً حرفاً
         function startTyping() {
@@ -206,7 +302,6 @@
                 if (charIndex < messageContent.length) {
                     messageEl.textContent += messageContent.charAt(charIndex);
                     charIndex++;
-                    // سرعة متغيرة قليلاً لإعطاء شعور بشري بالطبع
                     let speed = 35;
                     if (messageContent.charAt(charIndex - 1) === '.' || messageContent.charAt(charIndex - 1) === '،') {
                         speed = 120;
@@ -219,12 +314,6 @@
             type();
         }
 
-        // بدء الكتابة عند تحميل الصفحة
-        window.addEventListener('DOMContentLoaded', () => {
-            startTyping();
-        });
-
-        // إعادة تشغيل النص عند الضغط على زر الإعادة
         replayBtn.addEventListener('click', () => {
             clearTimeout(typingTimeout);
             startTyping();
@@ -245,19 +334,17 @@
             spotlight.style.opacity = '0';
         });
 
-        // تفاعل زر الإعجاب / القلب النابض وتناثر القلوب الصغيرة
+        // تفاعل زر الإعجاب وتناثر القلوب
         let likes = 14;
         heartBtn.addEventListener('click', () => {
             likes++;
             likeCountEl.textContent = likes;
 
-            // نبضة للزر والأيقونة
             heartIcon.classList.add('heart-beat');
             setTimeout(() => {
                 heartIcon.classList.remove('heart-beat');
             }, 600);
 
-            // توليد قلوب عائمة متناثرة عند النقر
             for (let i = 0; i < 5; i++) {
                 createFloatingHeart();
             }
@@ -268,24 +355,21 @@
             heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
             heart.classList.add('floating-heart');
             
-            // مواقع عشوائية أفقية قليلاً حول الزر
             const randomX = Math.random() * 60 - 30;
             heart.style.left = `calc(50% + ${randomX}px)`;
             heart.style.bottom = '20px';
             
-            // أحجام وألوان متفاوتة قليلاً للجمالية
             const size = Math.random() * 10 + 12;
             heart.style.fontSize = `${size}px`;
             
             heartsContainer.appendChild(heart);
 
-            // إزالة العنصر بعد انتهاء الأنيميشن
             setTimeout(() => {
                 heart.remove();
             }, 1200);
         }
 
-        // نظام محاكاة أصوات بيئية هادئة (خيار تشغيل موسيقى/أجواء عبر Web Audio API لضمان عدم وجود ملفات صوتية خارجية مكسورة)
+        // نظام محاكاة أصوات بيئية هادئة
         let audioCtx = null;
         let isMusicPlaying = false;
         let oscillatorInterval = null;
@@ -295,7 +379,6 @@
 
         musicToggle.addEventListener('click', () => {
             if (!isMusicPlaying) {
-                // تشغيل الأجواء الصوتية الهادئة
                 try {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                     playAmbientChord();
@@ -303,27 +386,25 @@
                     
                     isMusicPlaying = true;
                     musicText.textContent = 'إيقاف الأجواء';
-                    musicToggle.classList.add('bg-purple-500/20', 'border-purple-500/40');
+                    musicToggle.classList.add('bg-pink-500/20', 'border-pink-500/40');
                 } catch (e) {
                     console.log("Audio Context not supported");
                 }
             } else {
-                // إيقاف الأجواء الصوتية
                 if (audioCtx) {
                     audioCtx.close();
                 }
                 clearInterval(oscillatorInterval);
                 isMusicPlaying = false;
                 musicText.textContent = 'تشغيل أجواء هادئة';
-                musicToggle.classList.remove('bg-purple-500/20', 'border-purple-500/40');
+                musicToggle.classList.remove('bg-pink-500/20', 'border-pink-500/40');
             }
         });
 
-        // توليد نغمات هادئة رومانسية متناغمة (Ambient Chords) عبر الـ Web Audio API
         function playAmbientChord() {
             if (!audioCtx || audioCtx.state === 'closed') return;
             
-            const frequencies = [220, 277.18, 329.63, 440]; // نغمات هادئة (A Major chord vibes)
+            const frequencies = [220, 277.18, 329.63, 440];
             frequencies.forEach((freq, index) => {
                 setTimeout(() => {
                     if (!audioCtx || audioCtx.state === 'closed') return;
@@ -333,7 +414,6 @@
                     osc.type = 'sine';
                     osc.frequency.value = freq;
 
-                    // تدرج صوتي ناعم جداً (Fade in & Fade out) لعدم الإزعاج
                     gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
                     gainNode.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 1.5);
                     gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 5.5);
