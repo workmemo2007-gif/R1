@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى علويتي رتاج | رسالة حب وعزلة</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #030712;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glowing Orbs Animation */
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.1); }
+        }
+        .orb-1 { animation: floatOrb 12s ease-in-out infinite; }
+        .orb-2 { animation: floatOrb 15s ease-in-out infinite reverse; }
+        .orb-3 { animation: floatOrb 10s ease-in-out infinite 2s; }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(18, 18, 30, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+                        inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        /* Floating Card Animation */
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating-container {
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(3, 7, 18, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Blinking Cursor for Typing Effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #a78bfa;
+            margin-right: 2px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Heart Beat & Floating Particles Animation */
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .heart-beat {
+            animation: heartPulse 0.6s ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.6); opacity: 1; }
+            100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
+        }
+        .floating-heart {
+            position: absolute;
+            color: #f43f5e;
+            pointer-events: none;
+            animation: floatUp 1.2s forwards ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex items-center justify-center relative p-4 sm:p-6 lg:p-8">
+
+    <!-- خلفية تدرجات ليلية عميقة وأضواء ضبابية متحركة (Ambient Glowing Orbs) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-indigo-900/30 via-purple-900/20 to-transparent blur-[120px] orb-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-gradient-to-tl from-teal-900/20 via-blue-900/20 to-transparent blur-[140px] orb-2"></div>
+        <div class="absolute top-[30%] right-[20%] w-[35vw] h-[35vw] rounded-full bg-gradient-to-r from-violet-900/15 to-fuchsia-900/15 blur-[100px] orb-3"></div>
+    </div>
+
+    <!-- زر التحكم بالموسيقى الهادئة في الخلفية (اختياري) -->
+    <div class="absolute top-6 left-6 z-20">
+        <button id="musicToggle" class="glass-card px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition-all cursor-pointer shadow-lg group">
+            <i class="fa-solid fa-music text-purple-400 group-hover:scale-110 transition-transform"></i>
+            <span id="musicText">تشغيل أجواء هادئة</span>
+        </button>
+        <!-- صوت وهمي محاكي للأجواء (مدمج بتدفق نغمات خفيفة عبر Web Audio API لضمان عمله دون روابط خارجية تالفة) -->
+    </div>
+
+    <!-- الحاوية الرئيسية للبطاقة الزجاجية -->
+    <main class="relative z-10 w-full max-w-2xl mx-auto floating-container my-8">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-white/10" id="mainCard">
+            
+            <!-- تأثير ضوء الماوس التفاعلي على البطاقة (Spotlight) -->
+            <div id="spotlight" class="absolute pointer-events-none transition-opacity duration-300 opacity-0 -inset-px rounded-3xl z-0" style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(167, 139, 250, 0.08), transparent 40%);"></div>
+
+            <!-- رأس الرسالة (Metadata) -->
+            <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-6 mb-6 gap-4">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-purple-400 font-semibold bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">رسالة خاصة وعزلة مقدسة</span>
+                    <h1 class="text-2xl sm:text-3xl font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-purple-200">
+                        إلى علويتي رتاج
+                    </h1>
+                </div>
+                <div class="text-left sm:text-right">
+                    <span class="text-xs text-slate-400 block">المرسل:</span>
+                    <span class="text-sm font-bold text-teal-300 tracking-wide">مؤتمن سامي</span>
+                </div>
+            </div>
+
+            <!-- محتوى الرسالة مع تأثير الكتابة السينمائية -->
+            <div class="relative z-10 min-h-[220px] sm:min-h-[200px] mb-8">
+                <div id="messageText" class="text-slate-200 text-base sm:text-lg leading-relaxed font-light whitespace-pre-line typing-cursor">
+                    <!-- سيتم حقن النص هنا عبر الجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- لوحة التحكم السفلية (أزرار التفاعل) -->
+            <div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                
+                <!-- زر إعادة تشغيل النص أو إيقافه مؤقتاً -->
+                <div class="flex items-center gap-2">
+                    <button id="replayBtn" title="إعادة قراءة الرسالة" class="glass-card w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/15 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                    </button>
+                    <span class="text-xs text-slate-400 hidden sm:inline">أو انقر للإعادة</span>
+                </div>
+
+                <!-- زر الإعجاب والقلب النابض مع تناثر القلوب -->
+                <div class="relative">
+                    <button id="heartBtn" class="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-medium px-6 py-3 rounded-full shadow-lg shadow-rose-500/25 flex items-center gap-2.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+                        <i id="heartIcon" class="fa-solid fa-heart text-white"></i>
+                        <span class="text-sm tracking-wide">نبضة حب لروحك</span>
+                        <span id="likeCount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs font-bold">14</span>
+                    </button>
+                    <!-- حاوية تناثر القلوب الصغيرة -->
+                    <div id="heartsContainer" class="absolute inset-0 pointer-events-none overflow-visible"></div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- حقوق الطبع والنشر والتوقيع الهادئ -->
+    <footer class="fixed bottom-3 right-0 left-0 text-center z-10 pointer-events-none">
+        <p class="text-[11px] text-slate-500 tracking-wider">صُنِع بحب وعزلة لأجل رتاج بواسطة مؤتمن سامي © 2026</p>
+    </footer>
+
+    <!-- ملف الجافاسكريبت التفاعلي -->
+    <script>
+        // نص الرسالة العميقة والعصرية الموجهة لعلويتي رتاج
+        const messageContent = `في خضم صخب هذا العالم وضوضائه، حيث تتسارع الأيام وتتكدس الوجوه، أجد في عزلي معكِ -رغم المسافات أو تفاصيل الحضور- وطناً خالصاً لا يشبهه مكان. 
+
+أنتِ لستِ فقط حضوراً عابراً في أيامي، بل إشراقة هادئة تُعيد ترتيب فوضى روحي. فيكِ أكتشف معنى السكينة الحقيقية؛ عزلتي معكِ هي امتلاء لا نقص فيه، خلوة مقدسة أهرب فيها من ضجيج الكون لأستقر في عمق عينيْكِ ودفء روحكِ.
+
+يا علويتي رتاج، دمتِ لي الملاذ، والنبض الذي يمنح لكل تفصيل صغير في حياتي طعماً آخر، أعمق وأجمل.`;
+
+        const messageEl = document.getElementById('messageText');
+        const replayBtn = document.getElementById('replayBtn');
+        const heartBtn = document.getElementById('heartBtn');
+        const heartIcon = document.getElementById('heartIcon');
+        const likeCountEl = document.getElementById('likeCount');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const mainCard = document.getElementById('mainCard');
+        const spotlight = document.getElementById('spotlight');
+
+        let charIndex = 0;
+        let isTyping = false;
+        let typingTimeout = null;
+
+        // دالة الكتابة السينمائية حرفاً حرفاً
+        function startTyping() {
+            if (isTyping) return;
+            isTyping = true;
+            messageEl.textContent = '';
+            charIndex = 0;
+            
+            function type() {
+                if (charIndex < messageContent.length) {
+                    messageEl.textContent += messageContent.charAt(charIndex);
+                    charIndex++;
+                    // سرعة متغيرة قليلاً لإعطاء شعور بشري بالطبع
+                    let speed = 35;
+                    if (messageContent.charAt(charIndex - 1) === '.' || messageContent.charAt(charIndex - 1) === '،') {
+                        speed = 120;
+                    }
+                    typingTimeout = setTimeout(type, speed);
+                } else {
+                    isTyping = false;
+                }
+            }
+            type();
+        }
+
+        // بدء الكتابة عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            startTyping();
+        });
+
+        // إعادة تشغيل النص عند الضغط على زر الإعادة
+        replayBtn.addEventListener('click', () => {
+            clearTimeout(typingTimeout);
+            startTyping();
+        });
+
+        // تأثير Spotlight المتبع للماوس على البطاقة الزجاجية
+        mainCard.addEventListener('mousemove', (e) => {
+            const rect = mainCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            spotlight.style.setProperty('--mouse-x', `${x}px`);
+            spotlight.style.setProperty('--mouse-y', `${y}px`);
+            spotlight.style.opacity = '1';
+        });
+
+        mainCard.addEventListener('mouseleave', () => {
+            spotlight.style.opacity = '0';
+        });
+
+        // تفاعل زر الإعجاب / القلب النابض وتناثر القلوب الصغيرة
+        let likes = 14;
+        heartBtn.addEventListener('click', () => {
+            likes++;
+            likeCountEl.textContent = likes;
+
+            // نبضة للزر والأيقونة
+            heartIcon.classList.add('heart-beat');
+            setTimeout(() => {
+                heartIcon.classList.remove('heart-beat');
+            }, 600);
+
+            // توليد قلوب عائمة متناثرة عند النقر
+            for (let i = 0; i < 5; i++) {
+                createFloatingHeart();
+            }
+        });
+
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+            heart.classList.add('floating-heart');
+            
+            // مواقع عشوائية أفقية قليلاً حول الزر
+            const randomX = Math.random() * 60 - 30;
+            heart.style.left = `calc(50% + ${randomX}px)`;
+            heart.style.bottom = '20px';
+            
+            // أحجام وألوان متفاوتة قليلاً للجمالية
+            const size = Math.random() * 10 + 12;
+            heart.style.fontSize = `${size}px`;
+            
+            heartsContainer.appendChild(heart);
+
+            // إزالة العنصر بعد انتهاء الأنيميشن
+            setTimeout(() => {
+                heart.remove();
+            }, 1200);
+        }
+
+        // نظام محاكاة أصوات بيئية هادئة (خيار تشغيل موسيقى/أجواء عبر Web Audio API لضمان عدم وجود ملفات صوتية خارجية مكسورة)
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let oscillatorInterval = null;
+
+        const musicToggle = document.getElementById('musicToggle');
+        const musicText = document.getElementById('musicText');
+
+        musicToggle.addEventListener('click', () => {
+            if (!isMusicPlaying) {
+                // تشغيل الأجواء الصوتية الهادئة
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    playAmbientChord();
+                    oscillatorInterval = setInterval(playAmbientChord, 6000);
+                    
+                    isMusicPlaying = true;
+                    musicText.textContent = 'إيقاف الأجواء';
+                    musicToggle.classList.add('bg-purple-500/20', 'border-purple-500/40');
+                } catch (e) {
+                    console.log("Audio Context not supported");
+                }
+            } else {
+                // إيقاف الأجواء الصوتية
+                if (audioCtx) {
+                    audioCtx.close();
+                }
+                clearInterval(oscillatorInterval);
+                isMusicPlaying = false;
+                musicText.textContent = 'تشغيل أجواء هادئة';
+                musicToggle.classList.remove('bg-purple-500/20', 'border-purple-500/40');
+            }
+        });
+
+        // توليد نغمات هادئة رومانسية متناغمة (Ambient Chords) عبر الـ Web Audio API
+        function playAmbientChord() {
+            if (!audioCtx || audioCtx.state === 'closed') return;
+            
+            const frequencies = [220, 277.18, 329.63, 440]; // نغمات هادئة (A Major chord vibes)
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    if (!audioCtx || audioCtx.state === 'closed') return;
+                    const osc = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+
+                    // تدرج صوتي ناعم جداً (Fade in & Fade out) لعدم الإزعاج
+                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 1.5);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 5.5);
+
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 5.5);
+                }, index * 400);
+            });
+        }
+    </script>
+</body>
+</html>
