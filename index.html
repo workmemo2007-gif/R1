@@ -4,29 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إلى علويتي رتاج 💖 - سر المحبة</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cairo & Amiri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-main: #faf9f6;
-            --bg-card: #fffdfb;
             --cyan-glow: #00e5ff;
             --pink-glow: #ff2a8d;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-main);
+            background-color: #0f172a;
             color: #334155;
             overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        /* --- VIDEO BACKGROUND STYLES --- */
+        .bg-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        #bgVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bg-video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.65), rgba(30, 27, 75, 0.55));
+            backdrop-filter: blur(4px);
         }
 
         .font-amiri {
@@ -42,9 +69,9 @@
                 0 3px 0 #b30054,
                 0 4px 0 #990048,
                 0 5px 0 #80003c,
-                0 6px 12px rgba(255, 42, 141, 0.5),
+                0 6px 12px rgba(255, 42, 141, 0.6),
                 0 0 25px rgba(255, 105, 180, 0.8),
-                0 0 50px rgba(255, 20, 147, 0.6);
+                0 0 50px rgba(255, 20, 147, 0.7);
             animation: float3D 3.5s ease-in-out infinite alternate;
             display: inline-block;
         }
@@ -58,25 +85,27 @@
             }
         }
 
-        /* Animated Glowing Cyan & Pink Box Effect */
+        /* Animated Glowing Glassmorphic Container */
         .cyan-glow-box {
             position: relative;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         }
 
         .cyan-glow-box::before {
             content: '';
             position: absolute;
-            inset: -3px;
+            inset: -2px;
             border-radius: 1.6rem;
             background: linear-gradient(90deg, #ff2a8d, #00e5ff, #70e1ff, #ff2a8d);
             background-size: 300% 300%;
             z-index: -1;
             animation: borderGlow 4s ease infinite;
             opacity: 0.85;
-            filter: blur(5px);
+            filter: blur(4px);
         }
 
         .cyan-border-pulse {
@@ -96,7 +125,7 @@
             100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.7), inset 0 0 12px rgba(0, 229, 255, 0.3); }
         }
 
-        /* Floating & Blooming Background Canvas */
+        /* Floating & Blooming Background Canvas Overlay */
         .floating-bg-hearts {
             position: fixed;
             top: 0;
@@ -110,21 +139,22 @@
         /* Step status tabs styling */
         .step-tab {
             transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
         }
         .step-tab.active {
             background: linear-gradient(135deg, #ff2a8d 0%, #0284c7 100%);
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(255, 42, 141, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 42, 141, 0.5);
         }
         .step-tab.completed {
-            background-color: #e0f2fe;
+            background-color: rgba(224, 242, 254, 0.9);
             color: #0369a1;
             border-color: #38bdf8;
         }
         .step-tab.locked {
-            opacity: 0.6;
+            opacity: 0.7;
             cursor: pointer;
-            background-color: #f1f5f9;
+            background-color: rgba(241, 245, 249, 0.85);
         }
 
         /* Puzzle 1 Tiles */
@@ -166,7 +196,7 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #faf9f6;
+            background: #0f172a;
         }
         ::-webkit-scrollbar-thumb {
             background: #ff70a6;
@@ -176,18 +206,24 @@
 </head>
 <body class="relative flex flex-col min-h-screen justify-between items-center p-3 sm:p-6">
 
-    <!-- Background Canvas for Glowing Blooming Flowers & Particles -->
+    <div class="bg-video-container">
+        <video id="bgVideo" autoplay muted loop playsinline poster="">
+            <source src="8941730610867853921.mp4" type="video/mp4">
+            متصفحك لا يدعم تشغيل فيديو الخلفية.
+        </video>
+    </div>
+    <div class="bg-video-overlay"></div>
+
     <canvas id="bgCanvas" class="floating-bg-hearts"></canvas>
 
-    <!-- Top Header & Navigation -->
     <header class="w-full max-w-4xl z-10 my-2">
         <div class="cyan-glow-box p-4 sm:p-5 text-center relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-3">
             
             <div class="flex items-center gap-2">
-                <button onclick="switchTab(0)" class="px-4 py-2 rounded-xl bg-pink-100 text-pink-700 font-extrabold text-xs sm:text-sm hover:bg-pink-200 transition flex items-center gap-2 shadow-sm">
+                <button onclick="switchTab(0)" class="px-4 py-2 rounded-xl bg-pink-100/90 text-pink-700 font-extrabold text-xs sm:text-sm hover:bg-pink-200 transition flex items-center gap-2 shadow-sm">
                     <i class="fas fa-home text-pink-500"></i> الرئيسية
                 </button>
-                <button id="soundToggleBtn" onclick="toggleAudio()" class="w-9 h-9 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center hover:bg-cyan-100 transition shadow" title="تشغيل / إيقاف الصوت">
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="w-9 h-9 rounded-full bg-cyan-50/90 text-cyan-600 flex items-center justify-center hover:bg-cyan-100 transition shadow" title="تشغيل / إيقاف الصوت">
                     <i id="soundIcon" class="fas fa-volume-up text-sm"></i>
                 </button>
             </div>
@@ -196,12 +232,11 @@
                 رحلة المحبة إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-600 font-black">علويتي رتاج</span> ✨
             </h1>
 
-            <div class="text-xs text-slate-500 font-bold hidden sm:block">
+            <div class="text-xs text-slate-600 font-bold hidden sm:block bg-slate-100/80 px-3 py-1 rounded-lg">
                 مملكة السعادة 💖
             </div>
         </div>
 
-        <!-- Navigation Tabs Bar -->
         <div class="flex flex-wrap justify-center gap-2 sm:gap-3 my-4">
             <button id="tab0" onclick="switchTab(0)" class="step-tab active flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
                 <i class="fas fa-heart text-pink-500"></i>
@@ -229,122 +264,99 @@
         </div>
     </header>
 
-    <!-- Main Content Container -->
     <main class="w-full max-w-4xl z-10 my-auto py-2">
 
-        <!-- HOME SCREEN SECTION (SEPARATE MAIN SCREEN) -->
         <section id="homeSection" class="cyan-glow-box p-6 sm:p-12 text-center transition-all duration-500 relative overflow-hidden">
-            <!-- Background Decorative Glows -->
-            <div class="absolute -top-12 -right-12 w-48 h-48 bg-pink-300/30 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-cyan-300/30 rounded-full blur-3xl"></div>
-
             <div class="relative z-10">
                 <div class="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-100 to-cyan-100 text-pink-700 text-xs sm:text-sm font-extrabold mb-4 shadow-sm border border-pink-200">
                     🌸 أهلاً بكِ في عالم المحبة والسر المكمون 🌸
                 </div>
 
-                <!-- 3D ANIMATED PROMINENT TEXT FOR "رتاج" -->
                 <div class="my-4 py-2">
                     <h1 class="text-6xl sm:text-8xl md:text-9xl font-black text-3d-pink tracking-wider font-amiri select-none">
                         رتاج
                     </h1>
                 </div>
 
-                <p class="text-sm sm:text-lg text-slate-600 max-w-xl mx-auto leading-relaxed mb-8 font-medium">
-                    هناك رسالة سرية مخصصة لكِ وحدهكِ... اختاري أحد الألغاز التالية لتنطلقي في الرحلة واكتشاف ما خُبِّئ لقلبكِ العذب! 💕
+                <p class="text-sm sm:text-lg text-slate-700 max-w-xl mx-auto leading-relaxed mb-8 font-semibold">
+                    هناك رسالة سرية مخصصة لكِ وحدكِ... اختاري أحد الألغاز التالية لتنطلقي في الرحلة واكتشاف ما خُبِّئ لقلبكِ العذب! 💕
                 </p>
 
-                <!-- 3 SIDE-BY-SIDE TABS FOR PUZZLES -->
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 my-6 max-w-2xl mx-auto">
-                    <!-- Tab 1 -->
                     <button onclick="startPuzzle(1)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 text-white font-extrabold shadow-lg hover:shadow-pink-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-pink-300 group">
                         <i class="fas fa-font text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
                         <span class="text-base sm:text-lg">اللغز الأول</span>
-                        <span class="text-[11px] opacity-80 font-normal">ترتيب الكلمة</span>
+                        <span class="text-[11px] opacity-90 font-normal">ترتيب الكلمة</span>
                     </button>
 
-                    <!-- Tab 2 -->
                     <button onclick="startPuzzle(2)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white font-extrabold shadow-lg hover:shadow-cyan-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-cyan-300 group">
                         <i class="fas fa-puzzle-piece text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
                         <span class="text-base sm:text-lg">اللغز الثاني</span>
-                        <span class="text-[11px] opacity-80 font-normal">ترتيب البازل</span>
+                        <span class="text-[11px] opacity-90 font-normal">ترتيب البازل</span>
                     </button>
 
-                    <!-- Tab 3 -->
                     <button onclick="startPuzzle(3)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white font-extrabold shadow-lg hover:shadow-purple-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-purple-300 group">
                         <i class="fas fa-bullseye text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
                         <span class="text-base sm:text-lg">اللغز الثالث</span>
-                        <span class="text-[11px] opacity-80 font-normal">صيد القلوب</span>
+                        <span class="text-[11px] opacity-90 font-normal">صيد القلوب</span>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- PUZZLE 1: WORD UNSCRAMBLE -->
         <section id="puzzle1Section" class="cyan-glow-box p-4 sm:p-8 text-center hidden transition-all duration-500">
             <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-3">
                 <i class="fas fa-puzzle-piece ml-1"></i> اللغز الأول: ترتيب الجملة
             </div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-2">رّتبي الحروف المبعثرة لتكوين اللقب الغالي 💕</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mb-6">انقري على الحروف لنقلها بالترتيب الصحيح إلى خانة الجملة:</p>
+            <p class="text-xs sm:text-sm text-slate-600 mb-6 font-medium">انقري على الحروف لنقلها بالترتيب الصحيح إلى خانة الجملة:</p>
 
-            <!-- Target Slot Area -->
-            <div id="targetSlotArea" class="min-h-[64px] sm:min-h-[80px] p-3 rounded-2xl bg-slate-50 border-2 border-dashed border-cyan-300 flex flex-wrap justify-center items-center gap-2 mb-6 cyan-border-pulse">
+            <div id="targetSlotArea" class="min-h-[64px] sm:min-h-[80px] p-3 rounded-2xl bg-white/70 border-2 border-dashed border-cyan-400 flex flex-wrap justify-center items-center gap-2 mb-6 cyan-border-pulse">
                 <span class="text-slate-400 text-sm select-none" id="emptySlotHint">انقري على الحروف بالأسفل لجمعها هنا...</span>
             </div>
 
-            <!-- Scrambled Letter Bank -->
             <div id="scrambledBank" class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 min-h-[60px]">
-                <!-- Dynamic Letter Buttons Generated Here -->
-            </div>
+                </div>
 
-            <!-- Controls -->
             <div class="flex justify-center gap-4">
-                <button onclick="resetPuzzle1()" class="px-5 py-2.5 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold text-sm transition flex items-center gap-2">
+                <button onclick="resetPuzzle1()" class="px-5 py-2.5 rounded-xl bg-slate-200/90 text-slate-700 hover:bg-slate-300 font-bold text-sm transition flex items-center gap-2 shadow">
                     <i class="fas fa-undo"></i> إعادة محاولة
                 </button>
             </div>
         </section>
 
-        <!-- PUZZLE 2: 3x3 TILE SWAP PUZZLE -->
         <section id="puzzle2Section" class="cyan-glow-box p-4 sm:p-8 text-center hidden transition-all duration-500">
             <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-3">
                 <i class="fas fa-image ml-1"></i> اللغز الثاني: صورة البازل المبعثرة
             </div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-2">عيدي ترتيب أجزاء الصورة ليكتمل مشهد الحب 🖼️</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mb-4">اضغطي على مربع ثم على مربع آخر للمبادلة بين موقعيهما حتى تكتمل الصورة:</p>
+            <p class="text-xs sm:text-sm text-slate-600 mb-4 font-medium">اضغطي على مربع ثم على مربع آخر للمبادلة بين موقعيهما حتى تكتمل الصورة:</p>
 
             <div class="flex flex-col md:flex-row items-center justify-center gap-6 my-4">
-                <!-- Puzzle Board Grid (3x3) -->
-                <div id="puzzle2Grid" class="grid grid-cols-3 gap-1.5 p-2 bg-slate-200 rounded-2xl shadow-inner cyan-border-pulse w-[280px] h-[280px] sm:w-[360px] sm:h-[360px]">
-                    <!-- 9 Dynamic Tiles Generated Here -->
-                </div>
-
-                <!-- Preview Box & Stats -->
-                <div class="flex flex-col items-center gap-3">
-                    <div class="text-xs text-slate-500 font-semibold">الصورة الأصلية المطلوب تجميعها:</div>
-                    <div id="puzzle2Preview" class="w-32 h-32 sm:w-40 sm:h-40 rounded-xl overflow-hidden border-2 border-cyan-400 shadow-md">
-                        <!-- Canvas Preview rendered via JS -->
+                <div id="puzzle2Grid" class="grid grid-cols-3 gap-1.5 p-2 bg-slate-200/80 rounded-2xl shadow-inner cyan-border-pulse w-[280px] h-[280px] sm:w-[360px] sm:h-[360px]">
                     </div>
-                    <div class="text-xs text-slate-600 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-200 font-bold">
+
+                <div class="flex flex-col items-center gap-3">
+                    <div class="text-xs text-slate-600 font-semibold">الصورة الأصلية المطلوب تجميعها:</div>
+                    <div id="puzzle2Preview" class="w-32 h-32 sm:w-40 sm:h-40 rounded-xl overflow-hidden border-2 border-cyan-400 shadow-md">
+                        </div>
+                    <div class="text-xs text-slate-700 bg-cyan-50/90 px-3 py-1.5 rounded-lg border border-cyan-200 font-bold">
                         عدد المحاولات: <span id="swapCount">0</span>
                     </div>
-                    <button onclick="shufflePuzzle2()" class="px-4 py-2 text-xs rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition flex items-center gap-1.5">
+                    <button onclick="shufflePuzzle2()" class="px-4 py-2 text-xs rounded-xl bg-slate-200/90 text-slate-700 hover:bg-slate-300 font-bold transition flex items-center gap-1.5 shadow">
                         <i class="fas fa-random"></i> خلط القطع مجدداً
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- PUZZLE 3: ARCHERY FLYING HEARTS GAME -->
         <section id="puzzle3Section" class="cyan-glow-box p-4 sm:p-6 text-center hidden transition-all duration-500">
             <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-2">
                 <i class="fas fa-bow-arrow ml-1"></i> اللغز الثالث: صيد القلوب الطائرة
             </div>
             <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">اصطادي 10 قلوب باستخدام سهم الحب 💘</h2>
-            <p class="text-xs sm:text-sm text-slate-500 mb-3">اسحبي القوس بالماوس/الإصبع للأسفل للتصويب، ثم افلتيه لإطلاق السهم نحو القلوب!</p>
+            <p class="text-xs sm:text-sm text-slate-600 mb-3 font-medium">اسحبي القوس بالماوس/الإصبع للأسفل للتصويب، ثم افلتيه لإطلاق السهم نحو القلوب!</p>
 
-            <!-- Score Counter -->
             <div class="flex justify-center items-center gap-4 mb-3">
                 <div class="bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-extrabold px-6 py-2 rounded-full text-base sm:text-lg shadow-md flex items-center gap-2">
                     <i class="fas fa-heart text-yellow-300 animate-pulse"></i>
@@ -353,23 +365,18 @@
                 </div>
             </div>
 
-            <!-- Archery Canvas -->
             <div class="relative inline-block w-full max-w-[600px] aspect-[4/3] rounded-2xl overflow-hidden cyan-border-pulse bg-slate-900 shadow-2xl">
                 <canvas id="archeryCanvas" class="w-full h-full cursor-crosshair touch-none"></canvas>
             </div>
         </section>
 
-        <!-- FINAL SECRET MESSAGE MODAL / SCREEN -->
         <section id="secretMessageSection" class="cyan-glow-box p-6 sm:p-10 text-center hidden modal-enter relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-40 h-40 bg-pink-200/40 rounded-full blur-2xl"></div>
-            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-200/40 rounded-full blur-2xl"></div>
-
             <div class="relative z-10">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 text-pink-500 text-3xl sm:text-4xl shadow-inner border-2 border-pink-300 animate-bounce">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-pink-100/90 rounded-full flex items-center justify-center mx-auto mb-4 text-pink-500 text-3xl sm:text-4xl shadow-inner border-2 border-pink-300 animate-bounce">
                     💌
                 </div>
 
-                <div class="inline-block px-4 py-1 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-extrabold mb-3">
+                <div class="inline-block px-4 py-1 rounded-full bg-pink-100/90 text-pink-700 text-xs sm:text-sm font-extrabold mb-3">
                     السر المكمون لـ علويتي رتاج ❤️
                 </div>
 
@@ -377,7 +384,7 @@
                     إلى أميرتي الغالية <span class="text-cyan-600 underline decoration-pink-400">علويتي رتاج</span>
                 </h2>
 
-                <div class="max-w-2xl mx-auto bg-amber-50/70 p-6 sm:p-8 rounded-2xl border-2 border-amber-200/60 shadow-lg font-amiri text-lg sm:text-2xl text-slate-800 leading-loose text-justify sm:text-center space-y-4 mb-8">
+                <div class="max-w-2xl mx-auto bg-amber-50/90 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border-2 border-amber-200/80 shadow-lg font-amiri text-lg sm:text-2xl text-slate-800 leading-loose text-justify sm:text-center space-y-4 mb-8">
                     <p>
                         "منذ أن أشرقتِ في عالمي، أصبحت كل الأيام تحمل طعماً آخر من الفرح والجمال. أنتِ السكينة التي تنزل على قلبي في زحام الحياة، والنور الذي يضيء كل عتمة."
                     </p>
@@ -389,12 +396,11 @@
                     </p>
                 </div>
 
-                <!-- Interactive Buttons -->
                 <div class="flex flex-wrap justify-center gap-4">
                     <button onclick="copyMessageText()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-600 text-white font-bold shadow-lg hover:shadow-cyan-300/50 hover:scale-105 transition flex items-center gap-2">
                         <i class="fas fa-copy"></i> نسخ الرسالة
                     </button>
-                    <button onclick="restartAllPuzzles()" class="px-6 py-3 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition flex items-center gap-2">
+                    <button onclick="restartAllPuzzles()" class="px-6 py-3 rounded-xl bg-slate-200/90 text-slate-700 font-bold hover:bg-slate-300 transition flex items-center gap-2 shadow">
                         <i class="fas fa-redo"></i> إعادة المغامرة من جديد
                     </button>
                 </div>
@@ -403,15 +409,13 @@
 
     </main>
 
-    <!-- Toast Notification Message Box -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none translate-y-4 border border-cyan-400/30">
         <i id="toastIcon" class="fas fa-check-circle text-cyan-400 text-xl"></i>
         <span id="toastMsg" class="text-sm font-bold"></span>
     </div>
 
-    <!-- Footer -->
-    <footer class="w-full max-w-4xl text-center py-4 text-xs text-slate-400 z-10">
-        مُصمّم بكل حب وإتقان لـ <span class="text-pink-500 font-bold">علويتي رتاج</span> ✨
+    <footer class="w-full max-w-4xl text-center py-4 text-xs text-white/80 z-10 font-medium">
+        مُصمّم بكل حب وإتقان لـ <span class="text-pink-400 font-bold">علويتي رتاج</span> ✨
     </footer>
 
     <script>
@@ -905,8 +909,8 @@
             archeryCtx.clearRect(0, 0, archeryCanvas.width, archeryCanvas.height);
 
             const bgGrad = archeryCtx.createLinearGradient(0, 0, 0, archeryCanvas.height);
-            bgGrad.addColorStop(0, '#0f172a');
-            bgGrad.addColorStop(1, '#1e293b');
+            bgGrad.addColorStop(0, 'rgba(15, 23, 42, 0.85)');
+            bgGrad.addColorStop(1, 'rgba(30, 41, 59, 0.9)');
             archeryCtx.fillStyle = bgGrad;
             archeryCtx.fillRect(0, 0, archeryCanvas.width, archeryCanvas.height);
 
@@ -1183,11 +1187,21 @@
             showToast('تمت إعادة المغامرة، بالتوفيق لـ علويتي رتاج ✨', 'fa-redo');
         }
 
-        /* --- PAGE INITIALIZATION --- */
+        /* --- PAGE INITIALIZATION & VIDEO AUTOPLAY FALLBACK --- */
         window.onload = function() {
             initBgCanvas();
             initPuzzle1();
             switchTab(0); // Start on Home Screen by default
+
+            // Attempt Autoplay Video Fix for strictly restricted browsers
+            const video = document.getElementById('bgVideo');
+            if (video) {
+                video.play().catch(error => {
+                    console.log("Autoplay was prevented, attempting mute retry:", error);
+                    video.muted = true;
+                    video.play();
+                });
+            }
         };
     </script>
 </body>
