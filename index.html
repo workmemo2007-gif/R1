@@ -9,7 +9,7 @@
     <!-- Google Fonts: Cairo & Amiri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -18,8 +18,7 @@
             --bg-main: #faf9f6;
             --bg-card: #fffdfb;
             --cyan-glow: #00e5ff;
-            --cyan-soft: #70e1ff;
-            --cyan-dark: #0284c7;
+            --pink-glow: #ff2a8d;
         }
 
         body {
@@ -34,25 +33,50 @@
             font-family: 'Amiri', serif;
         }
 
-        /* Animated Glowing Cyan Border Effect */
+        /* 3D Animated Text Effect for "رتاج" */
+        .text-3d-pink {
+            color: #ff2a8d;
+            text-shadow: 
+                0 1px 0 #e6006c,
+                0 2px 0 #cc0060,
+                0 3px 0 #b30054,
+                0 4px 0 #990048,
+                0 5px 0 #80003c,
+                0 6px 12px rgba(255, 42, 141, 0.5),
+                0 0 25px rgba(255, 105, 180, 0.8),
+                0 0 50px rgba(255, 20, 147, 0.6);
+            animation: float3D 3.5s ease-in-out infinite alternate;
+            display: inline-block;
+        }
+
+        @keyframes float3D {
+            0% {
+                transform: perspective(600px) rotateX(12deg) rotateY(-8deg) translateY(0);
+            }
+            100% {
+                transform: perspective(600px) rotateX(-8deg) rotateY(8deg) translateY(-15px);
+            }
+        }
+
+        /* Animated Glowing Cyan & Pink Box Effect */
         .cyan-glow-box {
             position: relative;
             background: #ffffff;
-            border-radius: 1.25rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
         .cyan-glow-box::before {
             content: '';
             position: absolute;
             inset: -3px;
-            border-radius: 1.4rem;
-            background: linear-gradient(90deg, #00e5ff, #70e1ff, #38bdf8, #00e5ff);
+            border-radius: 1.6rem;
+            background: linear-gradient(90deg, #ff2a8d, #00e5ff, #70e1ff, #ff2a8d);
             background-size: 300% 300%;
             z-index: -1;
             animation: borderGlow 4s ease infinite;
             opacity: 0.85;
-            filter: blur(4px);
+            filter: blur(5px);
         }
 
         .cyan-border-pulse {
@@ -72,7 +96,7 @@
             100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.7), inset 0 0 12px rgba(0, 229, 255, 0.3); }
         }
 
-        /* Floating background animation */
+        /* Floating & Blooming Background Canvas */
         .floating-bg-hearts {
             position: fixed;
             top: 0;
@@ -88,9 +112,9 @@
             transition: all 0.3s ease;
         }
         .step-tab.active {
-            background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+            background: linear-gradient(135deg, #ff2a8d 0%, #0284c7 100%);
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 42, 141, 0.4);
         }
         .step-tab.completed {
             background-color: #e0f2fe;
@@ -98,8 +122,8 @@
             border-color: #38bdf8;
         }
         .step-tab.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
+            opacity: 0.6;
+            cursor: pointer;
             background-color: #f1f5f9;
         }
 
@@ -145,48 +169,60 @@
             background: #faf9f6;
         }
         ::-webkit-scrollbar-thumb {
-            background: #70e1ff;
+            background: #ff70a6;
             border-radius: 4px;
         }
     </style>
 </head>
 <body class="relative flex flex-col min-h-screen justify-between items-center p-3 sm:p-6">
 
-    <!-- Background Canvas for Floating Effects -->
+    <!-- Background Canvas for Glowing Blooming Flowers & Particles -->
     <canvas id="bgCanvas" class="floating-bg-hearts"></canvas>
 
-    <!-- Top Header & Audio Control -->
+    <!-- Top Header & Navigation -->
     <header class="w-full max-w-4xl z-10 my-2">
-        <div class="cyan-glow-box p-4 sm:p-6 text-center relative overflow-hidden">
-            <button id="soundToggleBtn" onclick="toggleAudio()" class="absolute left-4 top-4 w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center hover:bg-cyan-100 transition shadow" title="تشغيل / إيقاف الصوت">
-                <i id="soundIcon" class="fas fa-volume-up text-lg"></i>
-            </button>
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mb-2">
-                رحلة المحبة إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-sky-600 font-bold">علويتي رتاج</span> ✨
+        <div class="cyan-glow-box p-4 sm:p-5 text-center relative overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-3">
+            
+            <div class="flex items-center gap-2">
+                <button onclick="switchTab(0)" class="px-4 py-2 rounded-xl bg-pink-100 text-pink-700 font-extrabold text-xs sm:text-sm hover:bg-pink-200 transition flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-home text-pink-500"></i> الرئيسية
+                </button>
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="w-9 h-9 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center hover:bg-cyan-100 transition shadow" title="تشغيل / إيقاف الصوت">
+                    <i id="soundIcon" class="fas fa-volume-up text-sm"></i>
+                </button>
+            </div>
+
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
+                رحلة المحبة إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-600 font-black">علويتي رتاج</span> ✨
             </h1>
-            <p class="text-xs sm:text-base text-slate-600 max-w-2xl mx-auto">
-                هناك رسالة سرية مخصصة لكِ وحدهكِ... ولكن لا يمكن الوصول إليها إلا بعد اجتياز الألغاز الثلاثة المتتالية بنجاح!
-            </p>
+
+            <div class="text-xs text-slate-500 font-bold hidden sm:block">
+                مملكة السعادة 💖
+            </div>
         </div>
 
-        <!-- Navigation Tabs / Progress Bar -->
+        <!-- Navigation Tabs Bar -->
         <div class="flex flex-wrap justify-center gap-2 sm:gap-3 my-4">
-            <button id="tab1" onclick="switchTab(1)" class="step-tab active flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
-                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">1</span>
+            <button id="tab0" onclick="switchTab(0)" class="step-tab active flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
+                <i class="fas fa-heart text-pink-500"></i>
+                <span>الرئيسية</span>
+            </button>
+            <button id="tab1" onclick="switchTab(1)" class="step-tab locked flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[10px]">1</span>
                 <span>ترتيب الكلمة</span>
                 <i class="fas fa-font"></i>
             </button>
-            <button id="tab2" onclick="switchTab(2)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
-                <span class="w-6 h-6 rounded-full bg-black/10 flex items-center justify-center text-xs">2</span>
+            <button id="tab2" onclick="switchTab(2)" class="step-tab locked flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[10px]">2</span>
                 <span>ترتيب البازل</span>
                 <i class="fas fa-puzzle-piece"></i>
             </button>
-            <button id="tab3" onclick="switchTab(3)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
-                <span class="w-6 h-6 rounded-full bg-black/10 flex items-center justify-center text-xs">3</span>
+            <button id="tab3" onclick="switchTab(3)" class="step-tab locked flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center text-[10px]">3</span>
                 <span>صيد القلوب</span>
                 <i class="fas fa-bullseye"></i>
             </button>
-            <button id="tab4" onclick="switchTab(4)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
+            <button id="tab4" onclick="switchTab(4)" class="step-tab locked flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold">
                 <i class="fas fa-envelope-open-text text-pink-500"></i>
                 <span>الرسالة السرية</span>
             </button>
@@ -196,8 +232,56 @@
     <!-- Main Content Container -->
     <main class="w-full max-w-4xl z-10 my-auto py-2">
 
+        <!-- HOME SCREEN SECTION (SEPARATE MAIN SCREEN) -->
+        <section id="homeSection" class="cyan-glow-box p-6 sm:p-12 text-center transition-all duration-500 relative overflow-hidden">
+            <!-- Background Decorative Glows -->
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-pink-300/30 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-cyan-300/30 rounded-full blur-3xl"></div>
+
+            <div class="relative z-10">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-100 to-cyan-100 text-pink-700 text-xs sm:text-sm font-extrabold mb-4 shadow-sm border border-pink-200">
+                    🌸 أهلاً بكِ في عالم المحبة والسر المكمون 🌸
+                </div>
+
+                <!-- 3D ANIMATED PROMINENT TEXT FOR "رتاج" -->
+                <div class="my-4 py-2">
+                    <h1 class="text-6xl sm:text-8xl md:text-9xl font-black text-3d-pink tracking-wider font-amiri select-none">
+                        رتاج
+                    </h1>
+                </div>
+
+                <p class="text-sm sm:text-lg text-slate-600 max-w-xl mx-auto leading-relaxed mb-8 font-medium">
+                    هناك رسالة سرية مخصصة لكِ وحدهكِ... اختاري أحد الألغاز التالية لتنطلقي في الرحلة واكتشاف ما خُبِّئ لقلبكِ العذب! 💕
+                </p>
+
+                <!-- 3 SIDE-BY-SIDE TABS FOR PUZZLES -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 my-6 max-w-2xl mx-auto">
+                    <!-- Tab 1 -->
+                    <button onclick="startPuzzle(1)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 text-white font-extrabold shadow-lg hover:shadow-pink-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-pink-300 group">
+                        <i class="fas fa-font text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
+                        <span class="text-base sm:text-lg">اللغز الأول</span>
+                        <span class="text-[11px] opacity-80 font-normal">ترتيب الكلمة</span>
+                    </button>
+
+                    <!-- Tab 2 -->
+                    <button onclick="startPuzzle(2)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white font-extrabold shadow-lg hover:shadow-cyan-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-cyan-300 group">
+                        <i class="fas fa-puzzle-piece text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
+                        <span class="text-base sm:text-lg">اللغز الثاني</span>
+                        <span class="text-[11px] opacity-80 font-normal">ترتيب البازل</span>
+                    </button>
+
+                    <!-- Tab 3 -->
+                    <button onclick="startPuzzle(3)" class="w-full sm:w-1/3 py-4 px-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white font-extrabold shadow-lg hover:shadow-purple-400/50 hover:scale-105 active:scale-95 transition duration-300 flex flex-col items-center justify-center gap-2 border-2 border-purple-300 group">
+                        <i class="fas fa-bullseye text-2xl sm:text-3xl group-hover:rotate-12 transition-transform"></i>
+                        <span class="text-base sm:text-lg">اللغز الثالث</span>
+                        <span class="text-[11px] opacity-80 font-normal">صيد القلوب</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
         <!-- PUZZLE 1: WORD UNSCRAMBLE -->
-        <section id="puzzle1Section" class="cyan-glow-box p-4 sm:p-8 text-center transition-all duration-500">
+        <section id="puzzle1Section" class="cyan-glow-box p-4 sm:p-8 text-center hidden transition-all duration-500">
             <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-3">
                 <i class="fas fa-puzzle-piece ml-1"></i> اللغز الأول: ترتيب الجملة
             </div>
@@ -211,7 +295,7 @@
 
             <!-- Scrambled Letter Bank -->
             <div id="scrambledBank" class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 min-h-[60px]">
-                <!-- Dynamic Letter Buttons Will Be Generated Here -->
+                <!-- Dynamic Letter Buttons Generated Here -->
             </div>
 
             <!-- Controls -->
@@ -252,7 +336,7 @@
             </div>
         </section>
 
-        <!-- PUZZLE 3: ARCHERY flying HEARTS GAME -->
+        <!-- PUZZLE 3: ARCHERY FLYING HEARTS GAME -->
         <section id="puzzle3Section" class="cyan-glow-box p-4 sm:p-6 text-center hidden transition-all duration-500">
             <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-2">
                 <i class="fas fa-bow-arrow ml-1"></i> اللغز الثالث: صيد القلوب الطائرة
@@ -327,16 +411,16 @@
 
     <!-- Footer -->
     <footer class="w-full max-w-4xl text-center py-4 text-xs text-slate-400 z-10">
-        مُصمّم بكل حب وإتقان لـ <span class="text-cyan-600 font-bold">علويتي رتاج</span> ✨
+        مُصمّم بكل حب وإتقان لـ <span class="text-pink-500 font-bold">علويتي رتاج</span> ✨
     </footer>
 
     <script>
         /* --- GLOBAL STATE & GAME VARIABLES --- */
-        let currentStep = 1;
+        let currentStep = 0; // 0 = Home Screen
         let unlockedStep = 1;
         let soundEnabled = true;
 
-        // Audio Context Synthesizer (No external sound files required)
+        // Audio Context Synthesizer
         let audioCtx = null;
 
         function initAudio() {
@@ -376,11 +460,11 @@
             soundEnabled = !soundEnabled;
             const icon = document.getElementById('soundIcon');
             if (soundEnabled) {
-                icon.className = 'fas fa-volume-up text-lg';
+                icon.className = 'fas fa-volume-up text-sm';
                 showToast('تم تشغيل المكتبيات الصوتية ✨', 'fa-volume-up');
                 playTone(440, 'sine', 0.2);
             } else {
-                icon.className = 'fas fa-volume-mute text-lg';
+                icon.className = 'fas fa-volume-mute text-sm';
                 showToast('تم كتم الصوت', 'fa-volume-mute');
             }
         }
@@ -402,24 +486,26 @@
             }, 3000);
         }
 
-        /* --- STEP / NAVIGATION CONTROLLER --- */
-        function switchTab(step) {
-            if (step > unlockedStep) {
-                showToast('يجب عليكِ إنجاز الألغاز السابقة أولاً! 🔒', 'fa-lock');
-                playTone(200, 'sawtooth', 0.2, 0.05);
-                return;
-            }
+        /* --- NAVIGATION & STEP CONTROLLER --- */
+        function startPuzzle(puzzleNum) {
+            unlockedStep = Math.max(unlockedStep, puzzleNum);
+            switchTab(puzzleNum);
+        }
 
+        function switchTab(step) {
             currentStep = step;
             updateTabUI();
 
             // Hide all sections
+            document.getElementById('homeSection').classList.add('hidden');
             document.getElementById('puzzle1Section').classList.add('hidden');
             document.getElementById('puzzle2Section').classList.add('hidden');
             document.getElementById('puzzle3Section').classList.add('hidden');
             document.getElementById('secretMessageSection').classList.add('hidden');
 
-            if (step === 1) {
+            if (step === 0) {
+                document.getElementById('homeSection').classList.remove('hidden');
+            } else if (step === 1) {
                 document.getElementById('puzzle1Section').classList.remove('hidden');
             } else if (step === 2) {
                 document.getElementById('puzzle2Section').classList.remove('hidden');
@@ -434,9 +520,10 @@
         }
 
         function updateTabUI() {
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 0; i <= 4; i++) {
                 const tab = document.getElementById(`tab${i}`);
-                tab.className = 'step-tab flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold ';
+                if (!tab) continue;
+                tab.className = 'step-tab flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs sm:text-sm font-bold ';
 
                 if (i === currentStep) {
                     tab.classList.add('active');
@@ -458,23 +545,20 @@
             }, 800);
         }
 
-
         /* --- PUZZLE 1: UNSCRAMBLE WORD ("علويتي رتاج") --- */
         const targetPhrase = "علويتي رتاج";
-        let phraseLetters = []; // Objects: { id, char }
+        let phraseLetters = []; 
         let selectedLetters = [];
 
         function initPuzzle1() {
             phraseLetters = targetPhrase.split('').map((char, index) => ({ id: index, char: char }));
 
-            // Fisher-Yates Shuffle
             let shuffled = [...phraseLetters];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
 
-            // Ensure not equal to correct phrase right at start
             if (shuffled.map(l => l.char).join('') === targetPhrase) {
                 shuffled.reverse();
             }
@@ -498,7 +582,6 @@
                 emptyHint.style.display = 'none';
             }
 
-            // Render selected letters in answer bar
             selectedLetters.forEach((item, index) => {
                 const btn = document.createElement('button');
                 btn.className = `letter-tile px-3.5 py-2 sm:px-5 sm:py-3 text-lg sm:text-2xl font-black rounded-xl ${item.char === ' ' ? 'bg-amber-100 text-amber-800 border-amber-300 px-6' : 'bg-gradient-to-br from-cyan-400 to-sky-600 text-white shadow-md'} hover:scale-105`;
@@ -507,7 +590,6 @@
                 targetArea.appendChild(btn);
             });
 
-            // Render remaining letters in bank
             availableLetters.forEach((item) => {
                 const btn = document.createElement('button');
                 btn.className = `letter-tile px-3.5 py-2 sm:px-4 sm:py-3 text-lg sm:text-xl font-bold rounded-xl ${item.char === ' ' ? 'bg-amber-50 border-amber-300 text-amber-700 px-5' : 'bg-white text-slate-800 border-2 border-cyan-200 shadow'} hover:border-cyan-400 hover:shadow-cyan-100`;
@@ -529,11 +611,8 @@
         function removeLetterFromTarget(index) {
             playTone(400, 'sine', 0.1);
             const removed = selectedLetters.splice(index, 1)[0];
-
-            // Reconstruct available letters
             const selectedIds = new Set(selectedLetters.map(l => l.id));
             const availableLetters = phraseLetters.filter(l => !selectedIds.has(l.id));
-
             renderPuzzle1(availableLetters);
         }
 
@@ -550,7 +629,6 @@
             initPuzzle1();
         }
 
-
         /* --- PUZZLE 2: 3x3 IMAGE SWAP PUZZLE --- */
         let puzzle2Board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let selectedTileIndex = null;
@@ -563,7 +641,6 @@
             canvas.height = 360;
             const ctx = canvas.getContext('2d');
 
-            // Draw Romantic Romantic Art Background
             const grad = ctx.createLinearGradient(0, 0, 360, 360);
             grad.addColorStop(0, '#0f172a');
             grad.addColorStop(0.5, '#0284c7');
@@ -571,13 +648,11 @@
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 360, 360);
 
-            // Draw decorative circles & glows
             ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
             ctx.beginPath();
             ctx.arc(180, 180, 120, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw glowing Heart in Center
             ctx.fillStyle = '#ff2a6d';
             ctx.shadowColor = '#00e5ff';
             ctx.shadowBlur = 20;
@@ -589,13 +664,11 @@
             ctx.fill();
             ctx.shadowBlur = 0;
 
-            // Calligraphy text
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 32px Cairo';
             ctx.textAlign = 'center';
             ctx.fillText('علويتي رتاج', 180, 290);
 
-            // Sparkles
             ctx.fillStyle = '#ffeb3b';
             for (let i = 0; i < 15; i++) {
                 const sx = (i * 37) % 360;
@@ -611,7 +684,6 @@
         function initPuzzle2() {
             if (!artworkCanvas) {
                 artworkCanvas = generateArtworkCanvas();
-                // Render preview
                 const previewContainer = document.getElementById('puzzle2Preview');
                 previewContainer.innerHTML = '';
                 const previewImg = document.createElement('img');
@@ -619,7 +691,6 @@
                 previewImg.className = 'w-full h-full object-cover';
                 previewContainer.appendChild(previewImg);
             }
-
             shufflePuzzle2();
         }
 
@@ -628,7 +699,6 @@
             document.getElementById('swapCount').innerText = swapCount;
             selectedTileIndex = null;
 
-            // Random shuffle ensuring it's solvable and not solved initially
             puzzle2Board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
             for (let i = puzzle2Board.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -650,19 +720,16 @@
                 const tileDiv = document.createElement('div');
                 tileDiv.className = `puzzle-grid-item relative rounded-xl overflow-hidden shadow ${selectedTileIndex === currentPos ? 'selected' : ''}`;
 
-                // Create canvas slice for this piece
                 const tileCanvas = document.createElement('canvas');
                 tileCanvas.width = 120;
                 tileCanvas.height = 120;
                 const ctx = tileCanvas.getContext('2d');
 
-                // Source position in 360x360 artwork canvas
                 const sx = (tilePieceIndex % 3) * 120;
                 const sy = Math.floor(tilePieceIndex / 3) * 120;
 
                 ctx.drawImage(artworkCanvas, sx, sy, 120, 120, 0, 0, 120, 120);
 
-                // Add subtle tile number guide
                 ctx.fillStyle = 'rgba(0,0,0,0.4)';
                 ctx.fillRect(4, 4, 22, 22);
                 ctx.fillStyle = '#00e5ff';
@@ -688,7 +755,6 @@
                 selectedTileIndex = null;
                 renderPuzzle2Grid();
             } else {
-                // Swap pieces
                 [puzzle2Board[selectedTileIndex], puzzle2Board[pos]] = [puzzle2Board[pos], puzzle2Board[selectedTileIndex]];
                 selectedTileIndex = null;
                 swapCount++;
@@ -706,7 +772,6 @@
             return puzzle2Board.every((val, idx) => val === idx);
         }
 
-
         /* --- PUZZLE 3: CANVAS ARCHERY GAME --- */
         let archeryCanvas, archeryCtx;
         let isAiming = false;
@@ -722,7 +787,6 @@
             archeryCanvas = document.getElementById('archeryCanvas');
             archeryCtx = archeryCanvas.getContext('2d');
 
-            // Responsive sizing
             archeryCanvas.width = archeryCanvas.parentElement.clientWidth;
             archeryCanvas.height = archeryCanvas.parentElement.clientHeight;
 
@@ -733,7 +797,6 @@
             hearts = [];
             particles = [];
 
-            // Add Event Listeners for Aiming (Mouse & Touch)
             archeryCanvas.removeEventListener('mousedown', startAim);
             archeryCanvas.removeEventListener('mousemove', moveAim);
             window.removeEventListener('mouseup', endAim);
@@ -767,11 +830,9 @@
         function startAim(e) {
             if (e.touches) e.preventDefault();
             const coords = getCanvasCoords(e);
-            // Bow base location is bottom center
             const bowX = archeryCanvas.width / 2;
             const bowY = archeryCanvas.height - 40;
 
-            // Start pull if clicking near bow area
             if (Math.hypot(coords.x - bowX, coords.y - bowY) < 120) {
                 isAiming = true;
                 dragStart = { x: bowX, y: bowY };
@@ -843,17 +904,14 @@
         function runArcheryLoop() {
             archeryCtx.clearRect(0, 0, archeryCanvas.width, archeryCanvas.height);
 
-            // Background night sky inside canvas
             const bgGrad = archeryCtx.createLinearGradient(0, 0, 0, archeryCanvas.height);
             bgGrad.addColorStop(0, '#0f172a');
             bgGrad.addColorStop(1, '#1e293b');
             archeryCtx.fillStyle = bgGrad;
             archeryCtx.fillRect(0, 0, archeryCanvas.width, archeryCanvas.height);
 
-            // Spawn floating hearts
             spawnHeart();
 
-            // Update & Draw Hearts
             hearts.forEach((h, idx) => {
                 h.y -= h.speedY;
                 h.x += Math.sin(Date.now() * 0.003 + h.swayOffset) * 0.8;
@@ -864,7 +922,6 @@
                 archeryCtx.shadowColor = h.color;
                 archeryCtx.shadowBlur = 12;
 
-                // Draw heart shape
                 archeryCtx.beginPath();
                 const s = h.radius / 20;
                 archeryCtx.moveTo(0, 0);
@@ -873,19 +930,16 @@
                 archeryCtx.fill();
                 archeryCtx.restore();
 
-                // Remove out of screen hearts
                 if (h.y < -40) hearts.splice(idx, 1);
             });
 
-            // Update & Draw Arrows
             arrows.forEach((a, aIdx) => {
                 if (!a.active) return;
                 a.x += a.vx;
                 a.y += a.vy;
-                a.vy += 0.05; // gravity
+                a.vy += 0.05;
                 a.angle = Math.atan2(a.vy, a.vx);
 
-                // Draw arrow
                 archeryCtx.save();
                 archeryCtx.translate(a.x, a.y);
                 archeryCtx.rotate(a.angle);
@@ -896,7 +950,6 @@
                 archeryCtx.lineTo(10, 0);
                 archeryCtx.stroke();
 
-                // Arrow head
                 archeryCtx.fillStyle = '#ffffff';
                 archeryCtx.beginPath();
                 archeryCtx.moveTo(10, -5);
@@ -906,7 +959,6 @@
                 archeryCtx.fill();
                 archeryCtx.restore();
 
-                // Check collisions with hearts
                 hearts.forEach((h, hIdx) => {
                     if (Math.hypot(a.x - h.x, a.y - h.y) < h.radius + 10) {
                         createPopParticles(h.x, h.y, h.color);
@@ -924,13 +976,11 @@
                     }
                 });
 
-                // Remove out of bounds arrows
                 if (a.x < 0 || a.x > archeryCanvas.width || a.y > archeryCanvas.height + 50) {
                     a.active = false;
                 }
             });
 
-            // Update & Draw Particles
             particles.forEach((p, pIdx) => {
                 p.x += p.vx;
                 p.y += p.vy;
@@ -945,12 +995,10 @@
                 if (p.life <= 0) particles.splice(pIdx, 1);
             });
 
-            // Draw Bow & Aim Line
             const bowX = archeryCanvas.width / 2;
             const bowY = archeryCanvas.height - 40;
 
             if (isAiming) {
-                // Trajectory Aim Line
                 archeryCtx.strokeStyle = 'rgba(0, 229, 255, 0.5)';
                 archeryCtx.lineWidth = 2;
                 archeryCtx.setLineDash([6, 6]);
@@ -963,7 +1011,6 @@
                 archeryCtx.setLineDash([]);
             }
 
-            // Draw Bow Body
             archeryCtx.strokeStyle = '#38bdf8';
             archeryCtx.lineWidth = 5;
             archeryCtx.beginPath();
@@ -973,10 +1020,10 @@
             archeryAnimationId = requestAnimationFrame(runArcheryLoop);
         }
 
-
-        /* --- BACKGROUND FLOATING HEARTS & ROSE PETALS ANIMATION --- */
+        /* --- BACKGROUND CANVAS: ANIMATED BLOOMING GLOWING PINK FLOWERS --- */
         let bgCanvas, bgCtx;
         let bgParticles = [];
+        let bloomingFlowers = [];
 
         function initBgCanvas() {
             bgCanvas = document.getElementById('bgCanvas');
@@ -989,22 +1036,97 @@
             window.addEventListener('resize', resize);
             resize();
 
+            // Initialize background light floating particles
             bgParticles = [];
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 25; i++) {
                 bgParticles.push({
                     x: Math.random() * bgCanvas.width,
                     y: Math.random() * bgCanvas.height,
-                    size: Math.random() * 8 + 4,
-                    speedY: Math.random() * 0.8 + 0.3,
+                    size: Math.random() * 6 + 3,
+                    speedY: Math.random() * 0.6 + 0.2,
                     speedX: Math.random() * 0.4 - 0.2,
                     opacity: Math.random() * 0.5 + 0.3,
                     color: Math.random() > 0.5 ? '#70e1ff' : '#ffb7c5'
                 });
             }
 
-            function bgLoop() {
+            // Create Blooming Flowers positions across screen
+            bloomingFlowers = [];
+            const flowerCount = Math.min(Math.floor(window.innerWidth / 120), 8);
+            for (let i = 0; i < flowerCount; i++) {
+                bloomingFlowers.push({
+                    x: (window.innerWidth / (flowerCount + 1)) * (i + 1) + (Math.random() * 40 - 20),
+                    baseY: window.innerHeight,
+                    targetHeight: Math.random() * 80 + 120,
+                    stemProgress: 0,
+                    bloomProgress: 0,
+                    maxSize: Math.random() * 15 + 20,
+                    growSpeed: Math.random() * 0.008 + 0.006,
+                    swayOffset: Math.random() * Math.PI * 2,
+                    color: '#ff2a8d'
+                });
+            }
+
+            function drawFlower(f, time) {
+                const currentHeight = f.targetHeight * f.stemProgress;
+                const sway = Math.sin(time * 0.002 + f.swayOffset) * 6 * f.stemProgress;
+                const headX = f.x + sway;
+                const headY = f.baseY - currentHeight;
+
+                // Draw Growing Stem
+                bgCtx.beginPath();
+                bgCtx.moveTo(f.x, f.baseY);
+                bgCtx.quadraticCurveTo(f.x + sway * 0.5, f.baseY - currentHeight * 0.5, headX, headY);
+                bgCtx.strokeStyle = 'rgba(74, 222, 128, 0.4)';
+                bgCtx.lineWidth = 3;
+                bgCtx.stroke();
+
+                // Draw Glowing Pink Flower Head when stem is grown
+                if (f.stemProgress > 0.6) {
+                    const flowerSize = f.maxSize * f.bloomProgress;
+
+                    bgCtx.save();
+                    bgCtx.translate(headX, headY);
+                    
+                    // Radiant Pink Glow Effect
+                    bgCtx.shadowColor = '#ff2a8d';
+                    bgCtx.shadowBlur = 20 * f.bloomProgress;
+
+                    // Draw Glowing Petals
+                    const petalCount = 6;
+                    for (let p = 0; p < petalCount; p++) {
+                        const angle = (Math.PI * 2 / petalCount) * p + (time * 0.0005);
+                        bgCtx.fillStyle = 'rgba(255, 42, 141, 0.75)';
+                        bgCtx.beginPath();
+                        const px = Math.cos(angle) * (flowerSize * 0.6);
+                        const py = Math.sin(angle) * (flowerSize * 0.6);
+                        bgCtx.arc(px, py, flowerSize * 0.5, 0, Math.PI * 2);
+                        bgCtx.fill();
+                    }
+
+                    // Bright Glowing Flower Center
+                    bgCtx.fillStyle = '#fff0f6';
+                    bgCtx.shadowColor = '#ffffff';
+                    bgCtx.shadowBlur = 10;
+                    bgCtx.beginPath();
+                    bgCtx.arc(0, 0, flowerSize * 0.35, 0, Math.PI * 2);
+                    bgCtx.fill();
+
+                    bgCtx.restore();
+                }
+
+                // Update Stem & Bloom Growth Progress over time
+                if (f.stemProgress < 1) {
+                    f.stemProgress += f.growSpeed;
+                } else if (f.bloomProgress < 1) {
+                    f.bloomProgress += f.growSpeed * 1.2;
+                }
+            }
+
+            function bgLoop(timestamp) {
                 bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
 
+                // Update & Draw Background Floating Particles
                 bgParticles.forEach(p => {
                     p.y += p.speedY;
                     p.x += p.speedX;
@@ -1022,9 +1144,13 @@
                     bgCtx.globalAlpha = 1;
                 });
 
+                // Update & Draw Growing Blooming Flowers
+                bloomingFlowers.forEach(f => drawFlower(f, timestamp || 0));
+
                 requestAnimationFrame(bgLoop);
             }
-            bgLoop();
+
+            bgLoop(0);
         }
 
         function triggerConfettiAndCelebrate() {
@@ -1052,16 +1178,16 @@
 
         function restartAllPuzzles() {
             unlockedStep = 1;
-            switchTab(1);
+            switchTab(0);
             initPuzzle1();
             showToast('تمت إعادة المغامرة، بالتوفيق لـ علويتي رتاج ✨', 'fa-redo');
         }
-
 
         /* --- PAGE INITIALIZATION --- */
         window.onload = function() {
             initBgCanvas();
             initPuzzle1();
+            switchTab(0); // Start on Home Screen by default
         };
     </script>
 </body>
