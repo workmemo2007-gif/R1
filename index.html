@@ -3,429 +3,1066 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إلى علويتي رتاج | رسالة حب وعزلة</title>
-    <!-- Tailwind CSS Play CDN -->
+    <title>إلى علويتي رتاج 💖 - سر المحبة</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
+    <!-- Google Fonts: Cairo & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- jQuery (مطلوب لتأثير تموجات الماء) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- jQuery Ripples Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #1a0f13;
-            overflow-x: hidden;
+        :root {
+            --bg-main: #faf9f6;
+            --bg-card: #fffdfb;
+            --cyan-glow: #00e5ff;
+            --cyan-soft: #70e1ff;
+            --cyan-dark: #0284c7;
         }
 
-        /* خلفية الصورة مع تظليل خفيف لدمج التصميم */
-        #water-background {
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-main);
+            color: #334155;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .font-amiri {
+            font-family: 'Amiri', serif;
+        }
+
+        /* Animated Glowing Cyan Border Effect */
+        .cyan-glow-box {
+            position: relative;
+            background: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .cyan-glow-box::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 1.4rem;
+            background: linear-gradient(90deg, #00e5ff, #70e1ff, #38bdf8, #00e5ff);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: borderGlow 4s ease infinite;
+            opacity: 0.85;
+            filter: blur(4px);
+        }
+
+        .cyan-border-pulse {
+            border: 2px solid var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.2);
+            animation: pulseGlow 2.5s infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 8px rgba(0, 229, 255, 0.3), inset 0 0 5px rgba(0, 229, 255, 0.1); }
+            100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.7), inset 0 0 12px rgba(0, 229, 255, 0.3); }
+        }
+
+        /* Floating background animation */
+        .floating-bg-hearts {
             position: fixed;
-            inset: 0;
-            background-image: url('image.png'); /* رابط الصورة المرسلة */
-            background-size: cover;
-            background-position: center;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
             z-index: 0;
         }
 
-        /* طبقة إضاءة لامعة متحركة فوق الخلفية */
-        .shimmer-overlay {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.15), rgba(0, 0, 0, 0.65));
-            pointer-events: none;
-            z-index: 1;
+        /* Step status tabs styling */
+        .step-tab {
+            transition: all 0.3s ease;
+        }
+        .step-tab.active {
+            background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+        }
+        .step-tab.completed {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            border-color: #38bdf8;
+        }
+        .step-tab.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f1f5f9;
         }
 
-        /* Glassmorphism Card Style */
-        .glass-card {
-            background: rgba(30, 15, 22, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 192, 203, 0.15);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
-                        inset 0 0 20px rgba(255, 255, 255, 0.03);
+        /* Puzzle 1 Tiles */
+        .letter-tile {
+            touch-action: manipulation;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+        }
+        .letter-tile:active {
+            transform: scale(0.92);
         }
 
-        /* Floating Card Animation */
-        @keyframes cardFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+        /* Puzzle 2 Grid Tiles */
+        .puzzle-grid-item {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
         }
-        .floating-container {
-            animation: cardFloat 6s ease-in-out infinite;
+        .puzzle-grid-item:hover {
+            transform: scale(1.02);
+        }
+        .puzzle-grid-item.selected {
+            outline: 4px solid #00e5ff;
+            box-shadow: 0 0 20px #00e5ff;
+            z-index: 10;
+        }
+
+        /* Modal Overlay Animation */
+        .modal-enter {
+            animation: modalFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(20, 10, 15, 0.5);
+            background: #faf9f6;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 192, 203, 0.2);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 192, 203, 0.4);
-        }
-
-        /* Blinking Cursor for Typing Effect */
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 0.8s infinite;
-            color: #f472b6;
-            margin-right: 2px;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Heart Beat & Floating Particles Animation */
-        @keyframes heartPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        .heart-beat {
-            animation: heartPulse 0.6s ease-in-out;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.6); opacity: 1; }
-            100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
-        }
-        .floating-heart {
-            position: absolute;
-            color: #f43f5e;
-            pointer-events: none;
-            animation: floatUp 1.2s forwards ease-out;
-            z-index: 30;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-        .shake {
-            animation: shake 0.4s ease-in-out;
+            background: #70e1ff;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-100 flex items-center justify-center relative p-4 sm:p-6 lg:p-8">
+<body class="relative flex flex-col min-h-screen justify-between items-center p-3 sm:p-6">
 
-    <!-- خلفية الصورة مع تأثير الماء (Water Ripple Target) -->
-    <div id="water-background"></div>
-    <!-- طبقة إضاءة وتوهج لامع فوق الخلفية -->
-    <div class="shimmer-overlay"></div>
+    <!-- Background Canvas for Floating Effects -->
+    <canvas id="bgCanvas" class="floating-bg-hearts"></canvas>
 
-    <!-- زر التحكم بالموسيقى الهادئة في الخلفية -->
-    <div class="absolute top-6 left-6 z-20">
-        <button id="musicToggle" class="glass-card px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition-all cursor-pointer shadow-lg group">
-            <i class="fa-solid fa-music text-pink-400 group-hover:scale-110 transition-transform"></i>
-            <span id="musicText">تشغيل أجواء هادئة</span>
-        </button>
-    </div>
-
-    <!-- الحاوية الرئيسية للبطاقة الزجاجية -->
-    <main class="relative z-20 w-full max-w-2xl mx-auto floating-container my-8">
-        
-        <!-- شاشة اللغز وقفل الرسالة -->
-        <div id="lockScreen" class="glass-card rounded-3xl p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-white/10 transition-all duration-500">
-            <div class="w-16 h-16 bg-pink-500/10 border border-pink-500/20 rounded-2xl mx-auto flex items-center justify-center text-pink-400 text-2xl mb-6 shadow-inner">
-                <i class="fa-solid fa-lock" id="lockIcon"></i>
-            </div>
-            
-            <span class="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">رسالة محمية بالعزلة</span>
-            <h2 class="text-2xl sm:text-3xl font-black mt-4 mb-2 text-white">إلى علويتي</h2>
-            <p class="text-slate-300 text-sm sm:text-base max-w-md mx-auto mb-8 font-light leading-relaxed">
-                لكي تفتح هذه الرسالة المقدسة، يرجى حل اللغز التالي:<br>
-                <span class="text-pink-300 font-medium block mt-2">"من هي التي سكنت قلب مؤتمن سامي وأصبحت ملاذه وعزويته؟ (اسم مكون من 4 أحرف)"</span>
+    <!-- Top Header & Audio Control -->
+    <header class="w-full max-w-4xl z-10 my-2">
+        <div class="cyan-glow-box p-4 sm:p-6 text-center relative overflow-hidden">
+            <button id="soundToggleBtn" onclick="toggleAudio()" class="absolute left-4 top-4 w-10 h-10 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center hover:bg-cyan-100 transition shadow" title="تشغيل / إيقاف الصوت">
+                <i id="soundIcon" class="fas fa-volume-up text-lg"></i>
+            </button>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mb-2">
+                رحلة المحبة إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-sky-600 font-bold">علويتي رتاج</span> ✨
+            </h1>
+            <p class="text-xs sm:text-base text-slate-600 max-w-2xl mx-auto">
+                هناك رسالة سرية مخصصة لكِ وحدهكِ... ولكن لا يمكن الوصول إليها إلا بعد اجتياز الألغاز الثلاثة المتتالية بنجاح!
             </p>
+        </div>
 
-            <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="puzzleForm">
-                <input type="text" id="puzzleInput" placeholder="اكتب الإجابة هنا..." class="flex-1 glass-card bg-black/40 border border-white/15 px-4 py-3 rounded-2xl text-white placeholder-slate-400 text-sm focus:outline-none focus:border-pink-400 transition-all text-center sm:text-right">
-                <button id="unlockBtn" class="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white font-medium px-6 py-3 rounded-2xl shadow-lg shadow-pink-500/25 transition-all transform hover:scale-105 active:scale-95 cursor-pointer text-sm">
-                    افتح الرسالة <i class="fa-solid fa-key mr-1"></i>
+        <!-- Navigation Tabs / Progress Bar -->
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 my-4">
+            <button id="tab1" onclick="switchTab(1)" class="step-tab active flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">1</span>
+                <span>ترتيب الكلمة</span>
+                <i class="fas fa-font"></i>
+            </button>
+            <button id="tab2" onclick="switchTab(2)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-6 h-6 rounded-full bg-black/10 flex items-center justify-center text-xs">2</span>
+                <span>ترتيب البازل</span>
+                <i class="fas fa-puzzle-piece"></i>
+            </button>
+            <button id="tab3" onclick="switchTab(3)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
+                <span class="w-6 h-6 rounded-full bg-black/10 flex items-center justify-center text-xs">3</span>
+                <span>صيد القلوب</span>
+                <i class="fas fa-bullseye"></i>
+            </button>
+            <button id="tab4" onclick="switchTab(4)" class="step-tab locked flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold">
+                <i class="fas fa-envelope-open-text text-pink-500"></i>
+                <span>الرسالة السرية</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-4xl z-10 my-auto py-2">
+
+        <!-- PUZZLE 1: WORD UNSCRAMBLE -->
+        <section id="puzzle1Section" class="cyan-glow-box p-4 sm:p-8 text-center transition-all duration-500">
+            <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-3">
+                <i class="fas fa-puzzle-piece ml-1"></i> اللغز الأول: ترتيب الجملة
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-2">رّتبي الحروف المبعثرة لتكوين اللقب الغالي 💕</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mb-6">انقري على الحروف لنقلها بالترتيب الصحيح إلى خانة الجملة:</p>
+
+            <!-- Target Slot Area -->
+            <div id="targetSlotArea" class="min-h-[64px] sm:min-h-[80px] p-3 rounded-2xl bg-slate-50 border-2 border-dashed border-cyan-300 flex flex-wrap justify-center items-center gap-2 mb-6 cyan-border-pulse">
+                <span class="text-slate-400 text-sm select-none" id="emptySlotHint">انقري على الحروف بالأسفل لجمعها هنا...</span>
+            </div>
+
+            <!-- Scrambled Letter Bank -->
+            <div id="scrambledBank" class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 min-h-[60px]">
+                <!-- Dynamic Letter Buttons Will Be Generated Here -->
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-center gap-4">
+                <button onclick="resetPuzzle1()" class="px-5 py-2.5 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold text-sm transition flex items-center gap-2">
+                    <i class="fas fa-undo"></i> إعادة محاولة
                 </button>
             </div>
-            <p id="errorMsg" class="text-rose-400 text-xs mt-3 hidden"></p>
-        </div>
+        </section>
 
-        <!-- محتوى الرسالة الفعلية (مخفي لحين حل اللغز) -->
-        <div class="glass-card rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-white/10 hidden opacity-0 transition-all duration-700" id="mainCard">
-            
-            <!-- تأثير ضوء الماوس التفاعلي على البطاقة -->
-            <div id="spotlight" class="absolute pointer-events-none transition-opacity duration-300 opacity-0 -inset-px rounded-3xl z-0" style="background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(244, 114, 182, 0.1), transparent 40%);"></div>
-
-            <!-- رأس الرسالة (Metadata) -->
-            <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-white/10 pb-6 mb-6 gap-4">
-                <div>
-                    <span class="text-xs uppercase tracking-widest text-pink-400 font-semibold bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">رسالة خاصة وعزلة مقدسة</span>
-                    <h1 class="text-2xl sm:text-3xl font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-pink-200">
-                        إلى علويتي رتاج
-                    </h1>
-                </div>
-                <div class="text-left sm:text-right">
-                    <span class="text-xs text-slate-400 block">المرسل:</span>
-                    <span class="text-sm font-bold text-pink-300 tracking-wide">مؤتمن سامي</span>
-                </div>
+        <!-- PUZZLE 2: 3x3 TILE SWAP PUZZLE -->
+        <section id="puzzle2Section" class="cyan-glow-box p-4 sm:p-8 text-center hidden transition-all duration-500">
+            <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-3">
+                <i class="fas fa-image ml-1"></i> اللغز الثاني: صورة البازل المبعثرة
             </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-2">عيدي ترتيب أجزاء الصورة ليكتمل مشهد الحب 🖼️</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mb-4">اضغطي على مربع ثم على مربع آخر للمبادلة بين موقعيهما حتى تكتمل الصورة:</p>
 
-            <!-- محتوى الرسالة مع تأثير الكتابة السينمائية -->
-            <div class="relative z-10 min-h-[220px] sm:min-h-[200px] mb-8">
-                <div id="messageText" class="text-slate-200 text-base sm:text-lg leading-relaxed font-light whitespace-pre-line typing-cursor">
-                    <!-- سيتم حقن النص هنا بعد حل اللغز -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 my-4">
+                <!-- Puzzle Board Grid (3x3) -->
+                <div id="puzzle2Grid" class="grid grid-cols-3 gap-1.5 p-2 bg-slate-200 rounded-2xl shadow-inner cyan-border-pulse w-[280px] h-[280px] sm:w-[360px] sm:h-[360px]">
+                    <!-- 9 Dynamic Tiles Generated Here -->
                 </div>
-            </div>
 
-            <!-- لوحة التحكم السفلية (أزرار التفاعل) -->
-            <div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
-                
-                <!-- زر إعادة تشغيل النص -->
-                <div class="flex items-center gap-2">
-                    <button id="replayBtn" title="إعادة قراءة الرسالة" class="glass-card w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/15 transition-all cursor-pointer">
-                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                <!-- Preview Box & Stats -->
+                <div class="flex flex-col items-center gap-3">
+                    <div class="text-xs text-slate-500 font-semibold">الصورة الأصلية المطلوب تجميعها:</div>
+                    <div id="puzzle2Preview" class="w-32 h-32 sm:w-40 sm:h-40 rounded-xl overflow-hidden border-2 border-cyan-400 shadow-md">
+                        <!-- Canvas Preview rendered via JS -->
+                    </div>
+                    <div class="text-xs text-slate-600 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-200 font-bold">
+                        عدد المحاولات: <span id="swapCount">0</span>
+                    </div>
+                    <button onclick="shufflePuzzle2()" class="px-4 py-2 text-xs rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-bold transition flex items-center gap-1.5">
+                        <i class="fas fa-random"></i> خلط القطع مجدداً
                     </button>
-                    <span class="text-xs text-slate-400 hidden sm:inline">أو انقر للإعادة</span>
                 </div>
+            </div>
+        </section>
 
-                <!-- زر الإعجاب والقلب النابض مع تناثر القلوب -->
-                <div class="relative">
-                    <button id="heartBtn" class="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-medium px-6 py-3 rounded-full shadow-lg shadow-rose-500/25 flex items-center gap-2.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
-                        <i id="heartIcon" class="fa-solid fa-heart text-white"></i>
-                        <span class="text-sm tracking-wide">نبضة حب لروحك</span>
-                        <span id="likeCount" class="bg-white/20 px-2 py-0.5 rounded-full text-xs font-bold">14</span>
-                    </button>
-                    <div id="heartsContainer" class="absolute inset-0 pointer-events-none overflow-visible"></div>
+        <!-- PUZZLE 3: ARCHERY flying HEARTS GAME -->
+        <section id="puzzle3Section" class="cyan-glow-box p-4 sm:p-6 text-center hidden transition-all duration-500">
+            <div class="inline-block px-4 py-1 rounded-full bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-bold mb-2">
+                <i class="fas fa-bow-arrow ml-1"></i> اللغز الثالث: صيد القلوب الطائرة
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-1">اصطادي 10 قلوب باستخدام سهم الحب 💘</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mb-3">اسحبي القوس بالماوس/الإصبع للأسفل للتصويب، ثم افلتيه لإطلاق السهم نحو القلوب!</p>
+
+            <!-- Score Counter -->
+            <div class="flex justify-center items-center gap-4 mb-3">
+                <div class="bg-gradient-to-r from-pink-500 to-cyan-500 text-white font-extrabold px-6 py-2 rounded-full text-base sm:text-lg shadow-md flex items-center gap-2">
+                    <i class="fas fa-heart text-yellow-300 animate-pulse"></i>
+                    <span>القلوب التي تم اصطيادها:</span>
+                    <span id="heartsScore" class="text-xl sm:text-2xl font-black underline">0</span> / 10
                 </div>
-
             </div>
 
-        </div>
+            <!-- Archery Canvas -->
+            <div class="relative inline-block w-full max-w-[600px] aspect-[4/3] rounded-2xl overflow-hidden cyan-border-pulse bg-slate-900 shadow-2xl">
+                <canvas id="archeryCanvas" class="w-full h-full cursor-crosshair touch-none"></canvas>
+            </div>
+        </section>
+
+        <!-- FINAL SECRET MESSAGE MODAL / SCREEN -->
+        <section id="secretMessageSection" class="cyan-glow-box p-6 sm:p-10 text-center hidden modal-enter relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-pink-200/40 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-200/40 rounded-full blur-2xl"></div>
+
+            <div class="relative z-10">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 text-pink-500 text-3xl sm:text-4xl shadow-inner border-2 border-pink-300 animate-bounce">
+                    💌
+                </div>
+
+                <div class="inline-block px-4 py-1 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-extrabold mb-3">
+                    السر المكمون لـ علويتي رتاج ❤️
+                </div>
+
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-800 mb-6 font-amiri leading-relaxed">
+                    إلى أميرتي الغالية <span class="text-cyan-600 underline decoration-pink-400">علويتي رتاج</span>
+                </h2>
+
+                <div class="max-w-2xl mx-auto bg-amber-50/70 p-6 sm:p-8 rounded-2xl border-2 border-amber-200/60 shadow-lg font-amiri text-lg sm:text-2xl text-slate-800 leading-loose text-justify sm:text-center space-y-4 mb-8">
+                    <p>
+                        "منذ أن أشرقتِ في عالمي، أصبحت كل الأيام تحمل طعماً آخر من الفرح والجمال. أنتِ السكينة التي تنزل على قلبي في زحام الحياة، والنور الذي يضيء كل عتمة."
+                    </p>
+                    <p>
+                        "أعددتُ لكِ هذه اللفتة التفاعلية البسيطة كرمز لجمال روحكِ وسحر حضوركِ العذب. أردتُ أن تتذكري دائماً كم أنتِ استثنائية، وكم يحمل لكِ قلبي من الحب والتقدير الممتد بلا نهاية."
+                    </p>
+                    <p class="font-bold text-cyan-800 text-xl sm:text-3xl text-center pt-2">
+                        دمتِ لي أثمن وأجمل نعم العمر.. يا علويتي رتاج! 👑💖✨
+                    </p>
+                </div>
+
+                <!-- Interactive Buttons -->
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="copyMessageText()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-600 text-white font-bold shadow-lg hover:shadow-cyan-300/50 hover:scale-105 transition flex items-center gap-2">
+                        <i class="fas fa-copy"></i> نسخ الرسالة
+                    </button>
+                    <button onclick="restartAllPuzzles()" class="px-6 py-3 rounded-xl bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition flex items-center gap-2">
+                        <i class="fas fa-redo"></i> إعادة المغامرة من جديد
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- حقوق الطبع والنشر -->
-    <footer class="fixed bottom-3 right-0 left-0 text-center z-20 pointer-events-none">
-        <p class="text-[11px] text-pink-300/60 tracking-wider">صُنِع بحب وعزلة لأجل رتاج بواسطة مؤتمن سامي © 2026</p>
+    <!-- Toast Notification Message Box -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+        <i id="toastIcon" class="fas fa-check-circle text-cyan-400 text-xl"></i>
+        <span id="toastMsg" class="text-sm font-bold"></span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-4xl text-center py-4 text-xs text-slate-400 z-10">
+        مُصمّم بكل حب وإتقان لـ <span class="text-cyan-600 font-bold">علويتي رتاج</span> ✨
     </footer>
 
-    <!-- ملف الجافاسكريبت التفاعلي -->
     <script>
-        // تفعيل تأثير تموجات الماء على الخلفية باستخدام مكتبة jQuery Ripples
-        $(document).ready(function() {$('#water-background').ripples({
-                resolution: 512,
-                dropRadius: 20,
-                perturbance: 0.04,
-            });
-        });
+        /* --- GLOBAL STATE & GAME VARIABLES --- */
+        let currentStep = 1;
+        let unlockedStep = 1;
+        let soundEnabled = true;
 
-        const messageContent = `في خضم صخب هذا العالم وضوضائه، حيث تتسارع الأيام وتتكدس الوجوه، أجد في عزلي معكِ -رغم المسافات أو تفاصيل الحضور- وطناً خالصاً لا يشبهه مكان. 
-
-أنتِ لستِ فقط حضوراً عابراً في أيامي، بل إشراقة هادئة تُعيد ترتيب فوضى روحي. فيكِ أكتشف معنى السكينة الحقيقية؛ عزلتي معكِ هي امتلاء لا نقص فيه، خلوة مقدسة أهرب فيها من ضجيج الكون لأستقر في عمق عينيْكِ ودفء روحكِ.
-
-يا علويتي رتاج، دمتِ لي الملاذ، والنبض الذي يمنح لكل تفصيل صغير في حياتي طعماً آخر، أعمق وأجمل.`;
-
-        const lockScreen = document.getElementById('lockScreen');
-        const mainCard = document.getElementById('mainCard');
-        const puzzleInput = document.getElementById('puzzleInput');
-        const unlockBtn = document.getElementById('unlockBtn');
-        const errorMsg = document.getElementById('errorMsg');
-        const lockIcon = document.getElementById('lockIcon');
-
-        const messageEl = document.getElementById('messageText');
-        const replayBtn = document.getElementById('replayBtn');
-        const heartBtn = document.getElementById('heartBtn');
-        const heartIcon = document.getElementById('heartIcon');
-        const likeCountEl = document.getElementById('likeCount');
-        const heartsContainer = document.getElementById('heartsContainer');
-        const spotlight = document.getElementById('spotlight');
-
-        let charIndex = 0;
-        let isTyping = false;
-        let typingTimeout = null;
-
-        // التحقق من حل اللغز
-        function checkPuzzle() {
-            const userAnswer = puzzleInput.value.trim().toLowerCase();
-            const correctAnswers = ['رتاج', 'ريتاج'];
-
-            if (correctAnswers.includes(userAnswer)) {
-                lockIcon.classList.remove('fa-lock');
-                lockIcon.classList.add('fa-unlock', 'text-emerald-400');
-                
-                lockScreen.style.transform = 'scale(0.95)';
-                lockScreen.style.opacity = '0';
-                
-                setTimeout(() => {
-                    lockScreen.style.display = 'none';
-                    mainCard.classList.remove('hidden');
-                    setTimeout(() => {
-                        mainCard.style.opacity = '1';
-                        startTyping();
-                    }, 50);
-                }, 400);
-
-            } else {
-                puzzleInput.classList.add('shake', 'border-rose-500');
-                errorMsg.textContent = 'إجابة غير صحيحة، ركزي قليلاً يا علويتي!';
-                errorMsg.classList.remove('hidden');
-                
-                setTimeout(() => {
-                    puzzleInput.classList.remove('shake');
-                }, 400);
-            }
-        }
-
-        unlockBtn.addEventListener('click', checkPuzzle);
-        puzzleInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                checkPuzzle();
-            }
-        });
-
-        // دالة الكتابة السينمائية حرفاً حرفاً
-        function startTyping() {
-            if (isTyping) return;
-            isTyping = true;
-            messageEl.textContent = '';
-            charIndex = 0;
-            
-            function type() {
-                if (charIndex < messageContent.length) {
-                    messageEl.textContent += messageContent.charAt(charIndex);
-                    charIndex++;
-                    let speed = 35;
-                    if (messageContent.charAt(charIndex - 1) === '.' || messageContent.charAt(charIndex - 1) === '،') {
-                        speed = 120;
-                    }
-                    typingTimeout = setTimeout(type, speed);
-                } else {
-                    isTyping = false;
-                }
-            }
-            type();
-        }
-
-        replayBtn.addEventListener('click', () => {
-            clearTimeout(typingTimeout);
-            startTyping();
-        });
-
-        // تأثير Spotlight المتبع للماوس على البطاقة الزجاجية
-        mainCard.addEventListener('mousemove', (e) => {
-            const rect = mainCard.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            spotlight.style.setProperty('--mouse-x', `${x}px`);
-            spotlight.style.setProperty('--mouse-y', `${y}px`);
-            spotlight.style.opacity = '1';
-        });
-
-        mainCard.addEventListener('mouseleave', () => {
-            spotlight.style.opacity = '0';
-        });
-
-        // تفاعل زر الإعجاب وتناثر القلوب
-        let likes = 14;
-        heartBtn.addEventListener('click', () => {
-            likes++;
-            likeCountEl.textContent = likes;
-
-            heartIcon.classList.add('heart-beat');
-            setTimeout(() => {
-                heartIcon.classList.remove('heart-beat');
-            }, 600);
-
-            for (let i = 0; i < 5; i++) {
-                createFloatingHeart();
-            }
-        });
-
-        function createFloatingHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
-            heart.classList.add('floating-heart');
-            
-            const randomX = Math.random() * 60 - 30;
-            heart.style.left = `calc(50% + ${randomX}px)`;
-            heart.style.bottom = '20px';
-            
-            const size = Math.random() * 10 + 12;
-            heart.style.fontSize = `${size}px`;
-            
-            heartsContainer.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 1200);
-        }
-
-        // نظام محاكاة أصوات بيئية هادئة
+        // Audio Context Synthesizer (No external sound files required)
         let audioCtx = null;
-        let isMusicPlaying = false;
-        let oscillatorInterval = null;
 
-        const musicToggle = document.getElementById('musicToggle');
-        const musicText = document.getElementById('musicText');
-
-        musicToggle.addEventListener('click', () => {
-            if (!isMusicPlaying) {
-                try {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    playAmbientChord();
-                    oscillatorInterval = setInterval(playAmbientChord, 6000);
-                    
-                    isMusicPlaying = true;
-                    musicText.textContent = 'إيقاف الأجواء';
-                    musicToggle.classList.add('bg-pink-500/20', 'border-pink-500/40');
-                } catch (e) {
-                    console.log("Audio Context not supported");
-                }
-            } else {
-                if (audioCtx) {
-                    audioCtx.close();
-                }
-                clearInterval(oscillatorInterval);
-                isMusicPlaying = false;
-                musicText.textContent = 'تشغيل أجواء هادئة';
-                musicToggle.classList.remove('bg-pink-500/20', 'border-pink-500/40');
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
             }
-        });
+        }
 
-        function playAmbientChord() {
-            if (!audioCtx || audioCtx.state === 'closed') return;
-            
-            const frequencies = [220, 277.18, 329.63, 440];
-            frequencies.forEach((freq, index) => {
-                setTimeout(() => {
-                    if (!audioCtx || audioCtx.state === 'closed') return;
-                    const osc = audioCtx.createOscillator();
-                    const gainNode = audioCtx.createGain();
+        function playTone(freq, type = 'sine', duration = 0.2, gainVal = 0.1) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log(e);
+            }
+        }
 
-                    osc.type = 'sine';
-                    osc.frequency.value = freq;
-
-                    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-                    gainNode.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 1.5);
-                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 5.5);
-
-                    osc.connect(gainNode);
-                    gainNode.connect(audioCtx.destination);
-
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 5.5);
-                }, index * 400);
+        function playSuccessChime() {
+            if (!soundEnabled) return;
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                setTimeout(() => playTone(freq, 'triangle', 0.4, 0.15), idx * 100);
             });
         }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            if (soundEnabled) {
+                icon.className = 'fas fa-volume-up text-lg';
+                showToast('تم تشغيل المكتبيات الصوتية ✨', 'fa-volume-up');
+                playTone(440, 'sine', 0.2);
+            } else {
+                icon.className = 'fas fa-volume-mute text-lg';
+                showToast('تم كتم الصوت', 'fa-volume-mute');
+            }
+        }
+
+        function showToast(msg, iconClass = 'fa-star') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = msg;
+            toastIcon.className = `fas ${iconClass} text-cyan-400 text-xl`;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+
+        /* --- STEP / NAVIGATION CONTROLLER --- */
+        function switchTab(step) {
+            if (step > unlockedStep) {
+                showToast('يجب عليكِ إنجاز الألغاز السابقة أولاً! 🔒', 'fa-lock');
+                playTone(200, 'sawtooth', 0.2, 0.05);
+                return;
+            }
+
+            currentStep = step;
+            updateTabUI();
+
+            // Hide all sections
+            document.getElementById('puzzle1Section').classList.add('hidden');
+            document.getElementById('puzzle2Section').classList.add('hidden');
+            document.getElementById('puzzle3Section').classList.add('hidden');
+            document.getElementById('secretMessageSection').classList.add('hidden');
+
+            if (step === 1) {
+                document.getElementById('puzzle1Section').classList.remove('hidden');
+            } else if (step === 2) {
+                document.getElementById('puzzle2Section').classList.remove('hidden');
+                initPuzzle2();
+            } else if (step === 3) {
+                document.getElementById('puzzle3Section').classList.remove('hidden');
+                initPuzzle3Canvas();
+            } else if (step === 4) {
+                document.getElementById('secretMessageSection').classList.remove('hidden');
+                triggerConfettiAndCelebrate();
+            }
+        }
+
+        function updateTabUI() {
+            for (let i = 1; i <= 4; i++) {
+                const tab = document.getElementById(`tab${i}`);
+                tab.className = 'step-tab flex items-center gap-2 px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-bold ';
+
+                if (i === currentStep) {
+                    tab.classList.add('active');
+                } else if (i <= unlockedStep) {
+                    tab.classList.add('completed');
+                } else {
+                    tab.classList.add('locked');
+                }
+            }
+        }
+
+        function unlockNextStep(nextStep) {
+            if (nextStep > unlockedStep) {
+                unlockedStep = nextStep;
+            }
+            playSuccessChime();
+            setTimeout(() => {
+                switchTab(nextStep);
+            }, 800);
+        }
+
+
+        /* --- PUZZLE 1: UNSCRAMBLE WORD ("علويتي رتاج") --- */
+        const targetPhrase = "علويتي رتاج";
+        let phraseLetters = []; // Objects: { id, char }
+        let selectedLetters = [];
+
+        function initPuzzle1() {
+            phraseLetters = targetPhrase.split('').map((char, index) => ({ id: index, char: char }));
+
+            // Fisher-Yates Shuffle
+            let shuffled = [...phraseLetters];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+
+            // Ensure not equal to correct phrase right at start
+            if (shuffled.map(l => l.char).join('') === targetPhrase) {
+                shuffled.reverse();
+            }
+
+            selectedLetters = [];
+            renderPuzzle1(shuffled);
+        }
+
+        function renderPuzzle1(availableLetters) {
+            const bankContainer = document.getElementById('scrambledBank');
+            const targetArea = document.getElementById('targetSlotArea');
+            const emptyHint = document.getElementById('emptySlotHint');
+
+            bankContainer.innerHTML = '';
+            targetArea.innerHTML = '';
+
+            if (selectedLetters.length === 0) {
+                targetArea.appendChild(emptyHint);
+                emptyHint.style.display = 'block';
+            } else {
+                emptyHint.style.display = 'none';
+            }
+
+            // Render selected letters in answer bar
+            selectedLetters.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = `letter-tile px-3.5 py-2 sm:px-5 sm:py-3 text-lg sm:text-2xl font-black rounded-xl ${item.char === ' ' ? 'bg-amber-100 text-amber-800 border-amber-300 px-6' : 'bg-gradient-to-br from-cyan-400 to-sky-600 text-white shadow-md'} hover:scale-105`;
+                btn.innerText = item.char === ' ' ? 'مسافة' : item.char;
+                btn.onclick = () => removeLetterFromTarget(index);
+                targetArea.appendChild(btn);
+            });
+
+            // Render remaining letters in bank
+            availableLetters.forEach((item) => {
+                const btn = document.createElement('button');
+                btn.className = `letter-tile px-3.5 py-2 sm:px-4 sm:py-3 text-lg sm:text-xl font-bold rounded-xl ${item.char === ' ' ? 'bg-amber-50 border-amber-300 text-amber-700 px-5' : 'bg-white text-slate-800 border-2 border-cyan-200 shadow'} hover:border-cyan-400 hover:shadow-cyan-100`;
+                btn.innerText = item.char === ' ' ? 'مسافة' : item.char;
+                btn.onclick = () => addLetterToTarget(item, availableLetters);
+                bankContainer.appendChild(btn);
+            });
+
+            checkPuzzle1Success();
+        }
+
+        function addLetterToTarget(item, currentAvailable) {
+            playTone(600, 'sine', 0.1);
+            selectedLetters.push(item);
+            const nextAvailable = currentAvailable.filter(l => l.id !== item.id);
+            renderPuzzle1(nextAvailable);
+        }
+
+        function removeLetterFromTarget(index) {
+            playTone(400, 'sine', 0.1);
+            const removed = selectedLetters.splice(index, 1)[0];
+
+            // Reconstruct available letters
+            const selectedIds = new Set(selectedLetters.map(l => l.id));
+            const availableLetters = phraseLetters.filter(l => !selectedIds.has(l.id));
+
+            renderPuzzle1(availableLetters);
+        }
+
+        function checkPuzzle1Success() {
+            const currentStr = selectedLetters.map(l => l.char).join('');
+            if (currentStr === targetPhrase) {
+                showToast('ممتاز! تم تركيب الاسم الغالي بنجاح 💖', 'fa-check-double');
+                unlockNextStep(2);
+            }
+        }
+
+        function resetPuzzle1() {
+            playTone(300, 'sine', 0.15);
+            initPuzzle1();
+        }
+
+
+        /* --- PUZZLE 2: 3x3 IMAGE SWAP PUZZLE --- */
+        let puzzle2Board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let selectedTileIndex = null;
+        let swapCount = 0;
+        let artworkCanvas = null;
+
+        function generateArtworkCanvas() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 360;
+            canvas.height = 360;
+            const ctx = canvas.getContext('2d');
+
+            // Draw Romantic Romantic Art Background
+            const grad = ctx.createLinearGradient(0, 0, 360, 360);
+            grad.addColorStop(0, '#0f172a');
+            grad.addColorStop(0.5, '#0284c7');
+            grad.addColorStop(1, '#ec4899');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 360, 360);
+
+            // Draw decorative circles & glows
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.beginPath();
+            ctx.arc(180, 180, 120, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw glowing Heart in Center
+            ctx.fillStyle = '#ff2a6d';
+            ctx.shadowColor = '#00e5ff';
+            ctx.shadowBlur = 20;
+            ctx.beginPath();
+            const hx = 180, hy = 160;
+            ctx.moveTo(hx, hy);
+            ctx.bezierCurveTo(hx - 50, hy - 50, hx - 90, hy + 20, hx, hy + 80);
+            ctx.bezierCurveTo(hx + 90, hy + 20, hx + 50, hy - 50, hx, hy);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Calligraphy text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 32px Cairo';
+            ctx.textAlign = 'center';
+            ctx.fillText('علويتي رتاج', 180, 290);
+
+            // Sparkles
+            ctx.fillStyle = '#ffeb3b';
+            for (let i = 0; i < 15; i++) {
+                const sx = (i * 37) % 360;
+                const sy = (i * 53) % 360;
+                ctx.beginPath();
+                ctx.arc(sx, sy, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            return canvas;
+        }
+
+        function initPuzzle2() {
+            if (!artworkCanvas) {
+                artworkCanvas = generateArtworkCanvas();
+                // Render preview
+                const previewContainer = document.getElementById('puzzle2Preview');
+                previewContainer.innerHTML = '';
+                const previewImg = document.createElement('img');
+                previewImg.src = artworkCanvas.toDataURL();
+                previewImg.className = 'w-full h-full object-cover';
+                previewContainer.appendChild(previewImg);
+            }
+
+            shufflePuzzle2();
+        }
+
+        function shufflePuzzle2() {
+            swapCount = 0;
+            document.getElementById('swapCount').innerText = swapCount;
+            selectedTileIndex = null;
+
+            // Random shuffle ensuring it's solvable and not solved initially
+            puzzle2Board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            for (let i = puzzle2Board.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [puzzle2Board[i], puzzle2Board[j]] = [puzzle2Board[j], puzzle2Board[i]];
+            }
+
+            if (isPuzzle2Solved()) {
+                puzzle2Board.reverse();
+            }
+
+            renderPuzzle2Grid();
+        }
+
+        function renderPuzzle2Grid() {
+            const grid = document.getElementById('puzzle2Grid');
+            grid.innerHTML = '';
+
+            puzzle2Board.forEach((tilePieceIndex, currentPos) => {
+                const tileDiv = document.createElement('div');
+                tileDiv.className = `puzzle-grid-item relative rounded-xl overflow-hidden shadow ${selectedTileIndex === currentPos ? 'selected' : ''}`;
+
+                // Create canvas slice for this piece
+                const tileCanvas = document.createElement('canvas');
+                tileCanvas.width = 120;
+                tileCanvas.height = 120;
+                const ctx = tileCanvas.getContext('2d');
+
+                // Source position in 360x360 artwork canvas
+                const sx = (tilePieceIndex % 3) * 120;
+                const sy = Math.floor(tilePieceIndex / 3) * 120;
+
+                ctx.drawImage(artworkCanvas, sx, sy, 120, 120, 0, 0, 120, 120);
+
+                // Add subtle tile number guide
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(4, 4, 22, 22);
+                ctx.fillStyle = '#00e5ff';
+                ctx.font = 'bold 12px Cairo';
+                ctx.textAlign = 'center';
+                ctx.fillText(tilePieceIndex + 1, 15, 20);
+
+                tileCanvas.className = 'w-full h-full object-cover pointer-events-none';
+                tileDiv.appendChild(tileCanvas);
+
+                tileDiv.onclick = () => onTileClick(currentPos);
+                grid.appendChild(tileDiv);
+            });
+        }
+
+        function onTileClick(pos) {
+            playTone(500, 'sine', 0.1);
+
+            if (selectedTileIndex === null) {
+                selectedTileIndex = pos;
+                renderPuzzle2Grid();
+            } else if (selectedTileIndex === pos) {
+                selectedTileIndex = null;
+                renderPuzzle2Grid();
+            } else {
+                // Swap pieces
+                [puzzle2Board[selectedTileIndex], puzzle2Board[pos]] = [puzzle2Board[pos], puzzle2Board[selectedTileIndex]];
+                selectedTileIndex = null;
+                swapCount++;
+                document.getElementById('swapCount').innerText = swapCount;
+                renderPuzzle2Grid();
+
+                if (isPuzzle2Solved()) {
+                    showToast('رائع جداً! تجمعت صورة الحب ببراعة 🖼️💖', 'fa-puzzle-piece');
+                    unlockNextStep(3);
+                }
+            }
+        }
+
+        function isPuzzle2Solved() {
+            return puzzle2Board.every((val, idx) => val === idx);
+        }
+
+
+        /* --- PUZZLE 3: CANVAS ARCHERY GAME --- */
+        let archeryCanvas, archeryCtx;
+        let isAiming = false;
+        let dragStart = { x: 0, y: 0 };
+        let dragCurrent = { x: 0, y: 0 };
+        let arrows = [];
+        let hearts = [];
+        let particles = [];
+        let heartsShotCount = 0;
+        let archeryAnimationId = null;
+
+        function initPuzzle3Canvas() {
+            archeryCanvas = document.getElementById('archeryCanvas');
+            archeryCtx = archeryCanvas.getContext('2d');
+
+            // Responsive sizing
+            archeryCanvas.width = archeryCanvas.parentElement.clientWidth;
+            archeryCanvas.height = archeryCanvas.parentElement.clientHeight;
+
+            heartsShotCount = 0;
+            document.getElementById('heartsScore').innerText = heartsShotCount;
+
+            arrows = [];
+            hearts = [];
+            particles = [];
+
+            // Add Event Listeners for Aiming (Mouse & Touch)
+            archeryCanvas.removeEventListener('mousedown', startAim);
+            archeryCanvas.removeEventListener('mousemove', moveAim);
+            window.removeEventListener('mouseup', endAim);
+
+            archeryCanvas.removeEventListener('touchstart', startAim);
+            archeryCanvas.removeEventListener('touchmove', moveAim);
+            window.removeEventListener('touchend', endAim);
+
+            archeryCanvas.addEventListener('mousedown', startAim);
+            archeryCanvas.addEventListener('mousemove', moveAim);
+            window.addEventListener('mouseup', endAim);
+
+            archeryCanvas.addEventListener('touchstart', startAim, { passive: false });
+            archeryCanvas.addEventListener('touchmove', moveAim, { passive: false });
+            window.addEventListener('touchend', endAim);
+
+            if (archeryAnimationId) cancelAnimationFrame(archeryAnimationId);
+            runArcheryLoop();
+        }
+
+        function getCanvasCoords(e) {
+            const rect = archeryCanvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * (archeryCanvas.width / rect.width),
+                y: (clientY - rect.top) * (archeryCanvas.height / rect.height)
+            };
+        }
+
+        function startAim(e) {
+            if (e.touches) e.preventDefault();
+            const coords = getCanvasCoords(e);
+            // Bow base location is bottom center
+            const bowX = archeryCanvas.width / 2;
+            const bowY = archeryCanvas.height - 40;
+
+            // Start pull if clicking near bow area
+            if (Math.hypot(coords.x - bowX, coords.y - bowY) < 120) {
+                isAiming = true;
+                dragStart = { x: bowX, y: bowY };
+                dragCurrent = coords;
+            }
+        }
+
+        function moveAim(e) {
+            if (!isAiming) return;
+            if (e.touches) e.preventDefault();
+            dragCurrent = getCanvasCoords(e);
+        }
+
+        function endAim(e) {
+            if (!isAiming) return;
+            isAiming = false;
+
+            const bowX = archeryCanvas.width / 2;
+            const bowY = archeryCanvas.height - 40;
+
+            const dx = bowX - dragCurrent.x;
+            const dy = bowY - dragCurrent.y;
+            const power = Math.min(Math.hypot(dx, dy), 120);
+
+            if (power > 15) {
+                const angle = Math.atan2(dy, dx);
+                const speed = power * 0.22;
+
+                arrows.push({
+                    x: bowX,
+                    y: bowY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    angle: angle,
+                    active: true
+                });
+
+                playTone(700, 'triangle', 0.15, 0.2);
+            }
+        }
+
+        function spawnHeart() {
+            if (hearts.length < 5 && Math.random() < 0.03) {
+                hearts.push({
+                    x: Math.random() * (archeryCanvas.width - 80) + 40,
+                    y: archeryCanvas.height + 30,
+                    radius: Math.random() * 10 + 20,
+                    speedY: Math.random() * 1.5 + 1.2,
+                    swayOffset: Math.random() * Math.PI * 2,
+                    color: Math.random() > 0.3 ? '#ff2a6d' : '#00e5ff'
+                });
+            }
+        }
+
+        function createPopParticles(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                const ang = Math.random() * Math.PI * 2;
+                const spd = Math.random() * 4 + 1;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(ang) * spd,
+                    vy: Math.sin(ang) * spd,
+                    life: 1,
+                    color
+                });
+            }
+        }
+
+        function runArcheryLoop() {
+            archeryCtx.clearRect(0, 0, archeryCanvas.width, archeryCanvas.height);
+
+            // Background night sky inside canvas
+            const bgGrad = archeryCtx.createLinearGradient(0, 0, 0, archeryCanvas.height);
+            bgGrad.addColorStop(0, '#0f172a');
+            bgGrad.addColorStop(1, '#1e293b');
+            archeryCtx.fillStyle = bgGrad;
+            archeryCtx.fillRect(0, 0, archeryCanvas.width, archeryCanvas.height);
+
+            // Spawn floating hearts
+            spawnHeart();
+
+            // Update & Draw Hearts
+            hearts.forEach((h, idx) => {
+                h.y -= h.speedY;
+                h.x += Math.sin(Date.now() * 0.003 + h.swayOffset) * 0.8;
+
+                archeryCtx.save();
+                archeryCtx.translate(h.x, h.y);
+                archeryCtx.fillStyle = h.color;
+                archeryCtx.shadowColor = h.color;
+                archeryCtx.shadowBlur = 12;
+
+                // Draw heart shape
+                archeryCtx.beginPath();
+                const s = h.radius / 20;
+                archeryCtx.moveTo(0, 0);
+                archeryCtx.bezierCurveTo(-10 * s, -10 * s, -20 * s, 5 * s, 0, 20 * s);
+                archeryCtx.bezierCurveTo(20 * s, 5 * s, 10 * s, -10 * s, 0, 0);
+                archeryCtx.fill();
+                archeryCtx.restore();
+
+                // Remove out of screen hearts
+                if (h.y < -40) hearts.splice(idx, 1);
+            });
+
+            // Update & Draw Arrows
+            arrows.forEach((a, aIdx) => {
+                if (!a.active) return;
+                a.x += a.vx;
+                a.y += a.vy;
+                a.vy += 0.05; // gravity
+                a.angle = Math.atan2(a.vy, a.vx);
+
+                // Draw arrow
+                archeryCtx.save();
+                archeryCtx.translate(a.x, a.y);
+                archeryCtx.rotate(a.angle);
+                archeryCtx.strokeStyle = '#00e5ff';
+                archeryCtx.lineWidth = 3;
+                archeryCtx.beginPath();
+                archeryCtx.moveTo(-25, 0);
+                archeryCtx.lineTo(10, 0);
+                archeryCtx.stroke();
+
+                // Arrow head
+                archeryCtx.fillStyle = '#ffffff';
+                archeryCtx.beginPath();
+                archeryCtx.moveTo(10, -5);
+                archeryCtx.lineTo(20, 0);
+                archeryCtx.lineTo(10, 5);
+                archeryCtx.closePath();
+                archeryCtx.fill();
+                archeryCtx.restore();
+
+                // Check collisions with hearts
+                hearts.forEach((h, hIdx) => {
+                    if (Math.hypot(a.x - h.x, a.y - h.y) < h.radius + 10) {
+                        createPopParticles(h.x, h.y, h.color);
+                        hearts.splice(hIdx, 1);
+                        a.active = false;
+                        heartsShotCount++;
+                        document.getElementById('heartsScore').innerText = heartsShotCount;
+
+                        playTone(900, 'sine', 0.15, 0.25);
+
+                        if (heartsShotCount >= 10) {
+                            showToast('أحسنتِ! تم اصطياد 10 قلوب بنجاح! 🎉', 'fa-trophy');
+                            unlockNextStep(4);
+                        }
+                    }
+                });
+
+                // Remove out of bounds arrows
+                if (a.x < 0 || a.x > archeryCanvas.width || a.y > archeryCanvas.height + 50) {
+                    a.active = false;
+                }
+            });
+
+            // Update & Draw Particles
+            particles.forEach((p, pIdx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.025;
+                archeryCtx.fillStyle = p.color;
+                archeryCtx.globalAlpha = Math.max(0, p.life);
+                archeryCtx.beginPath();
+                archeryCtx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                archeryCtx.fill();
+                archeryCtx.globalAlpha = 1;
+
+                if (p.life <= 0) particles.splice(pIdx, 1);
+            });
+
+            // Draw Bow & Aim Line
+            const bowX = archeryCanvas.width / 2;
+            const bowY = archeryCanvas.height - 40;
+
+            if (isAiming) {
+                // Trajectory Aim Line
+                archeryCtx.strokeStyle = 'rgba(0, 229, 255, 0.5)';
+                archeryCtx.lineWidth = 2;
+                archeryCtx.setLineDash([6, 6]);
+                archeryCtx.beginPath();
+                archeryCtx.moveTo(bowX, bowY);
+                const dx = bowX - dragCurrent.x;
+                const dy = bowY - dragCurrent.y;
+                archeryCtx.lineTo(bowX + dx * 2, bowY + dy * 2);
+                archeryCtx.stroke();
+                archeryCtx.setLineDash([]);
+            }
+
+            // Draw Bow Body
+            archeryCtx.strokeStyle = '#38bdf8';
+            archeryCtx.lineWidth = 5;
+            archeryCtx.beginPath();
+            archeryCtx.arc(bowX, bowY, 35, Math.PI * 0.8, Math.PI * 0.2, true);
+            archeryCtx.stroke();
+
+            archeryAnimationId = requestAnimationFrame(runArcheryLoop);
+        }
+
+
+        /* --- BACKGROUND FLOATING HEARTS & ROSE PETALS ANIMATION --- */
+        let bgCanvas, bgCtx;
+        let bgParticles = [];
+
+        function initBgCanvas() {
+            bgCanvas = document.getElementById('bgCanvas');
+            bgCtx = bgCanvas.getContext('2d');
+
+            function resize() {
+                bgCanvas.width = window.innerWidth;
+                bgCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            bgParticles = [];
+            for (let i = 0; i < 30; i++) {
+                bgParticles.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    size: Math.random() * 8 + 4,
+                    speedY: Math.random() * 0.8 + 0.3,
+                    speedX: Math.random() * 0.4 - 0.2,
+                    opacity: Math.random() * 0.5 + 0.3,
+                    color: Math.random() > 0.5 ? '#70e1ff' : '#ffb7c5'
+                });
+            }
+
+            function bgLoop() {
+                bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+                bgParticles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+
+                    if (p.y > bgCanvas.height) {
+                        p.y = -20;
+                        p.x = Math.random() * bgCanvas.width;
+                    }
+
+                    bgCtx.fillStyle = p.color;
+                    bgCtx.globalAlpha = p.opacity;
+                    bgCtx.beginPath();
+                    bgCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    bgCtx.fill();
+                    bgCtx.globalAlpha = 1;
+                });
+
+                requestAnimationFrame(bgLoop);
+            }
+            bgLoop();
+        }
+
+        function triggerConfettiAndCelebrate() {
+            playSuccessChime();
+            showToast('تهانينا لـ علويتي رتاج! تم فتح السر المحفوظ 💖🎉', 'fa-heart');
+        }
+
+        function copyMessageText() {
+            const text = `إلى أميرتي الغالية علويتي رتاج\n"منذ أن أشرقتِ في عالمي، أصبحت كل الأيام تحمل طعماً آخر من الفرح والجمال..."\nدمتِ لي أثمن وأجمل نعم العمر.. يا علويتي رتاج! 👑💖✨`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('تم نسخ الرسالة بنجاح ✨', 'fa-copy');
+                });
+            } else {
+                const area = document.createElement('textarea');
+                area.value = text;
+                document.body.appendChild(area);
+                area.select();
+                document.execCommand('copy');
+                document.body.removeChild(area);
+                showToast('تم نسخ الرسالة بنجاح ✨', 'fa-copy');
+            }
+        }
+
+        function restartAllPuzzles() {
+            unlockedStep = 1;
+            switchTab(1);
+            initPuzzle1();
+            showToast('تمت إعادة المغامرة، بالتوفيق لـ علويتي رتاج ✨', 'fa-redo');
+        }
+
+
+        /* --- PAGE INITIALIZATION --- */
+        window.onload = function() {
+            initBgCanvas();
+            initPuzzle1();
+        };
     </script>
 </body>
 </html>
