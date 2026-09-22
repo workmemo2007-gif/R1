@@ -6,14 +6,15 @@
     <title>واجهة الرسالة الإلكترونية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* تطبيق خط Tajawal على الكل */
+            font-family: 'Tajawal', sans-serif;
         }
 
         body {
@@ -22,7 +23,7 @@
             overflow: hidden;
             display: flex;
             justify-content: center;
-            align-items: flex-end; /* وضع الكارت في المنطقة السفلى */
+            align-items: center; /* وضع العناصر في الوسط */
             background-color: #000000;
         }
 
@@ -44,76 +45,76 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.2);
             z-index: 2;
         }
 
-        /* تصميم كارت الزجاج السائل مصغر وشفاف بنسبة 90% */
+        /* تصميم كارت الزجاج الأبيض الشفاف */
         .glass-card {
             position: relative;
             z-index: 3;
             width: 85%;
-            max-width: 340px; /* تصغير حجم الكارت */
-            padding: 18px 20px; /* تقليل الحشوة الداخلية */
-            margin-bottom: 25px; /* إزاحة قصيرة عن الحافة السفلى */
-            border-radius: 20px;
+            max-width: 350px;
+            padding: 22px 24px;
             
-            /* شفافية 90% (خلفية بنسبة 10% فقط) */
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: blur(10px) saturate(160%);
-            -webkit-backdrop-filter: blur(10px) saturate(160%);
+            /* تمييز الموضع للوسط المائل للأسفل قليلاً */
+            margin-top: 8vh; 
             
+            border-radius: 24px;
+            
+            /* زيادة الشفافية البيضاء (خلفية بيضاء فائقة الشفافية مع تمويه ناعم) */
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            
+            /* حدود بيضاء ناعمة مضيئة */
             border: 1px solid rgba(255, 255, 255, 0.25);
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-            border-left: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.5),
-                inset 0 0 10px rgba(255, 255, 255, 0.15);
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
             color: #ffffff;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .glass-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: 
-                0 20px 45px rgba(0, 0, 0, 0.6),
-                inset 0 0 15px rgba(255, 255, 255, 0.25);
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
         .user-img {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .thuluth-title {
-            font-family: 'Aref Ruqaa', serif;
-            font-size: 1.4rem;
+        .card-title {
+            font-size: 1.35rem;
             font-weight: 700;
             color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            letter-spacing: -0.3px;
         }
 
-        /* خط واضح وصغير يظهر بنمط آلة كاتبة/كيبورد */
+        /* خط عصري ومريح للعين مع تأثير الآلة الكاتبة */
         .typing-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: #ffffff;
-            margin-bottom: 15px;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 18px;
             text-align: right;
-            border-left: 2px solid #ffffff; /* المؤشر النابض */
+            border-left: 2px solid rgba(255, 255, 255, 0.8);
             white-space: pre-wrap;
             overflow: hidden;
             display: inline-block;
@@ -128,24 +129,24 @@
         .glass-btn {
             display: block;
             width: 100%;
-            padding: 9px 0;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
             background: rgba(255, 255, 255, 0.15);
             color: #ffffff;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            transition: background 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
             text-align: center;
             text-decoration: none;
         }
 
         .glass-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
@@ -161,7 +162,7 @@
     <div class="glass-card">
         <div class="card-header">
             <img src="https://via.placeholder.com/60" alt="صورة المستلم" class="user-img">
-            <h1 class="thuluth-title">أهلاً بك</h1>
+            <h1 class="card-title">أهلاً بك</h1>
         </div>
         
         <p class="typing-text" id="typewriter"></p>
@@ -170,10 +171,9 @@
     </div>
 
     <script>
-        // تأثير طباعة الكيبورد الحية
         const text = "اهلا بالعلويه رتاج هناك هديه بانتظارك لكن حتى تصلين الى الهديه يجب اجتياز ثلاث مراحل صعبه و خطيره حتى تصل الاميره الى قصرها";
         let index = 0;
-        const speed = 50; // السرعة بالميللي ثانية
+        const speed = 45; 
 
         function typeWriter() {
             if (index < text.length) {
