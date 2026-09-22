@@ -4,21 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رسالة خاصة لك</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font (Tajawal) -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        body { 
+            font-family: 'Tajawal', sans-serif;
+            /* ضبط الصورة كخلفية للموقع بالكامل */
+            background-image: url('https://raw.githubusercontent.com/workmemo2007-gif/R1/b4b9f1d8c3c80d5a794d7d158392d1169de34c9f/IMG_2526.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* طبقة شفافة فوق الخلفية لضمان وضوح النصوص */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.4);
+            z-index: -1;
+        }
         .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .animate-bounce-slow { animation: bounce 2s infinite; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-rose-100 via-pink-50 to-rose-200 min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
+<body class="min-h-screen flex items-center justify-center p-4 overflow-x-hidden relative">
 
+    <!-- شاشة المغلف البدائية -->
     <div id="envelope-screen" class="text-center transition-all duration-500 ease-in-out">
         <div onclick="openCard()" class="cursor-pointer group relative inline-block">
-            <div class="w-64 h-44 bg-rose-500 rounded-lg card-shadow flex flex-col items-center justify-center p-6 text-white transform group-hover:scale-105 transition-transform duration-300">
+            <div class="w-64 h-44 bg-rose-500/90 backdrop-blur-sm rounded-lg card-shadow flex flex-col items-center justify-center p-6 text-white transform group-hover:scale-105 transition-transform duration-300">
                 <div class="text-5xl mb-2 animate-bounce-slow">✉️</div>
                 <p id="env-title" class="text-lg font-bold">لديك رسالة جديدة!</p>
                 <p class="text-xs opacity-80 mt-1">اضغط لفتح الرسالة</p>
@@ -26,22 +49,23 @@
         </div>
     </div>
 
-    <div id="card-screen" class="hidden w-full max-w-md bg-white rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
-        <div id="photo-container" class="relative w-28 h-28 mx-auto mb-6">
-            <img id="user-photo" src="" alt="صورة" class="w-full h-full object-cover rounded-full border-4 border-rose-300 shadow-md">
-            <span class="absolute bottom-0 right-0 text-2xl">❤️</span>
-        </div>
-
+    <!-- شاشة البطاقة الرئيسية (مخفية بدايةً) -->
+    <div id="card-screen" class="hidden w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
+        
+        <!-- العنوان الرئيسي -->
         <h1 id="user-title" class="text-2xl font-bold text-rose-600 mb-2"></h1>
 
-        <p id="user-date" class="text-xs text-gray-400 mb-6"></p>
+        <!-- تاريخ الرسالة -->
+        <p id="user-date" class="text-xs text-gray-500 mb-6"></p>
 
-        <div class="bg-rose-50/60 p-5 rounded-xl border border-rose-100 mb-6">
-            <p id="user-message" class="text-gray-700 leading-relaxed text-sm whitespace-pre-line"></p>
+        <!-- نص الرسالة -->
+        <div class="bg-rose-50/70 p-5 rounded-xl border border-rose-100 mb-6">
+            <p id="user-message" class="text-gray-800 leading-relaxed text-sm whitespace-pre-line"></p>
         </div>
 
-        <div class="border-t border-gray-100 pt-4">
-            <p class="text-xs text-gray-400">مع كل الحب،</p>
+        <!-- اسم المرسل -->
+        <div class="border-t border-gray-200 pt-4">
+            <p class="text-xs text-gray-500">مع كل الحب،</p>
             <p id="user-sender" class="text-base font-bold text-gray-800 mt-1"></p>
         </div>
     </div>
@@ -51,23 +75,11 @@
            قسم التعديل المباشر (تعديل بيانات الرسالة)
            ========================================== */
         const CONFIG = {
-            // اسم الشخص الموجهة له الرسالة
             recipientName: "سارة",
-
-            // عنوان الرسالة الرئيسي
             title: "إلى أختي العزيزة سارة ✨",
-
-            // تاريخ الرسالة أو المناسبة
             date: "22 سبتمبر 2026",
-
-            // نص الرسالة (يمكنك استخدام الأسطر الجديدة بشكل طبيعي)
             message: `أردت فقط أن أذكرك بمدى أهميتك في حياتي.\nشكراً لكِ على كل اللحظات الجميلة والذكريات الرائعة التي نتشاركها دائماً.\nأتمنى لكِ يوماً سعيداً يملؤه الفرح والنجاح! 🌸`,
-
-            // اسم المرسل
-            senderName: "أخوكِ المحب",
-
-            // رابط الصورة الخاصة بك من GitHub
-            photoUrl: "https://raw.githubusercontent.com/workmemo2007-gif/R1/b4b9f1d8c3c80d5a794d7d158392d1169de34c9f/IMG_2526.jpeg"
+            senderName: "أخوكِ المحب"
         };
 
         /* ==========================================
@@ -79,21 +91,18 @@
             document.getElementById('user-date').innerText = CONFIG.date;
             document.getElementById('user-message').innerText = CONFIG.message;
             document.getElementById('user-sender').innerText = CONFIG.senderName;
-            document.getElementById('user-photo').src = CONFIG.photoUrl;
         });
 
         function openCard() {
             const envelope = document.getElementById('envelope-screen');
             const card = document.getElementById('card-screen');
 
-            // إخفاء المغلف وإظهار البطاقة
             envelope.classList.add('opacity-0', 'scale-90');
             setTimeout(() => {
                 envelope.classList.add('hidden');
                 card.classList.remove('hidden');
                 card.classList.add('animate-fadeIn');
                 
-                // إطلاق تأثير القصاصات الملونة (Confetti)
                 confetti({
                     particleCount: 80,
                     spread: 70,
