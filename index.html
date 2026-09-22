@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-
-// Safe layout effect for SSR environments (Next.js / Remix / Gatsby)
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import './DriftWall.css';
 
 const DEFAULT_ITEMS = Array.from({ length: 15 }, (_, i) => {
   const ids = [1015, 1025, 1039, 1043, 1044, 1050, 1062, 1069, 1074, 1080, 1084, 106, 110, 133, 164];
@@ -14,89 +11,14 @@ const DEFAULT_ITEMS = Array.from({ length: 15 }, (_, i) => {
 });
 
 const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const columnFactor = (index, variance) => {
   const pseudo = ((index * 0.6180339887 + 0.35) % 1) * 2 - 1;
   return 1 + variance * pseudo;
 };
 
-const EMBEDDED_STYLES = `
-  .drift-wall {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 400px;
-    overflow: hidden;
-    perspective: var(--dw-perspective);
-    background-color: var(--dw-overlay);
-    user-select: none;
-  }
-  .drift-wall__plane {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: flex;
-    gap: var(--dw-gap);
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-  .drift-wall__col {
-    display: flex;
-    flex-direction: column;
-  }
-  .drift-wall__track {
-    display: flex;
-    flex-direction: column;
-    gap: var(--dw-gap);
-    will-change: transform;
-  }
-  .drift-wall__tile {
-    position: relative;
-    width: var(--dw-tile-w);
-    height: var(--dw-tile-h);
-    border-radius: var(--dw-radius);
-    overflow: hidden;
-    cursor: pointer;
-    outline: none;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
-  }
-  .drift-wall__inner {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
-  .drift-wall__inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(var(--dw-gray));
-    transition: filter 0.3s ease;
-  }
-  .drift-wall__overlay {
-    position: absolute;
-    inset: 0;
-    background-color: var(--dw-overlay);
-    opacity: var(--dw-dim);
-    transition: opacity 0.3s ease;
-  }
-  .drift-wall__tile.is-active,
-  .drift-wall__tile:focus-visible {
-    transform: translateZ(var(--dw-lift));
-    z-index: 10;
-  }
-  .drift-wall__tile.is-active .drift-wall__overlay,
-  .drift-wall__tile:focus-visible .drift-wall__overlay {
-    opacity: 0;
-  }
-  .drift-wall__tile.is-active img,
-  .drift-wall__tile:focus-visible img {
-    filter: grayscale(0);
-  }
-`;
-
-export const DriftWall = ({
+const DriftWall = ({
   items = DEFAULT_ITEMS,
   columns = 5,
   tileWidth = 200,
@@ -119,7 +41,7 @@ export const DriftWall = ({
   grayscale = false,
   overlayColor = '#060010',
   className = '',
-  style = {}
+  style
 }) => {
   const containerRef = useRef(null);
   const planeRef = useRef(null);
@@ -141,18 +63,10 @@ export const DriftWall = ({
 
   useEffect(() => {
     setReduced(prefersReducedMotion());
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onChange = e => setReduced(e.matches);
-
-    if (mq.addEventListener) {
-      mq.addEventListener('change', onChange);
-      return () => mq.removeEventListener('change', onChange);
-    } else if (mq.addListener) {
-      mq.addListener(onChange);
-      return () => mq.removeListener(onChange);
-    }
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   const columnItems = useMemo(() => {
@@ -170,8 +84,8 @@ export const DriftWall = ({
     });
   }, [columnItems, tileHeight, gap, containerHeight]);
 
-  useIsomorphicLayoutEffect(() => {
-    if (!containerRef.current || typeof ResizeObserver === 'undefined') return;
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
     const ro = new ResizeObserver(([entry]) => {
       setContainerHeight(entry.contentRect.height || 600);
     });
@@ -190,8 +104,7 @@ export const DriftWall = ({
   useEffect(() => {
     offsetsRef.current = columnMeta.map((meta, c) => meta.copyHeight * ((c * 0.37) % 1));
     velocitiesRef.current = columnItems.map(() => 0);
-    trackRefs.current = trackRefs.current.slice(0, columns);
-  }, [columnMeta, columnItems, columns]);
+  }, [columnMeta, columnItems]);
 
   const applyPlaneTransform = useCallback(
     (px, py) => {
@@ -260,7 +173,6 @@ export const DriftWall = ({
     hoveredColRef.current = index;
     setActiveId(id);
   }, []);
-
   const release = useCallback(() => {
     activeIdRef.current = null;
     hoveredColRef.current = -1;
@@ -295,13 +207,6 @@ export const DriftWall = ({
     release();
   }, [release]);
 
-  const handleKeyDown = useCallback((e, item) => {
-    if ((e.key === 'Enter' || e.key === ' ') && item.onClick) {
-      e.preventDefault();
-      item.onClick(e);
-    }
-  }, []);
-
   const cssVars = useMemo(
     () => ({
       '--dw-tile-w': `${tileWidth}px`,
@@ -326,7 +231,6 @@ export const DriftWall = ({
         <span className="drift-wall__overlay" aria-hidden="true" />
       </span>
     );
-
     const commonProps = {
       className: `drift-wall__tile${activeId === id ? ' is-active' : ''}`,
       'data-tile-id': id,
@@ -334,7 +238,6 @@ export const DriftWall = ({
       onFocus: () => activate(id, colIndex),
       onBlur: release
     };
-
     if (item.href) {
       return (
         <a key={id} href={item.href} target="_blank" rel="noreferrer noopener" {...commonProps}>
@@ -342,17 +245,8 @@ export const DriftWall = ({
         </a>
       );
     }
-
     return (
-      <div
-        key={id}
-        tabIndex={0}
-        role="button"
-        aria-label={item.title ?? 'tile'}
-        onKeyDown={e => handleKeyDown(e, item)}
-        onClick={item.onClick}
-        {...commonProps}
-      >
+      <div key={id} tabIndex={0} role="button" aria-label={item.title ?? 'tile'} {...commonProps}>
         {inner}
       </div>
     );
@@ -361,72 +255,35 @@ export const DriftWall = ({
   const rootClass = ['drift-wall', reduced ? 'drift-wall--reduced' : '', className].filter(Boolean).join(' ');
 
   return (
-    <>
-      <style>{EMBEDDED_STYLES}</style>
-      <div
-        ref={containerRef}
-        className={rootClass}
-        style={cssVars}
-        onPointerMove={handlePointerMove}
-        onPointerEnter={() => {
-          wallHoveredRef.current = true;
-        }}
-        onPointerLeave={handlePointerLeaveWall}
-        role="group"
-        aria-label="Drifting wall of tiles"
-      >
-        <div ref={planeRef} className="drift-wall__plane">
-          {columnItems.map((col, c) => {
-            const meta = columnMeta[c];
-            if (!meta) return null;
-            const copies = Array.from({ length: meta.copies });
-            return (
-              <div className="drift-wall__col" key={`col-${c}`}>
-                <div className="drift-wall__track" ref={el => (trackRefs.current[c] = el)}>
-                  {copies.map((_, copyIndex) =>
-                    col.map((item, itemIndex) => renderTile(item, `${c}-${copyIndex}-${itemIndex}`, c))
-                  )}
-                </div>
+    <div
+      ref={containerRef}
+      className={rootClass}
+      style={cssVars}
+      onPointerMove={handlePointerMove}
+      onPointerEnter={() => {
+        wallHoveredRef.current = true;
+      }}
+      onPointerLeave={handlePointerLeaveWall}
+      role="group"
+      aria-label="Drifting wall of tiles"
+    >
+      <div ref={planeRef} className="drift-wall__plane">
+        {columnItems.map((col, c) => {
+          const meta = columnMeta[c];
+          const copies = Array.from({ length: meta.copies });
+          return (
+            <div className="drift-wall__col" key={`col-${c}`}>
+              <div className="drift-wall__track" ref={el => (trackRefs.current[c] = el)}>
+                {copies.map((_, copyIndex) =>
+                  col.map((item, itemIndex) => renderTile(item, `${c}-${copyIndex}-${itemIndex}`, c))
+                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
-};
-
-DriftWall.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      image: PropTypes.string.isRequired,
-      title: PropTypes.string,
-      href: PropTypes.string,
-      onClick: PropTypes.func
-    })
-  ),
-  columns: PropTypes.number,
-  tileWidth: PropTypes.number,
-  tileHeight: PropTypes.number,
-  gap: PropTypes.number,
-  radius: PropTypes.number,
-  tilt: PropTypes.number,
-  turn: PropTypes.number,
-  roll: PropTypes.number,
-  perspective: PropTypes.number,
-  depth: PropTypes.number,
-  speed: PropTypes.number,
-  direction: PropTypes.oneOf(['up', 'down']),
-  variance: PropTypes.number,
-  parallax: PropTypes.number,
-  pauseOnHover: PropTypes.bool,
-  lift: PropTypes.number,
-  fade: PropTypes.number,
-  dim: PropTypes.number,
-  grayscale: PropTypes.bool,
-  overlayColor: PropTypes.string,
-  className: PropTypes.string,
-  style: PropTypes.object
 };
 
 export default DriftWall;
