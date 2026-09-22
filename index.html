@@ -14,25 +14,14 @@
     <style>
         body { 
             font-family: 'Tajawal', sans-serif;
-            /* ضبط الصورة كخلفية للموقع بالكامل */
+            /* خلفية الصورة بالألوان الأصلية كاملة */
             background-image: url('https://raw.githubusercontent.com/workmemo2007-gif/R1/b4b9f1d8c3c80d5a794d7d158392d1169de34c9f/IMG_2526.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        /* طبقة شفافة فوق الخلفية لضمان وضوح النصوص */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.4);
-            z-index: -1;
-        }
-        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1); }
         .animate-bounce-slow { animation: bounce 2s infinite; }
     </style>
 </head>
@@ -50,7 +39,7 @@
     </div>
 
     <!-- شاشة البطاقة الرئيسية (مخفية بدايةً) -->
-    <div id="card-screen" class="hidden w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
+    <div id="card-screen" class="hidden w-full max-w-md bg-white/95 backdrop-blur-md rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
         
         <!-- العنوان الرئيسي -->
         <h1 id="user-title" class="text-2xl font-bold text-rose-600 mb-2"></h1>
@@ -59,7 +48,7 @@
         <p id="user-date" class="text-xs text-gray-500 mb-6"></p>
 
         <!-- نص الرسالة -->
-        <div class="bg-rose-50/70 p-5 rounded-xl border border-rose-100 mb-6">
+        <div class="bg-rose-50/80 p-5 rounded-xl border border-rose-100 mb-6">
             <p id="user-message" class="text-gray-800 leading-relaxed text-sm whitespace-pre-line"></p>
         </div>
 
@@ -113,3 +102,4 @@
     </script>
 </body>
 </html>
+
