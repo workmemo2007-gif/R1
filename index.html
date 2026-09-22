@@ -3,103 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رسالة خاصة لك</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font (Tajawal) -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
+    <title>معرض الصور المتحركة | Animated GIF Gallery</title>
     <style>
-        body { 
-            font-family: 'Tajawal', sans-serif;
-            /* خلفية الصورة بالألوان الأصلية كاملة */
-            background-image: url('https://raw.githubusercontent.com/workmemo2007-gif/R1/b4b9f1d8c3c80d5a794d7d158392d1169de34c9f/IMG_2526.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
         }
-        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1); }
-        .animate-bounce-slow { animation: bounce 2s infinite; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        /* شريط التصفية */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid transparent;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* شبكة الصور */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gif-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gif-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .gif-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gif-info {
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* نافذة العرض المكبرة (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 overflow-x-hidden relative">
+<body>
 
-    <!-- شاشة المغلف البدائية -->
-    <div id="envelope-screen" class="text-center transition-all duration-500 ease-in-out">
-        <div onclick="openCard()" class="cursor-pointer group relative inline-block">
-            <div class="w-64 h-44 bg-rose-500/90 backdrop-blur-sm rounded-lg card-shadow flex flex-col items-center justify-center p-6 text-white transform group-hover:scale-105 transition-transform duration-300">
-                <div class="text-5xl mb-2 animate-bounce-slow">✉️</div>
-                <p id="env-title" class="text-lg font-bold">لديك رسالة جديدة!</p>
-                <p class="text-xs opacity-80 mt-1">اضغط لفتح الرسالة</p>
-            </div>
+    <header>
+        <h1>مكتبة الصور المتحركة</h1>
+        <p>اختر التصنيف أو اضغط على الصورة لمشاهدتها بالحجم الكامل</p>
+    </header>
+
+    <!-- أزرار التصفية -->
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterGifs('all')">الكل</button>
+        <button class="filter-btn" onclick="filterGifs('nature')">طبيعة</button>
+        <button class="filter-btn" onclick="filterGifs('tech')">تكنولوجيا</button>
+        <button class="filter-btn" onclick="filterGifs('funny')">مضحك</button>
+    </div>
+
+    <!-- معرض الصور -->
+    <div class="gallery-grid" id="gallery">
+        <!-- عنصر صورة 1 -->
+        <div class="gif-card" data-category="nature" onclick="openModal(this)">
+            <img src="https://media.giphy.com/media/26brvQnj4v5Bv82Fi/giphy.gif" alt="طبيعة">
+            <div class="gif-info">شلالات طبيعية</div>
+        </div>
+
+        <!-- عنصر صورة 2 -->
+        <div class="gif-card" data-category="tech" onclick="openModal(this)">
+            <img src="https://media.giphy.com/media/l3vhFAJ43M2RGCy40/giphy.gif" alt="تكنولوجيا">
+            <div class="gif-info">برمجة وكود</div>
+        </div>
+
+        <!-- عنصر صورة 3 -->
+        <div class="gif-card" data-category="funny" onclick="openModal(this)">
+            <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="مضحك">
+            <div class="gif-info">قطة متحركة</div>
+        </div>
+
+        <!-- عنصر صورة 4 -->
+        <div class="gif-card" data-category="nature" onclick="openModal(this)">
+            <img src="https://media.giphy.com/media/3o7qE1YN7aBOFPRw8E/giphy.gif" alt="طبيعة">
+            <div class="gif-info">غابة مطيرة</div>
         </div>
     </div>
 
-    <!-- شاشة البطاقة الرئيسية (مخفية بدايةً) -->
-    <div id="card-screen" class="hidden w-full max-w-md bg-white/95 backdrop-blur-md rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
-        
-        <!-- العنوان الرئيسي -->
-        <h1 id="user-title" class="text-2xl font-bold text-rose-600 mb-2"></h1>
-
-        <!-- تاريخ الرسالة -->
-        <p id="user-date" class="text-xs text-gray-500 mb-6"></p>
-
-        <!-- نص الرسالة -->
-        <div class="bg-rose-50/80 p-5 rounded-xl border border-rose-100 mb-6">
-            <p id="user-message" class="text-gray-800 leading-relaxed text-sm whitespace-pre-line"></p>
-        </div>
-
-        <!-- اسم المرسل -->
-        <div class="border-t border-gray-200 pt-4">
-            <p class="text-xs text-gray-500">مع كل الحب،</p>
-            <p id="user-sender" class="text-base font-bold text-gray-800 mt-1"></p>
-        </div>
+    <!-- نافذة العرض المكبرة -->
+    <div class="modal" id="gifModal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="fullImg">
     </div>
 
     <script>
-        /* ==========================================
-           قسم التعديل المباشر (تعديل بيانات الرسالة)
-           ========================================== */
-        const CONFIG = {
-            recipientName: "سارة",
-            title: "إلى أختي العزيزة سارة ✨",
-            date: "22 سبتمبر 2026",
-            message: `أردت فقط أن أذكرك بمدى أهميتك في حياتي.\nشكراً لكِ على كل اللحظات الجميلة والذكريات الرائعة التي نتشاركها دائماً.\nأتمنى لكِ يوماً سعيداً يملؤه الفرح والنجاح! 🌸`,
-            senderName: "أخوكِ المحب"
-        };
+        // تصفية الصور حسب التصنيف
+        function filterGifs(category) {
+            const cards = document.querySelectorAll('.gif-card');
+            const buttons = document.querySelectorAll('.filter-btn');
 
-        /* ==========================================
-           برمجية عرض البيانات والتحكم بالموقع
-           ========================================== */
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('env-title').innerText = `رسالة إلى ${CONFIG.recipientName}`;
-            document.getElementById('user-title').innerText = CONFIG.title;
-            document.getElementById('user-date').innerText = CONFIG.date;
-            document.getElementById('user-message').innerText = CONFIG.message;
-            document.getElementById('user-sender').innerText = CONFIG.senderName;
-        });
+            // تحديث زر التصنيف النشط
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-        function openCard() {
-            const envelope = document.getElementById('envelope-screen');
-            const card = document.getElementById('card-screen');
+            // إخفاء وإظهار الكروت
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
-            envelope.classList.add('opacity-0', 'scale-90');
-            setTimeout(() => {
-                envelope.classList.add('hidden');
-                card.classList.remove('hidden');
-                card.classList.add('animate-fadeIn');
-                
-                confetti({
-                    particleCount: 80,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            }, 300);
+        // فتح الصورة المكبرة
+        function openModal(card) {
+            const modal = document.getElementById('gifModal');
+            const fullImg = document.getElementById('fullImg');
+            const imgSrc = card.querySelector('img').src;
+
+            fullImg.src = imgSrc;
+            modal.style.display = 'flex';
+        }
+
+        // إغلاق النافذة المكبرة
+        function closeModal() {
+            document.getElementById('gifModal').style.display = 'none';
         }
     </script>
 </body>
 </html>
-
