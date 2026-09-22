@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رسالة خاصة لك</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font (Tajawal) -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -19,7 +16,6 @@
 </head>
 <body class="bg-gradient-to-br from-rose-100 via-pink-50 to-rose-200 min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
 
-    <!-- شاشة المغلف البدائية -->
     <div id="envelope-screen" class="text-center transition-all duration-500 ease-in-out">
         <div onclick="openCard()" class="cursor-pointer group relative inline-block">
             <div class="w-64 h-44 bg-rose-500 rounded-lg card-shadow flex flex-col items-center justify-center p-6 text-white transform group-hover:scale-105 transition-transform duration-300">
@@ -30,26 +26,20 @@
         </div>
     </div>
 
-    <!-- شاشة البطاقة الرئيسية (مخفية بدايةً) -->
     <div id="card-screen" class="hidden w-full max-w-md bg-white rounded-2xl p-8 card-shadow text-center relative border border-rose-100 transform transition-all duration-700">
-        <!-- الصورة الشخصية -->
         <div id="photo-container" class="relative w-28 h-28 mx-auto mb-6">
             <img id="user-photo" src="" alt="صورة" class="w-full h-full object-cover rounded-full border-4 border-rose-300 shadow-md">
             <span class="absolute bottom-0 right-0 text-2xl">❤️</span>
         </div>
 
-        <!-- العنوان الرئيسي -->
         <h1 id="user-title" class="text-2xl font-bold text-rose-600 mb-2"></h1>
 
-        <!-- تاريخ الرسالة -->
         <p id="user-date" class="text-xs text-gray-400 mb-6"></p>
 
-        <!-- نص الرسالة -->
         <div class="bg-rose-50/60 p-5 rounded-xl border border-rose-100 mb-6">
             <p id="user-message" class="text-gray-700 leading-relaxed text-sm whitespace-pre-line"></p>
         </div>
 
-        <!-- اسم المرسل -->
         <div class="border-t border-gray-100 pt-4">
             <p class="text-xs text-gray-400">مع كل الحب،</p>
             <p id="user-sender" class="text-base font-bold text-gray-800 mt-1"></p>
@@ -76,8 +66,8 @@
             // اسم المرسل
             senderName: "أخوكِ المحب",
 
-            // رابط صورة الشخص (يمكن استخدام رابط مباشر أو صورة محليّة)
-            photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80"
+            // رابط الصورة الخاصة بك من GitHub
+            photoUrl: "https://raw.githubusercontent.com/workmemo2007-gif/R1/b4b9f1d8c3c80d5a794d7d158392d1169de34c9f/IMG_2526.jpeg"
         };
 
         /* ==========================================
