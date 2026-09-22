@@ -48,7 +48,7 @@
             z-index: 2;
         }
 
-        /* تصميم كارت الزجاج السائل Liquid Glass مع زيادة الشفافية */
+        /* تصميم كارت الزجاج السائل Liquid Glass */
         .glass-card {
             position: relative;
             z-index: 3;
@@ -56,22 +56,15 @@
             max-width: 420px;
             padding: 30px 25px;
             border-radius: 24px;
-            
-            /* زيادة الشفافية (تقليل العتامة إلى 0.03 والـ Blur إلى 8px) */
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px) saturate(160%);
             -webkit-backdrop-filter: blur(8px) saturate(160%);
-            
-            /* حدود مضاءة تعطي إيحاء لمعان الزجاج */
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-top: 1px solid rgba(255, 255, 255, 0.4);
             border-left: 1px solid rgba(255, 255, 255, 0.3);
-            
-            /* ظلال وانعكاسات سائلة */
             box-shadow: 
                 0 20px 50px rgba(0, 0, 0, 0.5),
                 inset 0 0 15px rgba(255, 255, 255, 0.1);
-                
             color: #ffffff;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -83,7 +76,6 @@
                 inset 0 0 25px rgba(255, 255, 255, 0.2);
         }
 
-        /* رأس الكارت: الصورة والاسم على اليمين */
         .card-header {
             display: flex;
             align-items: center;
@@ -100,7 +92,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* اسم المستلم بخط الثلث / الرقعة */
         .thuluth-title {
             font-family: 'Aref Ruqaa', serif;
             font-size: 1.8rem;
@@ -118,7 +109,6 @@
             text-align: right;
         }
 
-        /* زر يتناسب مع تصميم الزجاج */
         .glass-btn {
             display: block;
             width: 100%;
@@ -146,7 +136,7 @@
 <body>
 
     <video class="bg-video" autoplay loop muted playsinline>
-        <source src="https://raw.githubusercontent.com/workmemo2007-gif/R1/7224ac7f6fba35cac330787b87501170b0082cae/lv_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A9%D9%A2%D9%A2%D9%A2%D9%A1%D9%A3%D9%A5%D9%A1%D9%A4.mp4" type="video/mp4">
+        <source src="https://raw.githubusercontent.com/workmemo2007-gif/R1/0d60df8b2327c8cb790f747c425956b407036370/lv_0_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A9%D9%A2%D9%A2%D9%A2%D9%A1%D9%A3%D9%A5%D9%A1%D9%A4.mp4" type="video/mp4">
         متصفحك لا يدعم تشغيل الفيديو.
     </video>
 
