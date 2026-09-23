@@ -48,53 +48,105 @@
             z-index: 2;
         }
 
-        /* تصميم كارت الزجاج - أبعاد أصغر */
-        .glass-card {
+        /* حاوية المغلف والرسالة - تتم إزاحتها للأسفل */
+        .envelope-wrapper {
             position: relative;
             z-index: 3;
-            width: 75%;
-            max-width: 220px;
-            padding: 10px;
-            border-radius: 16px;
+            width: 190px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-top: 100px; /* إزاحة الكارت والمغلف للأسرل */
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+
+        /* غطاء المغلف العلوي (أنيميشن الفتح) */
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 95px solid transparent;
+            border-right: 95px solid transparent;
+            border-top: 65px solid rgba(255, 255, 255, 0.35);
+            transform-origin: top;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
+            z-index: 5;
+        }
+
+        /* جيب المغلف السفلي */
+        .envelope-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 95px solid rgba(255, 255, 255, 0.2);
+            border-right: 95px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 60px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 8px 8px;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* تصميم كارت الزجاج المصغر */
+        .glass-card {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 175px;
+            padding: 6px;
+            border-radius: 10px;
             
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px) saturate(200%);
             -webkit-backdrop-filter: blur(12px) saturate(200%);
             
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 15px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             color: #ffffff;
             
+            z-index: 3;
             opacity: 0;
-            transform: scale(0.92) translateY(15px);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, 
+                        opacity 0.6s ease 0.5s,
+                        background 0.3s ease;
             overflow: hidden;
         }
 
-        /* حالة الظهور السينمائي */
-        .glass-card.show {
+        /* انيميشن فتح المغلف وخروج الكارت */
+        .envelope-wrapper.open::before {
+            transform: rotateX(180deg);
+            z-index: 2;
+        }
+
+        .envelope-wrapper.open .glass-card {
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: translateX(-50%) translateY(-70px);
+            z-index: 6;
         }
 
         .glass-card:hover {
-            transform: translateY(-3px) scale(1.01);
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* غلاف الكارت - تصغير الارتفاع */
+        /* غلاف الكارت - تصغير الأبعاد */
         .card-cover {
             width: 100%;
-            height: 80px;
-            border-radius: 10px;
+            height: 55px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .cover-img {
@@ -104,21 +156,20 @@
             display: block;
         }
 
-        /* حاوية النص */
+        /* حاوية النص المصغرة */
         .typing-container {
             padding: 0 2px;
-            min-height: 55px;
+            min-height: 40px;
         }
 
-        /* تصغير الخط */
         .typing-text {
             font-family: 'Amiri', serif;
-            font-size: 0.75rem;
+            font-size: 0.62rem;
             font-weight: 400;
-            line-height: 1.5;
+            line-height: 1.35;
             color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-            margin-bottom: 8px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 5px;
             text-align: right;
             border-left: 1.5px solid #ffffff;
             white-space: pre-wrap;
@@ -131,38 +182,34 @@
             50% { border-color: #ffffff; }
         }
 
-        /* حاوية الأزرار الثلاثة */
+        /* أزرار مصغرة */
         .games-container {
             display: flex;
             justify-content: space-between;
-            gap: 4px;
+            gap: 3px;
             margin-top: 2px;
         }
 
-        /* الأزرار المصغرة للألغاز */
         .small-btn {
             flex: 1;
-            padding: 5px 1px;
-            font-size: 0.58rem;
+            padding: 3px 0;
+            font-size: 0.48rem;
             font-weight: 500;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
             cursor: pointer;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             transition: all 0.3s ease;
             text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
             white-space: nowrap;
         }
 
         .small-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
@@ -175,19 +222,21 @@
 
     <div class="overlay"></div>
 
-    <div class="glass-card" id="card">
-        <div class="card-cover">
-            <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الكارت" class="cover-img">
-        </div>
-        
-        <div class="typing-container">
-            <span class="typing-text" id="typewriter"></span>
-        </div>
+    <div class="envelope-wrapper" id="envelope">
+        <div class="glass-card" id="card">
+            <div class="card-cover">
+                <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الكارت" class="cover-img">
+            </div>
+            
+            <div class="typing-container">
+                <span class="typing-text" id="typewriter"></span>
+            </div>
 
-        <div class="games-container">
-            <button class="small-btn">اللغز الأول</button>
-            <button class="small-btn">اللغز الثاني</button>
-            <button class="small-btn">اللغز الثالث</button>
+            <div class="games-container">
+                <button class="small-btn">اللغز الأول</button>
+                <button class="small-btn">اللغز الثاني</button>
+                <button class="small-btn">اللغز الثالث</button>
+            </div>
         </div>
     </div>
 
@@ -205,12 +254,13 @@
         }
 
         window.onload = () => {
+            const envelope = document.getElementById("envelope");
+            
+            // فتح الرسالة تلقائياً عند تحميل الصفحة
             setTimeout(() => {
-                const card = document.getElementById("card");
-                card.classList.add("show");
-                
-                setTimeout(typeWriter, 500);
-            }, 1000);
+                envelope.classList.add("open");
+                setTimeout(typeWriter, 1200);
+            }, 800);
         };
     </script>
 </body>
