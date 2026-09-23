@@ -48,14 +48,14 @@
             z-index: 2;
         }
 
-        /* تصميم كارت الزجاج */
+        /* تصميم كارت الزجاج - أبعاد أصغر */
         .glass-card {
             position: relative;
             z-index: 3;
-            width: 85%;
-            max-width: 310px;
-            padding: 14px;
-            border-radius: 24px;
+            width: 75%;
+            max-width: 220px;
+            padding: 10px;
+            border-radius: 16px;
             
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px) saturate(200%);
@@ -63,8 +63,8 @@
             
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.4),
-                inset 0 0 20px rgba(255, 255, 255, 0.08);
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.08);
             color: #ffffff;
             
             opacity: 0;
@@ -81,20 +81,20 @@
         }
 
         .glass-card:hover {
-            transform: translateY(-4px) scale(1.01);
+            transform: translateY(-3px) scale(1.01);
             background: rgba(255, 255, 255, 0.04);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* غلاف الكارت */
+        /* غلاف الكارت - تصغير الارتفاع */
         .card-cover {
             width: 100%;
-            height: 120px;
-            border-radius: 16px;
+            height: 80px;
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 14px;
+            margin-bottom: 8px;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .cover-img {
@@ -106,20 +106,21 @@
 
         /* حاوية النص */
         .typing-container {
-            padding: 0 4px;
-            min-height: 80px;
+            padding: 0 2px;
+            min-height: 55px;
         }
 
+        /* تصغير الخط */
         .typing-text {
             font-family: 'Amiri', serif;
-            font-size: 1rem;
+            font-size: 0.75rem;
             font-weight: 400;
-            line-height: 1.7;
+            line-height: 1.5;
             color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-            margin-bottom: 16px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+            margin-bottom: 8px;
             text-align: right;
-            border-left: 2px solid #ffffff;
+            border-left: 1.5px solid #ffffff;
             white-space: pre-wrap;
             display: inline;
             animation: blink 0.75s step-end infinite;
@@ -130,24 +131,24 @@
             50% { border-color: #ffffff; }
         }
 
-        /* حاوية الأزرار الصغيرة الثلاثة */
+        /* حاوية الأزرار الثلاثة */
         .games-container {
             display: flex;
             justify-content: space-between;
-            gap: 6px;
-            margin-top: 4px;
+            gap: 4px;
+            margin-top: 2px;
         }
 
-        /* الأزرار المصغرة للألعاب */
+        /* الأزرار المصغرة للألغاز */
         .small-btn {
             flex: 1;
-            padding: 8px 2px;
-            font-size: 0.72rem;
+            padding: 5px 1px;
+            font-size: 0.58rem;
             font-weight: 500;
             color: #ffffff;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -160,8 +161,8 @@
         .small-btn:hover {
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
@@ -183,11 +184,10 @@
             <span class="typing-text" id="typewriter"></span>
         </div>
 
-        <!-- أزرار الألعاب المصغرة -->
         <div class="games-container">
-            <button class="small-btn">حروف مبعثرة</button>
-            <button class="small-btn">ترتيب الصورة</button>
-            <button class="small-btn">لعبة السهم</button>
+            <button class="small-btn">اللغز الأول</button>
+            <button class="small-btn">اللغز الثاني</button>
+            <button class="small-btn">اللغز الثالث</button>
         </div>
     </div>
 
