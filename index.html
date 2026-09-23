@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واجهة الرسالة الإلكترونية</title>
+    <title>واجهة الرسالة الإلكترونية ولغز الحروف</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
         * {
@@ -24,6 +28,7 @@
             justify-content: center;
             align-items: center;
             background-color: #000000;
+            user-select: none;
         }
 
         /* فيديو الخلفية */
@@ -98,24 +103,21 @@
             transition: opacity 0.8s ease;
         }
 
-        /* تصميم كارت الزجاج المصغر - أفقياً وبخط أسرع وشفافية عالية */
+        /* تصميم كارت الزجاج المصغر */
         .glass-card {
             position: absolute;
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 200px; /* زيادة العرض ليصبح أفقياً */
+            width: 200px;
             padding: 8px;
             border-radius: 8px;
-            
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(6px) saturate(150%);
             -webkit-backdrop-filter: blur(6px) saturate(150%);
-            
             border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             color: #ffffff;
-            
             z-index: 3;
             opacity: 0;
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
@@ -155,7 +157,7 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        /* غلاف الكارت - إظهار الصورة بالكامل دون قص */
+        /* غلاف الكارت */
         .card-cover {
             width: 100%;
             height: 75px;
@@ -172,7 +174,7 @@
         .cover-img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain; /* إظهار الصورة بكامل أبعادها */
+            object-fit: contain;
             display: block;
         }
 
@@ -183,7 +185,7 @@
         }
 
         .typing-text {
-            font-family: 'Tajawal', sans-serif; /* خط واصل ورئيسي */
+            font-family: 'Tajawal', sans-serif;
             font-size: 0.52rem;
             font-weight: 500;
             line-height: 1.35;
@@ -202,7 +204,7 @@
             50% { border-color: #ffffff; }
         }
 
-        /* أزرار مصغرة مفصولة تماماً أسفل الكارد بشكل أفقي */
+        /* أزرار الألغاز */
         .games-container {
             position: absolute;
             top: 100%;
@@ -235,6 +237,156 @@
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.6);
         }
+
+        /* ==========================================
+           أنماط اللغز الأول (Puzzle Modal Layer)
+           ========================================== */
+        #puzzleModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(186, 230, 253, 0.95) 50%, rgba(240, 249, 255, 0.95) 100%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        #puzzleModal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* TV Screen Styles */
+        .tv-screen {
+            background-color: #0f172a;
+            position: relative;
+            overflow: hidden;
+            border: 6px solid #334155;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 8px 20px -5px rgba(0, 0, 0, 0.3);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tv-screen.broken::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        .tv-screen.broken .glitch-text {
+            animation: glitch 1.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff; }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); text-shadow: 2px 0 #ff0055, -2px 0 #00e5ff; }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff; }
+        }
+
+        .tv-screen.active {
+            background: linear-gradient(45deg, #0284c7, #38bdf8);
+            border-color: #38bdf8;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.5);
+        }
+
+        .floating-answer {
+            display: inline-block;
+            animation: bounceAndMove 4s ease-in-out infinite alternate;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        @keyframes bounceAndMove {
+            0% { transform: translate(-10%, -5%) scale(1) rotate(-2deg); }
+            50% { transform: translate(10%, 5%) scale(1.08) rotate(2deg); }
+            100% { transform: translate(-5%, 8%) scale(1.03) rotate(-1deg); }
+        }
+
+        .bear-container {
+            transition: transform 0.3s ease;
+        }
+
+        .bear-sad {
+            animation: headShake 0.8s ease-in-out, droop 0.5s forwards;
+        }
+
+        .bear-happy {
+            animation: happyJump 0.6s ease-in-out infinite alternate;
+        }
+
+        @keyframes headShake {
+            0%, 100% { transform: translateX(0) rotate(0); }
+            20% { transform: translateX(-10px) rotate(-5deg); }
+            40% { transform: translateX(10px) rotate(5deg); }
+            60% { transform: translateX(-8px) rotate(-3deg); }
+            80% { transform: translateX(8px) rotate(3deg); }
+        }
+
+        @keyframes happyJump {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-12px) scale(1.05); }
+        }
+
+        .btn-shake-red {
+            animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.7) !important;
+            color: white !important;
+        }
+
+        @keyframes shakeRed {
+            10%, 90% { transform: translate3d(-2px, 0, 0) scale(1.02); }
+            20%, 80% { transform: translate3d(4px, 0, 0) scale(1.02); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0) scale(1.02); }
+            40%, 60% { transform: translate3d(6px, 0, 0) scale(1.02); }
+        }
+
+        .btn-shake-green {
+            animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
+            color: white !important;
+        }
+
+        @keyframes shakeGreen {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.15) rotate(3deg); }
+            50% { transform: scale(1.1) rotate(-3deg); }
+            70% { transform: scale(1.12) rotate(2deg); }
+            100% { transform: scale(1); }
+        }
+
+        .letter-slot {
+            transition: all 0.25s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .letter-btn {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            touch-action: manipulation;
+        }
+
+        .letter-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .letter-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -257,14 +409,130 @@
             </div>
 
             <div class="games-container">
-                <button class="small-btn">اللغز الأول</button>
+                <button class="small-btn" id="puzzle1Btn">اللغز الأول</button>
                 <button class="small-btn">اللغز الثاني</button>
                 <button class="small-btn">اللغز الثالث</button>
             </div>
         </div>
     </div>
 
+    <div id="puzzleModal" class="p-3 md:p-6 text-slate-800">
+        
+        <button id="closeModalBtn" class="absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
+            ✕ العودة للرئيسية
+        </button>
+
+        <div class="w-full max-w-3xl flex flex-col items-center gap-5 my-auto">
+            
+            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+                
+                <div class="flex flex-col items-center shrink-0">
+                    <div id="bearContainer" class="bear-container w-24 h-24 md:w-28 md:h-28 relative">
+                        <svg id="bearSvg" viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
+                            <circle cx="100" cy="110" r="75" fill="#38bdf8" opacity="0.15" />
+                            <circle id="leftEar" cx="45" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
+                            <circle cx="45" cy="55" r="13" fill="#bae6fd" />
+                            <circle id="rightEar" cx="155" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
+                            <circle cx="155" cy="55" r="13" fill="#bae6fd" />
+                            
+                            <line x1="100" y1="40" x2="100" y2="18" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                            <circle id="antennaBall" cx="100" cy="14" r="9" fill="#38bdf8" class="animate-pulse" />
+
+                            <rect x="35" y="45" width="130" height="120" rx="45" fill="#f0f9ff" stroke="#0284c7" stroke-width="6" />
+                            
+                            <circle cx="62" cy="118" r="10" fill="#f472b6" opacity="0.5" />
+                            <circle cx="138" cy="118" r="10" fill="#f472b6" opacity="0.5" />
+
+                            <g id="eyesNeutral">
+                                <circle cx="70" cy="95" r="10" fill="#0f172a" />
+                                <circle cx="73" cy="92" r="3" fill="#ffffff" />
+                                <circle cx="130" cy="95" r="10" fill="#0f172a" />
+                                <circle cx="133" cy="92" r="3" fill="#ffffff" />
+                            </g>
+
+                            <g id="eyesSad" class="hidden">
+                                <path d="M 60 90 Q 70 102 80 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                                <path d="M 120 90 Q 130 102 140 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                                <path d="M 58 100 C 55 110, 62 118, 62 118 C 62 118, 68 110, 65 100 Z" fill="#38bdf8" />
+                            </g>
+
+                            <g id="eyesHappy" class="hidden">
+                                <path d="M 60 98 Q 70 82 80 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                                <path d="M 120 98 Q 130 82 140 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                                <path d="M 100 65 L 102 72 L 109 74 L 102 76 L 100 83 L 98 76 L 91 74 L 98 72 Z" fill="#f59e0b" />
+                            </g>
+
+                            <ellipse cx="100" cy="115" rx="22" ry="16" fill="#bae6fd" />
+                            <ellipse cx="100" cy="110" rx="8" ry="5" fill="#0369a1" />
+
+                            <path id="mouthNeutral" d="M 94 120 Q 100 125 106 120" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
+                            <path id="mouthSad" d="M 92 125 Q 100 116 108 125" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
+                            <path id="mouthHappy" d="M 90 118 Q 100 132 110 118 Z" fill="#0369a1" class="hidden" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-md">
+                    <div id="tvScreen" class="tv-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
+                        <div id="screenOffContent" class="flex flex-col items-center gap-1">
+                            <div class="flex items-center gap-1.5 text-slate-400">
+                                <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                                </svg>
+                                <span class="text-xs md:text-sm font-bold tracking-wider opacity-80">الشاشة معطلة</span>
+                            </div>
+                            <p class="glitch-text text-sky-300/60 text-[10px] md:text-xs font-mono">=== NO SIGNAL ===</p>
+                        </div>
+
+                        <div id="screenOnContent" class="hidden w-full h-full flex items-center justify-center overflow-hidden">
+                            <span class="floating-answer text-white font-black text-2xl md:text-3xl tracking-widest drop-shadow-lg">
+                                علويتي رتاج
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm transition-all duration-300">
+                رتب الحروف لأستعيد تشغيل الشاشة! 🤖
+            </div>
+
+            <div class="w-full bg-white/80 backdrop-blur-md rounded-3xl p-4 md:p-6 shadow-xl border border-sky-100 flex flex-col gap-5">
+                <div class="flex flex-row-reverse items-center justify-center gap-3 w-full overflow-x-auto py-1">
+                    <div id="word1Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 shrink-0"></div>
+                    <div id="word2Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 shrink-0"></div>
+                </div>
+
+                <div class="flex flex-col items-center gap-2 pt-2 border-t border-sky-100">
+                    <span class="text-xs font-bold text-slate-500">الحروف المبعثرة (انقر لترتيبها):</span>
+                    <div id="lettersBank" class="flex flex-wrap justify-center gap-2 min-h-[50px] p-1"></div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+                    <button id="finishBtn" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                        <span>تم الإنهاء</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+
+                    <button id="resetBtn" class="w-full sm:w-auto px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>إعادة المحاولة</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <script>
+        /* ==========================================
+           1. منطق الواجهة الرئيسية والمغلف
+           ========================================== */
         const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
         let index = 0;
         const speed = 45; 
@@ -284,12 +552,319 @@
 
         const envelope = document.getElementById("envelope");
 
-        envelope.addEventListener("click", () => {
+        envelope.addEventListener("click", (e) => {
+            // منع فتح المغلف عند الضغط على أزرار الألغاز نفسها
+            if(e.target.classList.contains('small-btn')) return;
+
             if (!isOpened) {
                 isOpened = true;
                 envelope.classList.add("open");
                 setTimeout(typeWriter, 800);
             }
+        });
+
+        /* ==========================================
+           2. الربط بين الصفحة الرئيسية واللغز
+           ========================================== */
+        const puzzle1Btn = document.getElementById('puzzle1Btn');
+        const puzzleModal = document.getElementById('puzzleModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        puzzle1Btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            initGame();
+            puzzleModal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            puzzleModal.classList.remove('active');
+        });
+
+        /* ==========================================
+           3. منطق اللغز الأول (ترتيب الحروف)
+           ========================================== */
+        const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
+        const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
+        const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
+
+        let currentWord1 = new Array(6).fill(null);
+        let currentWord2 = new Array(4).fill(null);
+        let availablePool = [];
+
+        class SoundFX {
+            constructor() { this.ctx = null; }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playTap() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+            playError() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(130, this.ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.35);
+            }
+            playSuccess() {
+                this.init();
+                if (!this.ctx) return;
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.1);
+                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime + idx * 0.1);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.1 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + idx * 0.1);
+                    osc.stop(this.ctx.currentTime + idx * 0.1 + 0.25);
+                });
+            }
+        }
+
+        const soundFX = new SoundFX();
+
+        const word1Container = document.getElementById('word1Container');
+        const word2Container = document.getElementById('word2Container');
+        const lettersBank = document.getElementById('lettersBank');
+        const finishBtn = document.getElementById('finishBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const tvScreen = document.getElementById('tvScreen');
+        const screenOffContent = document.getElementById('screenOffContent');
+        const screenOnContent = document.getElementById('screenOnContent');
+        
+        const bearContainer = document.getElementById('bearContainer');
+        const eyesNeutral = document.getElementById('eyesNeutral');
+        const eyesSad = document.getElementById('eyesSad');
+        const eyesHappy = document.getElementById('eyesHappy');
+        const mouthNeutral = document.getElementById('mouthNeutral');
+        const mouthSad = document.getElementById('mouthSad');
+        const mouthHappy = document.getElementById('mouthHappy');
+        const bearSpeech = document.getElementById('bearSpeech');
+        const antennaBall = document.getElementById('antennaBall');
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function initGame() {
+            currentWord1 = new Array(6).fill(null);
+            currentWord2 = new Array(4).fill(null);
+            
+            availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
+                id: `char-${index}-${Date.now()}`,
+                char: char
+            }));
+
+            setBearState('neutral');
+            resetScreen();
+            resetButtonStyles();
+            renderBoard();
+        }
+
+        function renderBoard() {
+            word1Container.innerHTML = '';
+            currentWord1.forEach((item, index) => {
+                const slot = createSlotElement(item, () => removeLetterFromWord(1, index));
+                word1Container.appendChild(slot);
+            });
+
+            word2Container.innerHTML = '';
+            currentWord2.forEach((item, index) => {
+                const slot = createSlotElement(item, () => removeLetterFromWord(2, index));
+                word2Container.appendChild(slot);
+            });
+
+            lettersBank.innerHTML = '';
+            availablePool.forEach((item) => {
+                const btn = document.createElement('button');
+                btn.className = 'letter-btn bg-white hover:bg-sky-50 text-sky-700 font-extrabold text-lg md:text-xl w-10 h-10 md:w-12 md:h-12 rounded-xl border-2 border-sky-200 shadow-sm flex items-center justify-center cursor-pointer';
+                btn.innerText = item.char;
+                btn.onclick = () => {
+                    soundFX.playTap();
+                    addLetterToNextAvailable(item);
+                };
+                lettersBank.appendChild(btn);
+            });
+        }
+
+        function createSlotElement(item, onClick) {
+            const slot = document.createElement('div');
+            slot.className = 'letter-slot w-10 h-10 md:w-11 md:h-11 rounded-xl border-2 border-sky-300/60 bg-white/60 flex items-center justify-center';
+            
+            if (item) {
+                const letterBtn = document.createElement('button');
+                letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-lg md:text-xl w-full h-full rounded-lg shadow-sm flex items-center justify-center cursor-pointer';
+                letterBtn.innerText = item.char;
+                letterBtn.onclick = () => {
+                    soundFX.playTap();
+                    onClick();
+                };
+                slot.appendChild(letterBtn);
+            }
+            return slot;
+        }
+
+        function addLetterToNextAvailable(item) {
+            const emptyW1Index = currentWord1.findIndex(slot => slot === null);
+            if (emptyW1Index !== -1) {
+                currentWord1[emptyW1Index] = item;
+                availablePool = availablePool.filter(p => p.id !== item.id);
+                renderBoard();
+                return;
+            }
+
+            const emptyW2Index = currentWord2.findIndex(slot => slot === null);
+            if (emptyW2Index !== -1) {
+                currentWord2[emptyW2Index] = item;
+                availablePool = availablePool.filter(p => p.id !== item.id);
+                renderBoard();
+                return;
+            }
+        }
+
+        function removeLetterFromWord(wordNumber, index) {
+            let item = null;
+            if (wordNumber === 1) {
+                item = currentWord1[index];
+                currentWord1[index] = null;
+            } else {
+                item = currentWord2[index];
+                currentWord2[index] = null;
+            }
+
+            if (item) {
+                availablePool.push(item);
+                renderBoard();
+            }
+        }
+
+        function setBearState(state) {
+            bearContainer.classList.remove('bear-sad', 'bear-happy');
+            eyesNeutral.classList.add('hidden');
+            eyesSad.classList.add('hidden');
+            eyesHappy.classList.add('hidden');
+            mouthNeutral.classList.add('hidden');
+            mouthSad.classList.add('hidden');
+            mouthHappy.classList.add('hidden');
+
+            if (state === 'sad') {
+                bearContainer.classList.add('bear-sad');
+                eyesSad.classList.remove('hidden');
+                mouthSad.classList.remove('hidden');
+                bearSpeech.innerText = "أوووه! الترتيب غير صحيح 😢 جرب ثانية!";
+                bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm animate-bounce";
+                antennaBall.setAttribute('fill', '#ef4444');
+            } else if (state === 'happy') {
+                bearContainer.classList.add('bear-happy');
+                eyesHappy.classList.remove('hidden');
+                mouthHappy.classList.remove('hidden');
+                bearSpeech.innerText = "ممتاز جداً! الشاشة اشتغلت 🎉 أحسنت!";
+                bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
+                antennaBall.setAttribute('fill', '#10b981');
+            } else {
+                eyesNeutral.classList.remove('hidden');
+                mouthNeutral.classList.remove('hidden');
+                bearSpeech.innerText = "رتب الحروف لأستعيد تشغيل الشاشة! 🤖";
+                bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
+                antennaBall.setAttribute('fill', '#38bdf8');
+            }
+        }
+
+        function activateScreen() {
+            tvScreen.classList.remove('broken');
+            tvScreen.classList.add('active');
+            screenOffContent.classList.add('hidden');
+            screenOnContent.classList.remove('hidden');
+        }
+
+        function resetScreen() {
+            tvScreen.classList.remove('active');
+            tvScreen.classList.add('broken');
+            screenOffContent.classList.remove('hidden');
+            screenOnContent.classList.add('hidden');
+        }
+
+        function resetButtonStyles() {
+            finishBtn.className = "w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
+        }
+
+        function checkAnswer() {
+            resetButtonStyles();
+
+            const userWord1 = currentWord1.map(i => i ? i.char : '').join('');
+            const userWord2 = currentWord2.map(i => i ? i.char : '').join('');
+
+            const target1 = WORD1_TARGET.join('');
+            const target2 = WORD2_TARGET.join('');
+
+            const isCorrect = (userWord1 === target1) && (userWord2 === target2);
+
+            if (isCorrect) {
+                soundFX.playSuccess();
+                setBearState('happy');
+                activateScreen();
+                finishBtn.classList.add('btn-shake-green');
+
+                if (window.confetti) {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+
+                // العودة التلقائية للشاشة الرئيسية بعد 3 ثوانٍ من النجاح
+                setTimeout(() => {
+                    puzzleModal.classList.remove('active');
+                }, 3000);
+
+            } else {
+                soundFX.playError();
+                setBearState('sad');
+                resetScreen();
+                finishBtn.classList.add('btn-shake-red');
+
+                setTimeout(() => {
+                    finishBtn.classList.remove('btn-shake-red');
+                }, 700);
+            }
+        }
+
+        finishBtn.addEventListener('click', checkAnswer);
+        resetBtn.addEventListener('click', () => {
+            soundFX.playTap();
+            initGame();
         });
     </script>
 </body>
