@@ -48,23 +48,24 @@
             z-index: 2;
         }
 
-        /* حاوية المغلف والرسالة - تتم إزاحتها للأسفل */
+        /* حاوية المغلف الوردي الشفاف */
         .envelope-wrapper {
             position: relative;
             z-index: 3;
             width: 190px;
             height: 120px;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 182, 193, 0.25);
             border-radius: 8px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            margin-top: 100px; /* إزاحة الكارت والمغلف للأسرل */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 192, 203, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+            margin-top: 100px;
             cursor: pointer;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s ease, opacity 0.8s ease, background 0.8s ease, border-color 0.8s ease;
         }
 
-        /* غطاء المغلف العلوي (أنيميشن الفتح) */
+        /* غطاء المغلف العلوي الوردي */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
@@ -74,13 +75,13 @@
             height: 0;
             border-left: 95px solid transparent;
             border-right: 95px solid transparent;
-            border-top: 65px solid rgba(255, 255, 255, 0.35);
+            border-top: 65px solid rgba(255, 182, 193, 0.45);
             transform-origin: top;
-            transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s;
+            transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s, opacity 0.8s ease;
             z-index: 5;
         }
 
-        /* جيب المغلف السفلي */
+        /* جيب المغلف السفلي الوردي */
         .envelope-wrapper::after {
             content: '';
             position: absolute;
@@ -88,12 +89,13 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 95px solid rgba(255, 255, 255, 0.2);
-            border-right: 95px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 60px solid rgba(255, 255, 255, 0.3);
+            border-left: 95px solid rgba(255, 182, 193, 0.3);
+            border-right: 95px solid rgba(255, 182, 193, 0.3);
+            border-bottom: 60px solid rgba(255, 182, 193, 0.4);
             border-radius: 0 0 8px 8px;
             z-index: 4;
             pointer-events: none;
+            transition: opacity 0.8s ease;
         }
 
         /* تصميم كارت الزجاج المصغر */
@@ -116,13 +118,13 @@
             
             z-index: 3;
             opacity: 0;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, 
-                        opacity 0.6s ease 0.5s,
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.6s ease,
                         background 0.3s ease;
             overflow: hidden;
         }
 
-        /* انيميشن فتح المغلف وخروج الكارت */
+        /* انيميشن فتح المغلف وخروج الكارت عند النقر */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 2;
@@ -134,12 +136,32 @@
             z-index: 6;
         }
 
+        /* مرحلة انبثاق الكارت للأمام واختفاء الظرف */
+        .envelope-wrapper.hide-envelope {
+            background-color: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        .envelope-wrapper.hide-envelope::before,
+        .envelope-wrapper.hide-envelope::after {
+            opacity: 0;
+        }
+
+        .envelope-wrapper.hide-envelope .glass-card {
+            transform: translateX(-50%) translateY(-30px) scale(1.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
         .glass-card:hover {
             background: rgba(255, 255, 255, 0.12);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* غلاف الكارت - تصغير الأبعاد */
+        /* غلاف الكارت */
         .card-cover {
             width: 100%;
             height: 55px;
@@ -156,7 +178,7 @@
             display: block;
         }
 
-        /* حاوية النص المصغرة */
+        /* حاوية النص */
         .typing-container {
             padding: 0 2px;
             min-height: 40px;
@@ -244,24 +266,31 @@
         const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
         let index = 0;
         const speed = 45; 
+        let isOpened = false;
 
         function typeWriter() {
             if (index < text.length) {
                 document.getElementById("typewriter").textContent += text.charAt(index);
                 index++;
                 setTimeout(typeWriter, speed);
+            } else {
+                // الانتظار ثانيتين بعد انتهاء النص ثم إخفاء الظرف وانبثاق الكارت للأمام
+                setTimeout(() => {
+                    document.getElementById("envelope").classList.add("hide-envelope");
+                }, 2000);
             }
         }
 
-        window.onload = () => {
-            const envelope = document.getElementById("envelope");
-            
-            // فتح الرسالة تلقائياً عند تحميل الصفحة
-            setTimeout(() => {
+        const envelope = document.getElementById("envelope");
+
+        // فتح الرسالة عند النقر على الظرف فقط
+        envelope.addEventListener("click", () => {
+            if (!isOpened) {
+                isOpened = true;
                 envelope.classList.add("open");
-                setTimeout(typeWriter, 1200);
-            }, 800);
-        };
+                setTimeout(typeWriter, 800);
+            }
+        });
     </script>
 </body>
 </html>
