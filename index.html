@@ -6,7 +6,7 @@
     <title>واجهة الرسالة الإلكترونية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -52,8 +52,8 @@
         .envelope-wrapper {
             position: relative;
             z-index: 3;
-            width: 190px;
-            height: 120px;
+            width: 220px;
+            height: 130px;
             background-color: rgba(255, 182, 193, 0.25);
             border-radius: 8px;
             backdrop-filter: blur(10px);
@@ -73,9 +73,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 95px solid transparent;
-            border-right: 95px solid transparent;
-            border-top: 65px solid rgba(255, 182, 193, 0.45);
+            border-left: 110px solid transparent;
+            border-right: 110px solid transparent;
+            border-top: 70px solid rgba(255, 182, 193, 0.45);
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s, opacity 0.8s ease;
             z-index: 5;
@@ -89,26 +89,26 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 95px solid rgba(255, 182, 193, 0.3);
-            border-right: 95px solid rgba(255, 182, 193, 0.3);
-            border-bottom: 60px solid rgba(255, 182, 193, 0.4);
+            border-left: 110px solid rgba(255, 182, 193, 0.3);
+            border-right: 110px solid rgba(255, 182, 193, 0.3);
+            border-bottom: 65px solid rgba(255, 182, 193, 0.4);
             border-radius: 0 0 8px 8px;
             z-index: 4;
             pointer-events: none;
             transition: opacity 0.8s ease;
         }
 
-        /* تصميم كارت الزجاج المصغر (تم التعديل: تصغير الحجم وزيادة الشفافية) */
+        /* تصميم كارت الزجاج المصغر - أفقياً وبخط أسرع وشفافية عالية */
         .glass-card {
             position: absolute;
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 140px; /* تصغير العرض */
-            padding: 5px;
+            width: 200px; /* زيادة العرض ليصبح أفقياً */
+            padding: 8px;
             border-radius: 8px;
             
-            background: rgba(255, 255, 255, 0.03); /* زيادة الشفافية */
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(6px) saturate(150%);
             -webkit-backdrop-filter: blur(6px) saturate(150%);
             
@@ -121,10 +121,9 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
                         opacity 0.6s ease,
                         background 0.3s ease;
-            overflow: hidden;
         }
 
-        /* انيميشن فتح المغلف وخروج الكارت عند النقر (تم التعديل: إزاحة الكارت لأسفل) */
+        /* انيميشن فتح المغلف */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 2;
@@ -132,7 +131,7 @@
 
         .envelope-wrapper.open .glass-card {
             opacity: 1;
-            transform: translateX(-50%) translateY(-20px); /* تم التعديل: إزاحة لأعلى بدرجة أقل ليصبح موقعه أسفل */
+            transform: translateX(-50%) translateY(-20px);
             z-index: 6;
         }
 
@@ -151,44 +150,43 @@
         }
 
         .envelope-wrapper.hide-envelope .glass-card {
-            transform: translateX(-50%) translateY(10px) scale(1.2); /* إزاحة للأسفل مع تكبير بسيط */
+            transform: translateX(-50%) translateY(10px) scale(1.15);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            background: rgba(255, 255, 255, 0.05); /* إبقاء الشفافية عالية */
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* غلاف الكارت */
+        /* غلاف الكارت - إظهار الصورة بالكامل دون قص */
         .card-cover {
             width: 100%;
-            height: 45px;
+            height: 75px;
             border-radius: 5px;
             overflow: hidden;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cover-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* إظهار الصورة بكامل أبعادها */
             display: block;
         }
 
-        /* حاوية النص */
+        /* حاوية النص والخط الرئيسي */
         .typing-container {
             padding: 0 2px;
-            min-height: 35px;
+            min-height: 38px;
         }
 
         .typing-text {
-            font-family: 'Amiri', serif;
-            font-size: 0.55rem;
-            font-weight: 400;
-            line-height: 1.3;
+            font-family: 'Tajawal', sans-serif; /* خط واصل ورئيسي */
+            font-size: 0.52rem;
+            font-weight: 500;
+            line-height: 1.35;
             color: #ffffff;
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
             margin-bottom: 2px;
@@ -204,19 +202,22 @@
             50% { border-color: #ffffff; }
         }
 
-        /* أزرار مصغرة مفصولة اسفل الكارد بشكل افقي */
+        /* أزرار مصغرة مفصولة تماماً أسفل الكارد بشكل أفقي */
         .games-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             gap: 4px;
             margin-top: 8px;
-            width: 100%;
         }
 
         .small-btn {
             flex: 1;
-            padding: 3px 0;
-            font-size: 0.45rem;
+            padding: 4px 0;
+            font-size: 0.5rem;
             font-weight: 500;
             color: #ffffff;
             background: rgba(255, 255, 255, 0.12);
@@ -275,7 +276,6 @@
                 index++;
                 setTimeout(typeWriter, speed);
             } else {
-                // الانتظار ثانيتين بعد انتهاء النص ثم إخفاء الظرف وانبثاق الكارت للأمام
                 setTimeout(() => {
                     document.getElementById("envelope").classList.add("hide-envelope");
                 }, 2000);
@@ -284,7 +284,6 @@
 
         const envelope = document.getElementById("envelope");
 
-        // فتح الرسالة عند النقر على الظرف فقط
         envelope.addEventListener("click", () => {
             if (!isOpened) {
                 isOpened = true;
