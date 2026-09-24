@@ -49,7 +49,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.35);
             z-index: 2;
         }
 
@@ -59,12 +59,12 @@
             z-index: 3;
             width: 220px;
             height: 130px;
-            background-color: rgba(255, 182, 193, 0.25);
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 192, 203, 0.4);
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+            background-color: rgba(255, 182, 193, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 192, 203, 0.35);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.25);
             margin-top: 100px;
             cursor: pointer;
             transition: transform 0.4s ease, opacity 0.8s ease, background 0.8s ease, border-color 0.8s ease;
@@ -80,7 +80,7 @@
             height: 0;
             border-left: 110px solid transparent;
             border-right: 110px solid transparent;
-            border-top: 70px solid rgba(255, 182, 193, 0.45);
+            border-top: 70px solid rgba(255, 182, 193, 0.4);
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s, opacity 0.8s ease;
             z-index: 5;
@@ -94,10 +94,10 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 110px solid rgba(255, 182, 193, 0.3);
-            border-right: 110px solid rgba(255, 182, 193, 0.3);
-            border-bottom: 65px solid rgba(255, 182, 193, 0.4);
-            border-radius: 0 0 8px 8px;
+            border-left: 110px solid rgba(255, 182, 193, 0.25);
+            border-right: 110px solid rgba(255, 182, 193, 0.25);
+            border-bottom: 65px solid rgba(255, 182, 193, 0.35);
+            border-radius: 0 0 12px 12px;
             z-index: 4;
             pointer-events: none;
             transition: opacity 0.8s ease;
@@ -111,12 +111,12 @@
             transform: translateX(-50%);
             width: 200px;
             padding: 8px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(6px) saturate(150%);
-            -webkit-backdrop-filter: blur(6px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px) saturate(160%);
+            -webkit-backdrop-filter: blur(10px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             color: #ffffff;
             z-index: 3;
             opacity: 0;
@@ -153,18 +153,18 @@
 
         .envelope-wrapper.hide-envelope .glass-card {
             transform: translateX(-50%) translateY(10px) scale(1.15);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         /* غلاف الكارت */
         .card-cover {
             width: 100%;
             height: 75px;
-            border-radius: 5px;
+            border-radius: 8px;
             overflow: hidden;
             margin-bottom: 6px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             align-items: center;
@@ -216,28 +216,31 @@
 
         .small-btn {
             flex: 1;
-            padding: 4px 0;
-            font-size: 0.5rem;
-            font-weight: 500;
+            padding: 5px 0;
+            font-size: 0.52rem;
+            font-weight: 700;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 192, 203, 0.3);
+            border-radius: 6px;
             cursor: pointer;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
             text-align: center;
             white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .small-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 182, 193, 0.25);
+            border-color: rgba(255, 192, 203, 0.6);
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.4);
+            transform: translateY(-1px);
         }
 
         /* ==========================================
-           أنماط الألغاز (Modal Layers)
+           أنماط الألغاز الزجاجية (Glassmorphism Modals)
            ========================================== */
         .puzzle-modal {
             position: fixed;
@@ -245,7 +248,9 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.98) 0%, rgba(186, 230, 253, 0.98) 50%, rgba(240, 249, 255, 0.98) 100%);
+            background: rgba(10, 8, 18, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             z-index: 50;
             display: flex;
             flex-direction: column;
@@ -262,182 +267,176 @@
             pointer-events: auto;
         }
 
-        /* TV Screen Styles */
-        .tv-frame {
-            position: relative;
-            perspective: 1000px;
+        /* الحاوية الزجاجية المركزية للغز */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
         }
 
-        .tv-screen {
-            background-color: #0f172a;
+        /* Holographic Screen Display */
+        .holo-screen {
+            background: rgba(15, 12, 25, 0.7);
+            border: 1px solid rgba(255, 192, 203, 0.3);
+            box-shadow: inset 0 0 20px rgba(255, 105, 180, 0.15), 0 0 15px rgba(255, 105, 180, 0.1);
             position: relative;
             overflow: hidden;
-            border: 6px solid #334155;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 8px 20px -5px rgba(0, 0, 0, 0.3);
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s ease;
         }
 
-        .tv-screen.broken::before {
+        .holo-screen.broken::before {
             content: " ";
             display: block;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(255, 255, 255, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 100, 0.03), rgba(0, 255, 200, 0.02), rgba(255, 255, 255, 0.03));
             z-index: 10;
             background-size: 100% 4px, 6px 100%;
             pointer-events: none;
         }
 
-        .tv-screen.broken .glitch-text {
-            animation: glitch 1.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0); text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff; }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); text-shadow: 2px 0 #ff0055, -2px 0 #00e5ff; }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); text-shadow: -2px 0 #ff0055, -2px 0 #00e5ff; }
-        }
-
-        .tv-screen.active {
-            background: #0f172a;
-            border-color: #38bdf8;
-            box-shadow: 0 0 35px rgba(56, 189, 248, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.6);
+        .holo-screen.active {
+            background: rgba(20, 15, 35, 0.85);
+            border-color: rgba(255, 182, 193, 0.8);
+            box-shadow: 0 0 30px rgba(255, 182, 193, 0.4), inset 0 0 15px rgba(255, 182, 193, 0.2);
         }
 
         .floating-answer {
             display: inline-block;
             animation: bounceAndMove 4s ease-in-out infinite alternate;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 0 15px rgba(255, 192, 203, 0.8), 0 0 30px rgba(255, 105, 180, 0.5);
         }
 
         @keyframes bounceAndMove {
-            0% { transform: translate(-10%, -5%) scale(1) rotate(-2deg); }
-            50% { transform: translate(10%, 5%) scale(1.08) rotate(2deg); }
-            100% { transform: translate(-5%, 8%) scale(1.03) rotate(-1deg); }
+            0% { transform: translate(-5%, -3%) scale(1); }
+            50% { transform: translate(5%, 3%) scale(1.05); }
+            100% { transform: translate(-3%, 4%) scale(1.02); }
         }
 
-        /* 3D Bear Styling for Puzzle 2 */
-        .bear-3d-wrapper {
-            position: absolute;
-            top: -28px;
-            right: -20px;
-            z-index: 30;
-            filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.45));
-            transform: translateZ(30px) rotate(-4deg);
-            transition: transform 0.4s ease;
+        /* المساعد الزجاجي المتوهج Glass Assistant */
+        .glass-assistant-wrapper {
+            filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.25));
+            transition: all 0.4s ease;
         }
 
-        .bear-3d-wrapper:hover {
-            transform: translateZ(45px) rotate(0deg) scale(1.05);
+        .glass-assistant-wrapper:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 15px 30px rgba(255, 105, 180, 0.4));
         }
 
-        .bear-container {
-            transition: transform 0.3s ease;
+        /* Button Custom Styling */
+        .glass-btn-primary {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.4));
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
 
-        .bear-sad {
-            animation: headShake 0.8s ease-in-out;
+        .glass-btn-primary:hover {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.5), rgba(255, 105, 180, 0.6));
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+            transform: translateY(-2px);
         }
 
-        .bear-happy {
-            animation: happyJump 0.6s ease-in-out infinite alternate;
+        .glass-btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
 
-        @keyframes headShake {
-            0%, 100% { transform: translateX(0) rotate(0); }
-            20% { transform: translateX(-10px) rotate(-5deg); }
-            40% { transform: translateX(10px) rotate(5deg); }
-            60% { transform: translateX(-8px) rotate(-3deg); }
-            80% { transform: translateX(8px) rotate(3deg); }
+        .glass-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        @keyframes happyJump {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-12px) scale(1.05); }
-        }
-
-        /* Button Animations */
         .btn-shake-red {
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.7) !important;
-            color: white !important;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.6), rgba(220, 38, 38, 0.7)) !important;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.6) !important;
+            border-color: rgba(255, 255, 255, 0.6) !important;
         }
 
         @keyframes shakeRed {
-            10%, 90% { transform: translate3d(-2px, 0, 0) scale(1.02); }
-            20%, 80% { transform: translate3d(4px, 0, 0) scale(1.02); }
-            30%, 50%, 70% { transform: translate3d(-6px, 0, 0) scale(1.02); }
-            40%, 60% { transform: translate3d(6px, 0, 0) scale(1.02); }
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
         }
 
         .btn-shake-green {
             animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
-            background: linear-gradient(135deg, #10b981, #059669) !important;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
-            color: white !important;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.6), rgba(5, 150, 105, 0.7)) !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.7) !important;
+            border-color: rgba(255, 255, 255, 0.8) !important;
         }
 
         @keyframes shakeGreen {
             0% { transform: scale(1); }
-            30% { transform: scale(1.15) rotate(3deg); }
-            50% { transform: scale(1.1) rotate(-3deg); }
-            70% { transform: scale(1.12) rotate(2deg); }
+            30% { transform: scale(1.08); }
+            50% { transform: scale(0.98); }
             100% { transform: scale(1); }
         }
 
-        /* Image Puzzle Tiles */
-        .puzzle-tile {
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            touch-action: manipulation;
-            background-repeat: no-repeat;
+        /* Puzzle Elements */
+        .glass-tile {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .puzzle-tile:hover {
+        .glass-tile:hover {
+            border-color: rgba(255, 192, 203, 0.6);
             transform: scale(1.03);
-            filter: brightness(1.05);
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.3);
         }
 
         .selected-tile {
-            outline: 3px solid #0284c7;
-            outline-offset: -3px;
-            box-shadow: 0 0 12px rgba(2, 132, 199, 0.8);
+            border-color: #ffb6c1 !important;
+            box-shadow: 0 0 18px rgba(255, 182, 193, 0.8) !important;
+            transform: scale(0.97);
+        }
+
+        .letter-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .letter-btn:hover {
+            background: rgba(255, 182, 193, 0.25);
+            border-color: rgba(255, 192, 203, 0.6);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+        }
+
+        .letter-slot {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1.5px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
         .connected-image {
-            animation: popConnected 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popConnected 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popConnected {
             0% { transform: scale(0.92); opacity: 0.8; }
             100% { transform: scale(1); opacity: 1; }
         }
-
-        /* Letter Puzzle Elements */
-        .letter-slot {
-            transition: all 0.25s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
-        }
-
-        .letter-btn {
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            touch-action: manipulation;
-        }
-
-        .letter-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        .letter-btn:active {
-            transform: translateY(0) scale(0.95);
-        }
     </style>
 </head>
 <body>
 
+    <!-- فيديو الخلفية -->
     <video class="bg-video" autoplay loop muted playsinline>
         <source src="https://raw.githubusercontent.com/workmemo2007-gif/R1/0d60df8b2327c8cb790f747c425956b407036370/lv_0_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A9%D9%A2%D9%A2%D9%A2%D9%A1%D9%A3%D9%A5%D9%A1%D9%A4.mp4" type="video/mp4">
         متصفحك لا يدعم تشغيل الفيديو.
@@ -445,6 +444,7 @@
 
     <div class="overlay"></div>
 
+    <!-- المغلف الرئيسي -->
     <div class="envelope-wrapper" id="envelope">
         <div class="glass-card" id="card">
             <div class="card-cover">
@@ -463,76 +463,66 @@
         </div>
     </div>
 
-    <div id="puzzle1Modal" class="puzzle-modal p-3 md:p-6 text-slate-800">
+    <!-- ==========================================
+         نافذة اللغز الأول: لغز الحروف (النمط الزجاجي)
+         ========================================== -->
+    <div id="puzzle1Modal" class="puzzle-modal p-4 text-white">
         
-        <button class="closeModalBtn absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
+        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 text-white/90 hover:text-white flex items-center gap-2">
             ✕ العودة للرئيسية
         </button>
 
-        <div class="w-full max-w-3xl flex flex-col items-center gap-5 my-auto">
+        <div class="glass-panel w-full max-w-2xl p-5 md:p-8 flex flex-col items-center gap-6 my-auto">
             
-            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-5">
                 
+                <!-- المساعد الزجاجي -->
                 <div class="flex flex-col items-center shrink-0">
-                    <div id="p1_bearContainer" class="bear-container w-24 h-24 md:w-28 md:h-28 relative">
-                        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
-                            <circle cx="100" cy="110" r="75" fill="#38bdf8" opacity="0.15" />
-                            <circle cx="45" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
-                            <circle cx="45" cy="55" r="13" fill="#bae6fd" />
-                            <circle cx="155" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
-                            <circle cx="155" cy="55" r="13" fill="#bae6fd" />
+                    <div id="p1_assistant" class="glass-assistant-wrapper w-20 h-20 md:w-24 md:h-24 relative">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <defs>
+                                <radialGradient id="glassGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#ffb6c1" stop-opacity="0.8"/>
+                                    <stop offset="70%" stop-color="#ff69b4" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#ff1493" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
                             
-                            <line x1="100" y1="40" x2="100" y2="18" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                            <circle id="p1_antennaBall" cx="100" cy="14" r="9" fill="#38bdf8" class="animate-pulse" />
-
-                            <rect x="35" y="45" width="130" height="120" rx="45" fill="#f0f9ff" stroke="#0284c7" stroke-width="6" />
+                            <circle cx="100" cy="100" r="85" fill="url(#glassGlow)" class="animate-pulse" />
+                            <circle cx="100" cy="100" r="65" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 192, 203, 0.5)" stroke-width="3" />
                             
-                            <circle cx="62" cy="118" r="10" fill="#f472b6" opacity="0.5" />
-                            <circle cx="138" cy="118" r="10" fill="#f472b6" opacity="0.5" />
-
+                            <!-- Eyes -->
                             <g id="p1_eyesNeutral">
-                                <circle cx="70" cy="95" r="10" fill="#0f172a" />
-                                <circle cx="73" cy="92" r="3" fill="#ffffff" />
-                                <circle cx="130" cy="95" r="10" fill="#0f172a" />
-                                <circle cx="133" cy="92" r="3" fill="#ffffff" />
+                                <circle cx="75" cy="90" r="8" fill="#ffffff" />
+                                <circle cx="125" cy="90" r="8" fill="#ffffff" />
                             </g>
-
                             <g id="p1_eyesSad" class="hidden">
-                                <path d="M 60 90 Q 70 102 80 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
-                                <path d="M 120 90 Q 130 102 140 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
-                                <path d="M 58 100 C 55 110, 62 118, 62 118 C 62 118, 68 110, 65 100 Z" fill="#38bdf8" />
+                                <path d="M 68 95 Q 75 85 82 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+                                <path d="M 118 95 Q 125 85 132 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
                             </g>
-
                             <g id="p1_eyesHappy" class="hidden">
-                                <path d="M 60 98 Q 70 82 80 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                                <path d="M 120 98 Q 130 82 140 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                                <path d="M 100 65 L 102 72 L 109 74 L 102 76 L 100 83 L 98 76 L 91 74 L 98 72 Z" fill="#f59e0b" />
+                                <path d="M 68 88 Q 75 98 82 88" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+                                <path d="M 118 88 Q 125 98 132 88" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
                             </g>
 
-                            <ellipse cx="100" cy="115" rx="22" ry="16" fill="#bae6fd" />
-                            <ellipse cx="100" cy="110" rx="8" ry="5" fill="#0369a1" />
-
-                            <path id="p1_mouthNeutral" d="M 94 120 Q 100 125 106 120" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
-                            <path id="p1_mouthSad" d="M 92 125 Q 100 116 108 125" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
-                            <path id="p1_mouthHappy" d="M 90 118 Q 100 132 110 118 Z" fill="#0369a1" class="hidden" />
+                            <!-- Mouth -->
+                            <path id="p1_mouthNeutral" d="M 90 120 Q 100 125 110 120" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                            <path id="p1_mouthSad" d="M 90 125 Q 100 115 110 125" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" class="hidden" />
+                            <path id="p1_mouthHappy" d="M 88 118 Q 100 132 112 118 Z" fill="#ffffff" class="hidden" />
                         </svg>
                     </div>
                 </div>
 
+                <!-- الشاشة الهولوغرامية -->
                 <div class="w-full max-w-md">
-                    <div id="p1_tvScreen" class="tv-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
+                    <div id="p1_tvScreen" class="holo-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
                         <div id="p1_screenOffContent" class="flex flex-col items-center gap-1">
-                            <div class="flex items-center gap-1.5 text-slate-400">
-                                <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                                </svg>
-                                <span class="text-xs md:text-sm font-bold tracking-wider opacity-80">الشاشة معطلة</span>
-                            </div>
-                            <p class="glitch-text text-sky-300/60 text-[10px] md:text-xs font-mono">=== NO SIGNAL ===</p>
+                            <span class="text-xs md:text-sm font-bold tracking-widest text-pink-200/60 uppercase">إشارة القفل مفعلة</span>
+                            <p class="text-pink-300/40 text-[10px] md:text-xs font-mono">=== WAITING FOR DECRYPTION ===</p>
                         </div>
 
-                        <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center overflow-hidden">
-                            <span class="floating-answer text-white font-black text-2xl md:text-3xl tracking-widest drop-shadow-lg">
+                        <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
+                            <span class="floating-answer text-white font-black text-2xl md:text-3xl tracking-widest">
                                 علويتي رتاج
                             </span>
                         </div>
@@ -541,30 +531,33 @@
 
             </div>
 
-            <div id="p1_bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm transition-all duration-300">
-                رتب الحروف لأستعيد تشغيل الشاشة! 🤖
+            <!-- نص الإرشاد -->
+            <div id="p1_speech" class="bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md">
+                رتب الحروف لإلغاء قفل الشاشة الزجاجية ✨
             </div>
 
-            <div class="w-full bg-white/80 backdrop-blur-md rounded-3xl p-4 md:p-6 shadow-xl border border-sky-100 flex flex-col gap-5">
+            <!-- منطقة حقول اللعب -->
+            <div class="w-full flex flex-col gap-6">
                 <div class="flex flex-row-reverse items-center justify-center gap-3 w-full overflow-x-auto py-1">
-                    <div id="word1Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 shrink-0"></div>
-                    <div id="word2Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 shrink-0"></div>
+                    <div id="word1Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-black/20 rounded-2xl border border-white/10 shrink-0"></div>
+                    <div id="word2Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-black/20 rounded-2xl border border-white/10 shrink-0"></div>
                 </div>
 
-                <div class="flex flex-col items-center gap-2 pt-2 border-t border-sky-100">
-                    <span class="text-xs font-bold text-slate-500">الحروف المبعثرة (انقر لترتيبها):</span>
+                <div class="flex flex-col items-center gap-3 border-t border-white/10 pt-4">
+                    <span class="text-xs font-semibold text-white/60">الحروف المبعثرة (انقر لترتيبها):</span>
                     <div id="lettersBank" class="flex flex-wrap justify-center gap-2 min-h-[50px] p-1"></div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
-                    <button id="p1_finishBtn" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                <!-- الأزرار -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <button id="p1_finishBtn" class="glass-btn-primary w-full sm:w-auto px-8 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2">
                         <span>تم الإنهاء</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="p1_resetBtn" class="w-full sm:w-auto px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-2">
+                    <button id="p1_resetBtn" class="glass-btn-secondary w-full sm:w-auto px-6 py-3 text-white/80 font-bold text-sm rounded-xl flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -576,89 +569,30 @@
         </div>
     </div>
 
-    <div id="puzzle2Modal" class="puzzle-modal p-3 md:p-6 text-slate-800">
+    <!-- ==========================================
+         نافذة اللغز الثاني: لغز الصورة (النمط الزجاجي)
+         ========================================== -->
+    <div id="puzzle2Modal" class="puzzle-modal p-4 text-white">
         
-        <button class="closeModalBtn absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
+        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 text-white/90 hover:text-white flex items-center gap-2">
             ✕ العودة للرئيسية
         </button>
 
-        <div class="w-full max-w-2xl flex flex-col items-center gap-5 my-auto">
+        <div class="glass-panel w-full max-w-xl p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
             
-            <div class="w-full tv-frame">
+            <div class="w-full flex flex-col items-center gap-3">
                 
-                <div id="p2_bearContainer" class="bear-3d-wrapper w-28 h-28 md:w-36 md:h-36 pointer-events-none">
-                    <svg viewBox="0 0 200 200" class="w-full h-full">
-                        <defs>
-                            <radialGradient id="bearBodyGrad" cx="30%" cy="30%" r="70%">
-                                <stop offset="0%" stop-color="#ffffff"/>
-                                <stop offset="60%" stop-color="#bae6fd"/>
-                                <stop offset="100%" stop-color="#0284c7"/>
-                            </radialGradient>
-                            <radialGradient id="earGrad" cx="30%" cy="30%" r="70%">
-                                <stop offset="0%" stop-color="#38bdf8"/>
-                                <stop offset="100%" stop-color="#0369a1"/>
-                            </radialGradient>
-                            <filter id="shadow3d" x="-20%" y="-20%" width="140%" height="140%">
-                                <feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
-                            </filter>
-                        </defs>
-
-                        <circle cx="40" cy="50" r="24" fill="url(#earGrad)" stroke="#e0f2fe" stroke-width="4" filter="url(#shadow3d)" />
-                        <circle cx="40" cy="50" r="12" fill="#bae6fd" />
-                        <circle cx="160" cy="50" r="24" fill="url(#earGrad)" stroke="#e0f2fe" stroke-width="4" filter="url(#shadow3d)" />
-                        <circle cx="160" cy="50" r="12" fill="#bae6fd" />
-                        
-                        <line x1="100" y1="38" x2="100" y2="16" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                        <circle id="p2_antennaBall" cx="100" cy="12" r="10" fill="#38bdf8" filter="url(#shadow3d)" class="animate-pulse" />
-
-                        <rect x="30" y="40" width="140" height="130" rx="50" fill="url(#bearBodyGrad)" stroke="#0284c7" stroke-width="5" filter="url(#shadow3d)" />
-                        
-                        <circle cx="58" cy="120" r="11" fill="#f472b6" opacity="0.6" />
-                        <circle cx="142" cy="120" r="11" fill="#f472b6" opacity="0.6" />
-
-                        <g id="p2_eyesNeutral">
-                            <ellipse cx="68" cy="95" rx="9" ry="11" fill="#0f172a" />
-                            <circle cx="71" cy="91" r="3.5" fill="#ffffff" />
-                            <ellipse cx="132" cy="95" rx="9" ry="11" fill="#0f172a" />
-                            <circle cx="135" cy="91" r="3.5" fill="#ffffff" />
-                        </g>
-
-                        <g id="p2_eyesSad" class="hidden">
-                            <path d="M 58 92 Q 68 104 78 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
-                            <path d="M 122 92 Q 132 104 142 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
-                            <path d="M 56 102 C 53 112, 60 120, 60 120 C 60 120, 66 112, 63 102 Z" fill="#38bdf8" />
-                        </g>
-
-                        <g id="p2_eyesHappy" class="hidden">
-                            <path d="M 58 100 Q 68 82 78 100" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                            <path d="M 122 100 Q 132 82 142 100" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                            <path d="M 100 60 L 103 68 L 110 70 L 103 72 L 100 80 L 97 72 L 90 70 L 97 68 Z" fill="#f59e0b" />
-                        </g>
-
-                        <ellipse cx="100" cy="118" rx="22" ry="15" fill="#f0f9ff" />
-                        <ellipse cx="100" cy="112" rx="8" ry="5" fill="#0369a1" />
-
-                        <path id="p2_mouthNeutral" d="M 93 122 Q 100 127 107 122" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
-                        <path id="p2_mouthSad" d="M 92 126 Q 100 117 108 126" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
-                        <path id="p2_mouthHappy" d="M 90 120 Q 100 135 110 120 Z" fill="#0369a1" class="hidden" />
-                    </svg>
-                </div>
-
-                <div id="p2_tvScreen" class="tv-screen broken rounded-3xl h-36 md:h-44 flex flex-col items-center justify-center p-4 text-center">
+                <!-- الشاشة الهولوغرامية لصورة المفاجأة -->
+                <div id="p2_tvScreen" class="holo-screen broken rounded-2xl w-full h-32 md:h-40 flex flex-col items-center justify-center p-3 text-center">
                     
-                    <div id="p2_screenOffContent" class="flex flex-col items-center gap-1 mt-2">
-                        <div class="flex items-center gap-1.5 text-slate-400">
-                            <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                            </svg>
-                            <span class="text-xs md:text-sm font-bold tracking-wider opacity-80">الشاشة معطلة</span>
-                        </div>
-                        <p class="glitch-text text-sky-300/70 text-xs md:text-sm font-mono font-bold">=== NO SIGNAL ===</p>
+                    <div id="p2_screenOffContent" class="flex flex-col items-center gap-1">
+                        <span class="text-xs md:text-sm font-bold tracking-widest text-pink-200/60 uppercase">الصورة مشفرة</span>
+                        <p class="text-pink-300/40 text-[10px] md:text-xs font-mono">=== REASSEMBLE TILES ===</p>
                     </div>
 
-                    <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
-                        <img id="p2_fullPreviewImage" class="w-full h-full object-cover rounded-xl shadow-md" alt="Completed Image" />
-                        <div class="absolute bottom-2 bg-black/70 backdrop-blur-sm text-white text-xs px-4 py-1 rounded-full font-bold">
+                    <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
+                        <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
+                        <div class="absolute bottom-2 bg-black/60 backdrop-blur-md text-white text-xs px-4 py-1 rounded-full font-bold border border-white/20">
                             علويتي رتاج ✨
                         </div>
                     </div>
@@ -666,35 +600,37 @@
 
             </div>
 
-            <div id="p2_bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm transition-all duration-300">
-                رتب أجزاء الصورة المبعثرة لإعادة تشغيل الشاشة! 🤖
+            <!-- نص الإرشاد -->
+            <div id="p2_speech" class="bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md">
+                رتب أجزاء الصورة لإظهار الرسالة الزجاجية ✨
             </div>
 
-            <div class="w-full bg-white/80 backdrop-blur-md rounded-3xl p-4 md:p-6 shadow-xl border border-sky-100 flex flex-col items-center gap-5">
+            <!-- لوحة الصورة المبعثرة -->
+            <div class="flex flex-col items-center gap-5 w-full">
                 
-                <div id="puzzleBoardWrapper" class="relative w-64 h-64 md:w-80 md:h-80">
-                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 w-full h-full shadow-inner">
+                <div id="puzzleBoardWrapper" class="relative w-60 h-60 md:w-72 md:h-72">
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-2 p-2 bg-black/20 rounded-2xl border border-white/10 w-full h-full shadow-inner">
                     </div>
 
-                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-4 border-emerald-400 shadow-2xl connected-image">
+                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-300 shadow-2xl connected-image">
                         <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-500/20 to-transparent pointer-events-none"></div>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center gap-3 pt-1 w-full max-w-sm">
-                    <button id="p2_finishBtn" class="flex-1 py-3.5 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-sm md:text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                <!-- الأزرار -->
+                <div class="flex items-center justify-center gap-3 w-full max-w-xs">
+                    <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2">
                         <span>تم الإنهاء</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="p2_resetBtn" class="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-1.5">
+                    <button id="p2_resetBtn" class="glass-btn-secondary px-5 py-3 text-white/80 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
-                        <span>إعادة المحاولة</span>
+                        <span>إعادة</span>
                     </button>
                 </div>
 
@@ -703,6 +639,9 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         برمجة السكريبت المدمجة
+         ========================================== -->
     <script>
         /* --- 1. المؤثرات الصوتية العامة --- */
         class SoundFX {
@@ -718,9 +657,9 @@
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(450, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(850, this.ctx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(500, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(900, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
@@ -735,12 +674,12 @@
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(180, this.ctx.currentTime);
                 osc.frequency.setValueAtTime(130, this.ctx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
                 osc.start();
-                osc.stop(this.ctx.currentTime + 0.35);
+                osc.stop(this.ctx.currentTime + 0.3);
             }
             playSuccess() {
                 this.init();
@@ -749,14 +688,14 @@
                 notes.forEach((freq, idx) => {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.1);
-                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime + idx * 0.1);
-                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.1 + 0.25);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.09);
+                    gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.09);
+                    gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.09 + 0.25);
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
-                    osc.start(this.ctx.currentTime + idx * 0.1);
-                    osc.stop(this.ctx.currentTime + idx * 0.1 + 0.25);
+                    osc.start(this.ctx.currentTime + idx * 0.09);
+                    osc.stop(this.ctx.currentTime + idx * 0.09 + 0.25);
                 });
             }
         }
@@ -836,15 +775,13 @@
         const p1_screenOffContent = document.getElementById('p1_screenOffContent');
         const p1_screenOnContent = document.getElementById('p1_screenOnContent');
         
-        const p1_bearContainer = document.getElementById('p1_bearContainer');
         const p1_eyesNeutral = document.getElementById('p1_eyesNeutral');
         const p1_eyesSad = document.getElementById('p1_eyesSad');
         const p1_eyesHappy = document.getElementById('p1_eyesHappy');
         const p1_mouthNeutral = document.getElementById('p1_mouthNeutral');
         const p1_mouthSad = document.getElementById('p1_mouthSad');
         const p1_mouthHappy = document.getElementById('p1_mouthHappy');
-        const p1_bearSpeech = document.getElementById('p1_bearSpeech');
-        const p1_antennaBall = document.getElementById('p1_antennaBall');
+        const p1_speech = document.getElementById('p1_speech');
 
         function shuffleArray(array) {
             const arr = [...array];
@@ -864,7 +801,7 @@
                 char: char
             }));
 
-            setP1BearState('neutral');
+            setP1AssistantState('neutral');
             resetP1Screen();
             resetP1ButtonStyles();
             renderP1Board();
@@ -886,7 +823,7 @@
             p1_lettersBank.innerHTML = '';
             availablePool.forEach((item) => {
                 const btn = document.createElement('button');
-                btn.className = 'letter-btn bg-white hover:bg-sky-50 text-sky-700 font-extrabold text-lg md:text-xl w-10 h-10 md:w-12 md:h-12 rounded-xl border-2 border-sky-200 shadow-sm flex items-center justify-center cursor-pointer';
+                btn.className = 'letter-btn font-extrabold text-lg md:text-xl w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center cursor-pointer shadow-sm';
                 btn.innerText = item.char;
                 btn.onclick = () => {
                     soundFX.playTap();
@@ -898,11 +835,11 @@
 
         function createSlotElement(item, onClick) {
             const slot = document.createElement('div');
-            slot.className = 'letter-slot w-10 h-10 md:w-11 md:h-11 rounded-xl border-2 border-sky-300/60 bg-white/60 flex items-center justify-center';
+            slot.className = 'letter-slot w-10 h-10 md:w-11 md:h-11 flex items-center justify-center';
             
             if (item) {
                 const letterBtn = document.createElement('button');
-                letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-lg md:text-xl w-full h-full rounded-lg shadow-sm flex items-center justify-center cursor-pointer';
+                letterBtn.className = 'letter-btn bg-pink-500/30 border-pink-300/50 text-white font-extrabold text-lg md:text-xl w-full h-full rounded-xl shadow-sm flex items-center justify-center cursor-pointer';
                 letterBtn.innerText = item.char;
                 letterBtn.onclick = () => {
                     soundFX.playTap();
@@ -947,8 +884,7 @@
             }
         }
 
-        function setP1BearState(state) {
-            p1_bearContainer.classList.remove('bear-sad', 'bear-happy');
+        function setP1AssistantState(state) {
             p1_eyesNeutral.classList.add('hidden');
             p1_eyesSad.classList.add('hidden');
             p1_eyesHappy.classList.add('hidden');
@@ -957,25 +893,20 @@
             p1_mouthHappy.classList.add('hidden');
 
             if (state === 'sad') {
-                p1_bearContainer.classList.add('bear-sad');
                 p1_eyesSad.classList.remove('hidden');
                 p1_mouthSad.classList.remove('hidden');
-                p1_bearSpeech.innerText = "أوووه! الترتيب غير صحيح 😢 جرب ثانية!";
-                p1_bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm animate-bounce";
-                p1_antennaBall.setAttribute('fill', '#ef4444');
+                p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
+                p1_speech.className = "bg-rose-500/20 border border-rose-300/40 text-rose-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md animate-bounce";
             } else if (state === 'happy') {
-                p1_bearContainer.classList.add('bear-happy');
                 p1_eyesHappy.classList.remove('hidden');
                 p1_mouthHappy.classList.remove('hidden');
-                p1_bearSpeech.innerText = "ممتاز جداً! الشاشة اشتغلت 🎉 أحسنت!";
-                p1_bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
-                p1_antennaBall.setAttribute('fill', '#10b981');
+                p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
+                p1_speech.className = "bg-emerald-500/20 border border-emerald-300/40 text-emerald-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md";
             } else {
                 p1_eyesNeutral.classList.remove('hidden');
                 p1_mouthNeutral.classList.remove('hidden');
-                p1_bearSpeech.innerText = "رتب الحروف لأستعيد تشغيل الشاشة! 🤖";
-                p1_bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
-                p1_antennaBall.setAttribute('fill', '#38bdf8');
+                p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة الزجاجية ✨";
+                p1_speech.className = "bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md";
             }
         }
 
@@ -994,7 +925,7 @@
         }
 
         function resetP1ButtonStyles() {
-            p1_finishBtn.className = "w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
+            p1_finishBtn.className = "glass-btn-primary w-full sm:w-auto px-8 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2";
         }
 
         p1_finishBtn.addEventListener('click', () => {
@@ -1010,7 +941,7 @@
 
             if (isCorrect) {
                 soundFX.playSuccess();
-                setP1BearState('happy');
+                setP1AssistantState('happy');
                 activateP1Screen();
                 p1_finishBtn.classList.add('btn-shake-green');
 
@@ -1025,7 +956,7 @@
 
             } else {
                 soundFX.playError();
-                setP1BearState('sad');
+                setP1AssistantState('sad');
                 resetP1Screen();
                 p1_finishBtn.classList.add('btn-shake-red');
 
@@ -1058,16 +989,7 @@
         const p2_screenOffContent = document.getElementById('p2_screenOffContent');
         const p2_screenOnContent = document.getElementById('p2_screenOnContent');
         const p2_fullPreviewImage = document.getElementById('p2_fullPreviewImage');
-
-        const p2_bearContainer = document.getElementById('p2_bearContainer');
-        const p2_eyesNeutral = document.getElementById('p2_eyesNeutral');
-        const p2_eyesSad = document.getElementById('p2_eyesSad');
-        const p2_eyesHappy = document.getElementById('p2_eyesHappy');
-        const p2_mouthNeutral = document.getElementById('p2_mouthNeutral');
-        const p2_mouthSad = document.getElementById('p2_mouthSad');
-        const p2_mouthHappy = document.getElementById('p2_mouthHappy');
-        const p2_bearSpeech = document.getElementById('p2_bearSpeech');
-        const p2_antennaBall = document.getElementById('p2_antennaBall');
+        const p2_speech = document.getElementById('p2_speech');
 
         p2_fullPreviewImage.src = PUZZLE_IMAGE_URL;
         completedPuzzleImg.src = PUZZLE_IMAGE_URL;
@@ -1084,7 +1006,7 @@
             puzzleBoard.classList.remove('hidden');
             connectedBoard.classList.add('hidden');
 
-            setP2BearState('neutral');
+            setP2SpeechState('neutral');
             resetP2Screen();
             resetP2ButtonStyles();
             renderP2Board();
@@ -1095,7 +1017,7 @@
 
             currentP2Board.forEach((originalIndex, boardPosition) => {
                 const tile = document.createElement('div');
-                tile.className = 'puzzle-tile w-full h-full rounded-xl cursor-pointer border-2 border-white/60 shadow-md relative overflow-hidden select-none';
+                tile.className = 'glass-tile w-full h-full rounded-xl cursor-pointer relative overflow-hidden select-none';
 
                 const row = Math.floor(originalIndex / GRID_SIZE);
                 const col = originalIndex % GRID_SIZE;
@@ -1133,35 +1055,16 @@
             renderP2Board();
         }
 
-        function setP2BearState(state) {
-            p2_bearContainer.classList.remove('bear-sad', 'bear-happy');
-            p2_eyesNeutral.classList.add('hidden');
-            p2_eyesSad.classList.add('hidden');
-            p2_eyesHappy.classList.add('hidden');
-            p2_mouthNeutral.classList.add('hidden');
-            p2_mouthSad.classList.add('hidden');
-            p2_mouthHappy.classList.add('hidden');
-
+        function setP2SpeechState(state) {
             if (state === 'sad') {
-                p2_bearContainer.classList.add('bear-sad');
-                p2_eyesSad.classList.remove('hidden');
-                p2_mouthSad.classList.remove('hidden');
-                p2_bearSpeech.innerText = "أوووه! ترتيب الصورة غير صحيح 😢 حاول مجدداً!";
-                p2_bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm animate-bounce";
-                p2_antennaBall.setAttribute('fill', '#ef4444');
+                p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
+                p2_speech.className = "bg-rose-500/20 border border-rose-300/40 text-rose-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md animate-bounce";
             } else if (state === 'happy') {
-                p2_bearContainer.classList.add('bear-happy');
-                p2_eyesHappy.classList.remove('hidden');
-                p2_mouthHappy.classList.remove('hidden');
-                p2_bearSpeech.innerText = "مذهل جداً! اكتملت الصورة واشتغلت الشاشة 🎉";
-                p2_bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm";
-                p2_antennaBall.setAttribute('fill', '#10b981');
+                p2_speech.innerText = "مذهل! اكتملت الصورة واشتغلت الشاشة ✨";
+                p2_speech.className = "bg-emerald-500/20 border border-emerald-300/40 text-emerald-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md";
             } else {
-                p2_eyesNeutral.classList.remove('hidden');
-                p2_mouthNeutral.classList.remove('hidden');
-                p2_bearSpeech.innerText = "رتب أجزاء الصورة المبعثرة لإعادة تشغيل الشاشة! 🤖";
-                p2_bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm";
-                p2_antennaBall.setAttribute('fill', '#38bdf8');
+                p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة الزجاجية ✨";
+                p2_speech.className = "bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md";
             }
         }
 
@@ -1180,7 +1083,7 @@
         }
 
         function resetP2ButtonStyles() {
-            p2_finishBtn.className = "flex-1 py-3.5 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-sm md:text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
+            p2_finishBtn.className = "glass-btn-primary flex-1 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2";
         }
 
         p2_finishBtn.addEventListener('click', () => {
@@ -1190,7 +1093,7 @@
 
             if (isCorrect) {
                 soundFX.playSuccess();
-                setP2BearState('happy');
+                setP2SpeechState('happy');
                 activateP2Screen();
                 p2_finishBtn.classList.add('btn-shake-green');
 
@@ -1208,7 +1111,7 @@
 
             } else {
                 soundFX.playError();
-                setP2BearState('sad');
+                setP2SpeechState('sad');
                 resetP2Screen();
                 p2_finishBtn.classList.add('btn-shake-red');
 
