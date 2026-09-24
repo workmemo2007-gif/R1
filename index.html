@@ -239,17 +239,17 @@
         }
 
         /* ==========================================
-           أنماط الألغاز (تنبثق من الأسفل وبدون ضبابية)
+           أنماط الألغاز (متصلة بأسفل الشاشة حتى المنتصف)
            ========================================== */
         .puzzle-modal {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.2); /* خلفية شفافة جداً وبدون ضبابية */
+            background: rgba(0, 0, 0, 0.2);
             z-index: 50;
             display: flex;
-            align-items: center;
+            align-items: flex-end; /* تم التعديل للالتصاق بالأسفل */
             justify-content: center;
             opacity: 0;
             pointer-events: none;
@@ -261,14 +261,20 @@
             pointer-events: auto;
         }
 
-        /* كارد اللغز المركزي المنسحب من الأسفل */
+        /* كارد اللغز السفلي الممتد للمنتصف */
         .glass-panel-white {
-            background: rgba(255, 255, 255, 0.85); /* بطاقة شفافة وأنيقة */
-            border: 1.5px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 182, 193, 0.4);
-            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.92);
+            border-top: 2px solid rgba(255, 255, 255, 0.9);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.6);
+            border-right: 1.5px solid rgba(255, 255, 255, 0.6);
+            border-bottom: none;
+            box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 182, 193, 0.3);
+            border-radius: 28px 28px 0 0; /* انحناء من الأعلى فقط */
+            width: 100vw;
+            height: 52vh; /* يغطي المساحة حتى المنتصف */
             transform: translateY(100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
         }
 
         .puzzle-modal.active .glass-panel-white {
@@ -293,19 +299,18 @@
 
         /* الشاشة المربعة للروبوت البكسلي */
         .pixel-robot-box {
-            width: 80px;
-            height: 80px;
+            width: 65px;
+            height: 65px;
             background: rgba(255, 255, 255, 0.7);
             border: 2px solid rgba(255, 182, 193, 0.8);
             box-shadow: 0 6px 15px rgba(255, 105, 180, 0.2);
-            border-radius: 18px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             shrink: 0;
         }
 
-        /* رسم البكسل البسيط للروبوت */
         .pixel-art {
             image-rendering: pixelated;
         }
@@ -390,10 +395,9 @@
             box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
         }
 
-        /* مربعات الإجابة مصغرة وفي سطر واحد فقط */
         .letter-slot-mini {
-            width: 28px;
-            height: 32px;
+            width: 26px;
+            height: 30px;
             background: rgba(255, 255, 255, 0.6);
             border: 1.5px dashed rgba(255, 105, 180, 0.5);
             border-radius: 8px;
@@ -405,8 +409,8 @@
 
         @media (min-width: 640px) {
             .letter-slot-mini {
-                width: 34px;
-                height: 38px;
+                width: 32px;
+                height: 36px;
                 border-radius: 10px;
             }
         }
@@ -457,17 +461,16 @@
         </div>
     </div>
 
-    <div id="puzzle1Modal" class="puzzle-modal p-4 text-gray-800">
-        <div class="glass-panel-white relative w-full max-w-xl p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
+    <div id="puzzle1Modal" class="puzzle-modal text-gray-800">
+        <div class="glass-panel-white relative p-4 md:p-6 flex flex-col items-center justify-between gap-3">
             
-            <button class="closeModalBtn absolute -top-12 right-0 glass-btn-secondary px-4 py-1.5 rounded-xl text-xs md:text-sm font-bold z-10 flex items-center gap-2 shadow-lg">
-                ✕ العودة للرئيسية
+            <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-xl text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
+                ✕ العودة
             </button>
 
-            <div class="w-full flex items-center justify-center gap-3 md:gap-4">
-                
+            <div class="w-full max-w-lg flex items-center justify-center gap-3 pt-6 md:pt-2">
                 <div class="pixel-robot-box shrink-0">
-                    <svg class="pixel-art w-12 h-12" viewBox="0 0 16 16" fill="none">
+                    <svg class="pixel-art w-10 h-10" viewBox="0 0 16 16" fill="none">
                         <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
                         <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
                         <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
@@ -478,74 +481,67 @@
                 </div>
 
                 <div class="flex-1">
-                    <div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-20 md:h-22 flex flex-col items-center justify-center p-2 text-center">
+                    <div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-16 md:h-18 flex flex-col items-center justify-center p-2 text-center">
                         <div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
-                            <span class="text-xs md:text-sm font-bold tracking-wider text-pink-600 uppercase">الشاشة قيد الانتظار</span>
-                            <p class="text-pink-400 text-[10px] md:text-xs font-mono">=== WAITING ===</p>
+                            <span class="text-xs font-bold tracking-wider text-pink-600 uppercase">الشاشة قيد الانتظار</span>
+                            <p class="text-pink-400 text-[10px] font-mono">=== WAITING ===</p>
                         </div>
 
                         <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
-                            <span class="floating-answer font-black text-xl md:text-2xl tracking-widest">
+                            <span class="floating-answer font-black text-lg md:text-xl tracking-widest">
                                 علويتي رتاج
                             </span>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <div id="p1_speech" class="bg-white border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm">
+            <div id="p1_speech" class="bg-white border border-pink-200 text-pink-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm">
                 رتب الحروف لإلغاء قفل الشاشة ✨
             </div>
 
-            <div class="w-full flex flex-col items-center gap-5">
-                
-                <div dir="rtl" class="w-full flex items-center justify-center gap-1 sm:gap-2 p-2.5 bg-pink-50/50 rounded-2xl border border-pink-200 shadow-inner overflow-x-auto">
-                    
+            <div class="w-full max-w-lg flex flex-col items-center gap-3">
+                <div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-pink-50/50 rounded-2xl border border-pink-200 shadow-inner overflow-x-auto">
                     <div id="word1Container" class="flex flex-row items-center gap-1 shrink-0"></div>
-                    
-                    <div class="w-1.5 h-6 bg-pink-300/60 rounded-full shrink-0 mx-0.5"></div>
-
+                    <div class="w-1 h-5 bg-pink-300/60 rounded-full shrink-0 mx-0.5"></div>
                     <div id="word2Container" class="flex flex-row items-center gap-1 shrink-0"></div>
                 </div>
 
-                <div class="flex flex-col items-center gap-2 border-t border-pink-200/60 pt-3 w-full">
-                    <span class="text-xs font-bold text-gray-600">الحروف المبعثرة (انقر للترتيب):</span>
-                    <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-2 min-h-[45px]"></div>
+                <div class="flex flex-col items-center gap-1 w-full">
+                    <span class="text-[11px] font-bold text-gray-600">الحروف المبعثرة (انقر للترتيب):</span>
+                    <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-1.5 min-h-[38px]"></div>
                 </div>
 
-                <div class="flex items-center justify-center gap-3 w-full max-w-xs pt-1">
-                    <button id="p1_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-2">
+                    <button id="p1_finishBtn" class="glass-btn-primary flex-1 py-2 text-white font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <span>تم الإنهاء</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                    <button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-2 font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
                         <span>إعادة</span>
                     </button>
                 </div>
-
             </div>
 
         </div>
     </div>
 
-    <div id="puzzle2Modal" class="puzzle-modal p-4 text-gray-800">
-        <div class="glass-panel-white relative w-full max-w-lg p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
+    <div id="puzzle2Modal" class="puzzle-modal text-gray-800">
+        <div class="glass-panel-white relative p-4 md:p-6 flex flex-col items-center justify-between gap-3">
             
-            <button class="closeModalBtn absolute -top-12 right-0 glass-btn-secondary px-4 py-1.5 rounded-xl text-xs md:text-sm font-bold z-10 flex items-center gap-2 shadow-lg">
-                ✕ العودة للرئيسية
+            <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-xl text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
+                ✕ العودة
             </button>
 
-            <div class="w-full flex items-center justify-center gap-3 md:gap-4">
-                
+            <div class="w-full max-w-lg flex items-center justify-center gap-3 pt-6 md:pt-2">
                 <div class="pixel-robot-box shrink-0">
-                    <svg class="pixel-art w-12 h-12" viewBox="0 0 16 16" fill="none">
+                    <svg class="pixel-art w-10 h-10" viewBox="0 0 16 16" fill="none">
                         <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
                         <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
                         <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
@@ -556,31 +552,29 @@
                 </div>
 
                 <div class="flex-1">
-                    <div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-2 text-center">
+                    <div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-16 md:h-20 flex flex-col items-center justify-center p-1 text-center">
                         <div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
-                            <span class="text-xs md:text-sm font-bold tracking-wider text-pink-600 uppercase">الصورة مشفرة</span>
-                            <p class="text-pink-400 text-[10px] md:text-xs font-mono">=== REASSEMBLE TILES ===</p>
+                            <span class="text-xs font-bold tracking-wider text-pink-600 uppercase">الصورة مشفرة</span>
+                            <p class="text-pink-400 text-[10px] font-mono">=== REASSEMBLE TILES ===</p>
                         </div>
 
                         <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
                             <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
-                            <div class="absolute bottom-1 bg-white/90 text-pink-700 text-[11px] px-3 py-0.5 rounded-full font-extrabold border border-pink-300">
+                            <div class="absolute bottom-1 bg-white/90 text-pink-700 text-[10px] px-2 py-0.5 rounded-full font-extrabold border border-pink-300">
                                 علويتي رتاج ✨
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <div id="p2_speech" class="bg-white border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm">
+            <div id="p2_speech" class="bg-white border border-pink-200 text-pink-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm">
                 رتب أجزاء الصورة لإظهار الرسالة ✨
             </div>
 
-            <div class="flex flex-col items-center gap-4 w-full">
-                
-                <div id="puzzleBoardWrapper" class="relative w-56 h-56 md:w-64 md:h-64">
-                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1.5 p-2 bg-pink-50/50 rounded-2xl border border-pink-200 w-full h-full shadow-inner">
+            <div class="flex flex-col items-center gap-3 w-full max-w-lg pb-2">
+                <div id="puzzleBoardWrapper" class="relative w-40 h-40 md:w-48 md:h-48">
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1.5 bg-pink-50/50 rounded-2xl border border-pink-200 w-full h-full shadow-inner">
                     </div>
 
                     <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-400 shadow-xl">
@@ -588,22 +582,21 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center gap-3 w-full max-w-xs pt-1">
-                    <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                <div class="flex items-center justify-center gap-3 w-full max-w-xs">
+                    <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-2 text-white font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <span>تم الإنهاء</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                    <button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-2 font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
                         <span>إعادة</span>
                     </button>
                 </div>
-
             </div>
 
         </div>
@@ -783,7 +776,7 @@
             p1_lettersBank.innerHTML = '';
             availablePool.forEach((item) => {
                 const btn = document.createElement('button');
-                btn.className = 'letter-btn font-extrabold text-base md:text-lg w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center cursor-pointer shadow-sm';
+                btn.className = 'letter-btn font-extrabold text-xs md:text-sm w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center cursor-pointer shadow-sm';
                 btn.innerText = item.char;
                 btn.onclick = () => {
                     soundFX.playTap();
@@ -799,7 +792,7 @@
             
             if (item) {
                 const letterBtn = document.createElement('button');
-                letterBtn.className = 'letter-btn bg-pink-400 text-white font-extrabold text-xs md:text-sm w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
+                letterBtn.className = 'letter-btn bg-pink-400 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
                 letterBtn.innerText = item.char;
                 letterBtn.onclick = () => {
                     soundFX.playTap();
@@ -810,7 +803,6 @@
             return slot;
         }
 
-        /* الإضافة تبدأ من الكلمة الأولى من اليمين ثم الكلمة الثانية */
         function addLetterToNextAvailable(item) {
             const emptyW1Index = currentWord1.findIndex(slot => slot === null);
             if (emptyW1Index !== -1) {
@@ -850,15 +842,15 @@
             if (state === 'sad') {
                 pxMouth.setAttribute('fill', '#ef4444');
                 p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
-                p1_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm animate-bounce";
+                p1_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm animate-bounce";
             } else if (state === 'happy') {
                 pxMouth.setAttribute('fill', '#10b981');
                 p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
-                p1_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
+                p1_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm";
             } else {
                 pxMouth.setAttribute('fill', '#c2185b');
                 p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨";
-                p1_speech.className = "bg-white border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
+                p1_speech.className = "bg-white border border-pink-200 text-pink-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm";
             }
         }
 
@@ -875,7 +867,7 @@
         }
 
         function resetP1ButtonStyles() {
-            p1_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5";
+            p1_finishBtn.className = "glass-btn-primary flex-1 py-2 text-white font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5";
         }
 
         p1_finishBtn.addEventListener('click', () => {
@@ -1009,15 +1001,15 @@
             if (state === 'sad') {
                 pxMouth.setAttribute('fill', '#ef4444');
                 p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
-                p2_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm animate-bounce";
+                p2_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm animate-bounce";
             } else if (state === 'happy') {
                 pxMouth.setAttribute('fill', '#10b981');
                 p2_speech.innerText = "مذهل! اكتملت الصورة واشتغلت الشاشة ✨";
-                p2_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
+                p2_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm";
             } else {
                 pxMouth.setAttribute('fill', '#c2185b');
                 p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة ✨";
-                p2_speech.className = "bg-white border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
+                p2_speech.className = "bg-white border border-pink-200 text-pink-700 text-xs font-bold px-4 py-1 rounded-full shadow-sm";
             }
         }
 
@@ -1034,7 +1026,7 @@
         }
 
         function resetP2ButtonStyles() {
-            p2_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5";
+            p2_finishBtn.className = "glass-btn-primary flex-1 py-2 text-white font-bold text-xs md:text-sm rounded-xl flex items-center justify-center gap-1.5";
         }
 
         p2_finishBtn.addEventListener('click', () => {
