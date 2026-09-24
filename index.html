@@ -42,7 +42,7 @@
             z-index: 1;
         }
 
-        /* طبقة تظليل سوداء خفيفة */
+        /* طبقة تظليل سوداء خفيفة للرئيسية */
         .overlay {
             position: absolute;
             top: 0;
@@ -157,7 +157,6 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        /* غلاف الكارت */
         .card-cover {
             width: 100%;
             height: 75px;
@@ -240,7 +239,7 @@
         }
 
         /* ==========================================
-           أنماط الألغاز الزجاجية (Glassmorphism Modals)
+           أنماط الألغاز الشفافة باللون الأبيض (White Glass)
            ========================================== */
         .puzzle-modal {
             position: fixed;
@@ -248,9 +247,10 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(10, 8, 18, 0.65);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            /* خلفية بيضاء عالية الشفافية وناعمة */
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
             z-index: 50;
             display: flex;
             flex-direction: column;
@@ -267,98 +267,96 @@
             pointer-events: auto;
         }
 
-        /* الحاوية الزجاجية المركزية للغز */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
+        /* الحاوية الزجاجية المركزية - بيضاء شفافة */
+        .glass-panel-white {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 50px rgba(255, 182, 193, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.4);
+            border-radius: 28px;
         }
 
-        /* Holographic Screen Display */
-        .holo-screen {
-            background: rgba(15, 12, 25, 0.7);
-            border: 1px solid rgba(255, 192, 203, 0.3);
-            box-shadow: inset 0 0 20px rgba(255, 105, 180, 0.15), 0 0 15px rgba(255, 105, 180, 0.1);
+        /* الشاشة الكبيرة البيضاء الشفافة */
+        .holo-screen-white {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1.5px solid rgba(255, 182, 193, 0.6);
+            box-shadow: inset 0 0 15px rgba(255, 105, 180, 0.15), 0 8px 20px rgba(255, 105, 180, 0.15);
             position: relative;
             overflow: hidden;
             transition: all 0.5s ease;
         }
 
-        .holo-screen.broken::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(255, 255, 255, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 100, 0.03), rgba(0, 255, 200, 0.02), rgba(255, 255, 255, 0.03));
-            z-index: 10;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
+        .holo-screen-white.active {
+            background: rgba(255, 240, 245, 0.75);
+            border-color: #ff69b4;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.4);
         }
 
-        .holo-screen.active {
-            background: rgba(20, 15, 35, 0.85);
-            border-color: rgba(255, 182, 193, 0.8);
-            box-shadow: 0 0 30px rgba(255, 182, 193, 0.4), inset 0 0 15px rgba(255, 182, 193, 0.2);
+        /* الشاشة المربعة للروبوت البكسلي */
+        .pixel-robot-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 182, 193, 0.8);
+            box-shadow: 0 6px 15px rgba(255, 105, 180, 0.2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        /* رسم البكسل البسيط للروبوت */
+        .pixel-art {
+            image-rendering: pixelated;
         }
 
         .floating-answer {
             display: inline-block;
             animation: bounceAndMove 4s ease-in-out infinite alternate;
-            text-shadow: 0 0 15px rgba(255, 192, 203, 0.8), 0 0 30px rgba(255, 105, 180, 0.5);
+            color: #d81b60;
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.8);
         }
 
         @keyframes bounceAndMove {
-            0% { transform: translate(-5%, -3%) scale(1); }
-            50% { transform: translate(5%, 3%) scale(1.05); }
-            100% { transform: translate(-3%, 4%) scale(1.02); }
+            0% { transform: translate(-3%, -2%) scale(1); }
+            100% { transform: translate(3%, 2%) scale(1.03); }
         }
 
-        /* المساعد الزجاجي المتوهج Glass Assistant */
-        .glass-assistant-wrapper {
-            filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.25));
-            transition: all 0.4s ease;
-        }
-
-        .glass-assistant-wrapper:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 15px 30px rgba(255, 105, 180, 0.4));
-        }
-
-        /* Button Custom Styling */
+        /* الأزرار العلوية والتحكم */
         .glass-btn-primary {
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.4));
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
-            backdrop-filter: blur(8px);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.8), rgba(255, 20, 147, 0.85));
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
             transition: all 0.3s ease;
         }
 
         .glass-btn-primary:hover {
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.5), rgba(255, 105, 180, 0.6));
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.95), rgba(255, 20, 147, 1));
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
         }
 
         .glass-btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 182, 193, 0.6);
+            color: #d81b60;
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
         .glass-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.75);
+            border-color: #ff69b4;
         }
 
         .btn-shake-red {
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.6), rgba(220, 38, 38, 0.7)) !important;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.6) !important;
-            border-color: rgba(255, 255, 255, 0.6) !important;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5) !important;
+            color: #ffffff !important;
         }
 
         @keyframes shakeRed {
@@ -370,67 +368,71 @@
 
         .btn-shake-green {
             animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.6), rgba(5, 150, 105, 0.7)) !important;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.7) !important;
-            border-color: rgba(255, 255, 255, 0.8) !important;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
+            color: #ffffff !important;
         }
 
         @keyframes shakeGreen {
             0% { transform: scale(1); }
-            30% { transform: scale(1.08); }
-            50% { transform: scale(0.98); }
+            30% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
 
-        /* Puzzle Elements */
-        .glass-tile {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(6px);
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .glass-tile:hover {
-            border-color: rgba(255, 192, 203, 0.6);
-            transform: scale(1.03);
-            box-shadow: 0 0 12px rgba(255, 182, 193, 0.3);
-        }
-
-        .selected-tile {
-            border-color: #ffb6c1 !important;
-            box-shadow: 0 0 18px rgba(255, 182, 193, 0.8) !important;
-            transform: scale(0.97);
-        }
-
+        /* عناصر اللغز والأحرف */
         .letter-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(255, 182, 193, 0.6);
+            color: #c2185b;
             backdrop-filter: blur(8px);
-            color: #ffffff;
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .letter-btn:hover {
-            background: rgba(255, 182, 193, 0.25);
-            border-color: rgba(255, 192, 203, 0.6);
+            background: #ffb6c1;
+            color: #ffffff;
             transform: translateY(-2px) scale(1.05);
             box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
         }
 
-        .letter-slot {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1.5px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            transition: all 0.3s ease;
+        /* مربعات الإجابة مصغرة وفي سطر واحد فقط */
+        .letter-slot-mini {
+            width: 28px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1.5px dashed rgba(255, 105, 180, 0.5);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            shrink: 0;
         }
 
-        .connected-image {
-            animation: popConnected 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        @media (min-width: 640px) {
+            .letter-slot-mini {
+                width: 34px;
+                height: 38px;
+                border-radius: 10px;
+            }
         }
 
-        @keyframes popConnected {
-            0% { transform: scale(0.92); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
+        .glass-tile {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(6px);
+            transition: all 0.25s ease;
+        }
+
+        .glass-tile:hover {
+            border-color: #ff69b4;
+            transform: scale(1.03);
+            box-shadow: 0 0 12px rgba(255, 182, 193, 0.5);
+        }
+
+        .selected-tile {
+            border-color: #ff1493 !important;
+            box-shadow: 0 0 18px rgba(255, 20, 147, 0.8) !important;
+            transform: scale(0.96);
         }
     </style>
 </head>
@@ -464,65 +466,45 @@
     </div>
 
     <!-- ==========================================
-         نافذة اللغز الأول: لغز الحروف (النمط الزجاجي)
+         نافذة اللغز الأول: ترتيب الحروف (تصميم شفاف أبيض)
          ========================================== -->
-    <div id="puzzle1Modal" class="puzzle-modal p-4 text-white">
+    <div id="puzzle1Modal" class="puzzle-modal p-4 text-gray-800">
         
-        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 text-white/90 hover:text-white flex items-center gap-2">
+        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 flex items-center gap-2">
             ✕ العودة للرئيسية
         </button>
 
-        <div class="glass-panel w-full max-w-2xl p-5 md:p-8 flex flex-col items-center gap-6 my-auto">
+        <div class="glass-panel-white w-full max-w-xl p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
             
-            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-5">
+            <!-- الهيدر: شاشة الروبوت المربعة + الشاشة الكبيرة -->
+            <div class="w-full flex items-center justify-center gap-3 md:gap-4">
                 
-                <!-- المساعد الزجاجي -->
-                <div class="flex flex-col items-center shrink-0">
-                    <div id="p1_assistant" class="glass-assistant-wrapper w-20 h-20 md:w-24 md:h-24 relative">
-                        <svg viewBox="0 0 200 200" class="w-full h-full">
-                            <defs>
-                                <radialGradient id="glassGlow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="#ffb6c1" stop-opacity="0.8"/>
-                                    <stop offset="70%" stop-color="#ff69b4" stop-opacity="0.3"/>
-                                    <stop offset="100%" stop-color="#ff1493" stop-opacity="0"/>
-                                </radialGradient>
-                            </defs>
-                            
-                            <circle cx="100" cy="100" r="85" fill="url(#glassGlow)" class="animate-pulse" />
-                            <circle cx="100" cy="100" r="65" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 192, 203, 0.5)" stroke-width="3" />
-                            
-                            <!-- Eyes -->
-                            <g id="p1_eyesNeutral">
-                                <circle cx="75" cy="90" r="8" fill="#ffffff" />
-                                <circle cx="125" cy="90" r="8" fill="#ffffff" />
-                            </g>
-                            <g id="p1_eyesSad" class="hidden">
-                                <path d="M 68 95 Q 75 85 82 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
-                                <path d="M 118 95 Q 125 85 132 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
-                            </g>
-                            <g id="p1_eyesHappy" class="hidden">
-                                <path d="M 68 88 Q 75 98 82 88" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
-                                <path d="M 118 88 Q 125 98 132 88" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
-                            </g>
-
-                            <!-- Mouth -->
-                            <path id="p1_mouthNeutral" d="M 90 120 Q 100 125 110 120" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
-                            <path id="p1_mouthSad" d="M 90 125 Q 100 115 110 125" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" class="hidden" />
-                            <path id="p1_mouthHappy" d="M 88 118 Q 100 132 112 118 Z" fill="#ffffff" class="hidden" />
-                        </svg>
-                    </div>
+                <!-- شاشة الروبوت البكسلي المربعة -->
+                <div class="pixel-robot-box shrink-0">
+                    <svg class="pixel-art w-12 h-12" viewBox="0 0 16 16" fill="none">
+                        <!-- Head -->
+                        <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
+                        <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
+                        <!-- Antenna -->
+                        <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
+                        <!-- Eyes -->
+                        <rect id="p1_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#c2185b" />
+                        <rect id="p1_pxEyeRight" x="9" y="6" width="2" height="2" fill="#c2185b" />
+                        <!-- Mouth -->
+                        <rect id="p1_pxMouth" x="6" y="9" width="4" height="1" fill="#c2185b" />
+                    </svg>
                 </div>
 
-                <!-- الشاشة الهولوغرامية -->
-                <div class="w-full max-w-md">
-                    <div id="p1_tvScreen" class="holo-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
-                        <div id="p1_screenOffContent" class="flex flex-col items-center gap-1">
-                            <span class="text-xs md:text-sm font-bold tracking-widest text-pink-200/60 uppercase">إشارة القفل مفعلة</span>
-                            <p class="text-pink-300/40 text-[10px] md:text-xs font-mono">=== WAITING FOR DECRYPTION ===</p>
+                <!-- الشاشة الكبيرة -->
+                <div class="flex-1">
+                    <div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-20 md:h-22 flex flex-col items-center justify-center p-2 text-center">
+                        <div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
+                            <span class="text-xs md:text-sm font-bold tracking-wider text-pink-600 uppercase">الشاشة قيد الانتظار</span>
+                            <p class="text-pink-400 text-[10px] md:text-xs font-mono">=== WAITING ===</p>
                         </div>
 
                         <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
-                            <span class="floating-answer text-white font-black text-2xl md:text-3xl tracking-widest">
+                            <span class="floating-answer font-black text-xl md:text-2xl tracking-widest">
                                 علويتي رتاج
                             </span>
                         </div>
@@ -532,101 +514,42 @@
             </div>
 
             <!-- نص الإرشاد -->
-            <div id="p1_speech" class="bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md">
-                رتب الحروف لإلغاء قفل الشاشة الزجاجية ✨
+            <div id="p1_speech" class="bg-white/60 border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full backdrop-blur-md shadow-sm">
+                رتب الحروف لإلغاء قفل الشاشة ✨
             </div>
 
-            <!-- منطقة حقول اللعب -->
-            <div class="w-full flex flex-col gap-6">
-                <div class="flex flex-row-reverse items-center justify-center gap-3 w-full overflow-x-auto py-1">
-                    <div id="word1Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-black/20 rounded-2xl border border-white/10 shrink-0"></div>
-                    <div id="word2Container" class="flex flex-row-reverse justify-center gap-1.5 p-2 bg-black/20 rounded-2xl border border-white/10 shrink-0"></div>
-                </div>
-
-                <div class="flex flex-col items-center gap-3 border-t border-white/10 pt-4">
-                    <span class="text-xs font-semibold text-white/60">الحروف المبعثرة (انقر لترتيبها):</span>
-                    <div id="lettersBank" class="flex flex-wrap justify-center gap-2 min-h-[50px] p-1"></div>
-                </div>
-
-                <!-- الأزرار -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-                    <button id="p1_finishBtn" class="glass-btn-primary w-full sm:w-auto px-8 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2">
-                        <span>تم الإنهاء</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </button>
-
-                    <button id="p1_resetBtn" class="glass-btn-secondary w-full sm:w-auto px-6 py-3 text-white/80 font-bold text-sm rounded-xl flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
-                        <span>إعادة المحاولة</span>
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ==========================================
-         نافذة اللغز الثاني: لغز الصورة (النمط الزجاجي)
-         ========================================== -->
-    <div id="puzzle2Modal" class="puzzle-modal p-4 text-white">
-        
-        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 text-white/90 hover:text-white flex items-center gap-2">
-            ✕ العودة للرئيسية
-        </button>
-
-        <div class="glass-panel w-full max-w-xl p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
-            
-            <div class="w-full flex flex-col items-center gap-3">
+            <!-- منطقة حقول الإجابة: مستطيلات مصغرة وثابتة جنب بعضها (RTL) -->
+            <div class="w-full flex flex-col items-center gap-5">
                 
-                <!-- الشاشة الهولوغرامية لصورة المفاجأة -->
-                <div id="p2_tvScreen" class="holo-screen broken rounded-2xl w-full h-32 md:h-40 flex flex-col items-center justify-center p-3 text-center">
+                <!-- مستطيلات الإجابة في سطر واحد ثابت تماماً مع الاتجاه من اليمين لليسار -->
+                <div dir="rtl" class="w-full flex items-center justify-center gap-1 sm:gap-2 p-2.5 bg-white/40 rounded-2xl border border-pink-200 shadow-inner overflow-x-auto">
                     
-                    <div id="p2_screenOffContent" class="flex flex-col items-center gap-1">
-                        <span class="text-xs md:text-sm font-bold tracking-widest text-pink-200/60 uppercase">الصورة مشفرة</span>
-                        <p class="text-pink-300/40 text-[10px] md:text-xs font-mono">=== REASSEMBLE TILES ===</p>
-                    </div>
+                    <!-- الكلمة الأولى (علويتي - 6 أحرف) -->
+                    <div id="word1Container" class="flex flex-row items-center gap-1 shrink-0"></div>
+                    
+                    <!-- فاصل بين الكلمتين -->
+                    <div class="w-1.5 h-6 bg-pink-300/40 rounded-full shrink-0 mx-0.5"></div>
 
-                    <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
-                        <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
-                        <div class="absolute bottom-2 bg-black/60 backdrop-blur-md text-white text-xs px-4 py-1 rounded-full font-bold border border-white/20">
-                            علويتي رتاج ✨
-                        </div>
-                    </div>
+                    <!-- الكلمة الثانية (رتاج - 4 أحرف) -->
+                    <div id="word2Container" class="flex flex-row items-center gap-1 shrink-0"></div>
                 </div>
 
-            </div>
-
-            <!-- نص الإرشاد -->
-            <div id="p2_speech" class="bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md">
-                رتب أجزاء الصورة لإظهار الرسالة الزجاجية ✨
-            </div>
-
-            <!-- لوحة الصورة المبعثرة -->
-            <div class="flex flex-col items-center gap-5 w-full">
-                
-                <div id="puzzleBoardWrapper" class="relative w-60 h-60 md:w-72 md:h-72">
-                    <div id="puzzleBoard" class="grid grid-cols-3 gap-2 p-2 bg-black/20 rounded-2xl border border-white/10 w-full h-full shadow-inner">
-                    </div>
-
-                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-300 shadow-2xl connected-image">
-                        <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
-                    </div>
+                <!-- بنك الحروف المبعثرة -->
+                <div class="flex flex-col items-center gap-2 border-t border-pink-200/50 pt-3 w-full">
+                    <span class="text-xs font-bold text-gray-600">الحروف المبعثرة (انقر للترتيب):</span>
+                    <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-2 min-h-[45px]"></div>
                 </div>
 
-                <!-- الأزرار -->
-                <div class="flex items-center justify-center gap-3 w-full max-w-xs">
-                    <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2">
+                <!-- الأزرار المجاورة لبعضها -->
+                <div class="flex items-center justify-center gap-3 w-full max-w-xs pt-1">
+                    <button id="p1_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <span>تم الإنهاء</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="p2_resetBtn" class="glass-btn-secondary px-5 py-3 text-white/80 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                    <button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -640,10 +563,92 @@
     </div>
 
     <!-- ==========================================
-         برمجة السكريبت المدمجة
+         نافذة اللغز الثاني: لغز الصورة (تصميم شفاف أبيض)
          ========================================== -->
+    <div id="puzzle2Modal" class="puzzle-modal p-4 text-gray-800">
+        
+        <button class="closeModalBtn absolute top-5 right-5 glass-btn-secondary px-4 py-2 rounded-xl text-xs md:text-sm font-bold z-10 flex items-center gap-2">
+            ✕ العودة للرئيسية
+        </button>
+
+        <div class="glass-panel-white w-full max-w-lg p-5 md:p-7 flex flex-col items-center gap-5 my-auto">
+            
+            <!-- الهيدر: شاشة الروبوت المربعة + الشاشة الكبيرة -->
+            <div class="w-full flex items-center justify-center gap-3 md:gap-4">
+                
+                <!-- شاشة الروبوت البكسلي المربعة -->
+                <div class="pixel-robot-box shrink-0">
+                    <svg class="pixel-art w-12 h-12" viewBox="0 0 16 16" fill="none">
+                        <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
+                        <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
+                        <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
+                        <rect id="p2_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#c2185b" />
+                        <rect id="p2_pxEyeRight" x="9" y="6" width="2" height="2" fill="#c2185b" />
+                        <rect id="p2_pxMouth" x="6" y="9" width="4" height="1" fill="#c2185b" />
+                    </svg>
+                </div>
+
+                <!-- الشاشة الكبيرة -->
+                <div class="flex-1">
+                    <div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-2 text-center">
+                        <div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
+                            <span class="text-xs md:text-sm font-bold tracking-wider text-pink-600 uppercase">الصورة مشفرة</span>
+                            <p class="text-pink-400 text-[10px] md:text-xs font-mono">=== REASSEMBLE TILES ===</p>
+                        </div>
+
+                        <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
+                            <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
+                            <div class="absolute bottom-1 bg-white/80 backdrop-blur-md text-pink-700 text-[11px] px-3 py-0.5 rounded-full font-extrabold border border-pink-300">
+                                علويتي رتاج ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- نص الإرشاد -->
+            <div id="p2_speech" class="bg-white/60 border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full backdrop-blur-md shadow-sm">
+                رتب أجزاء الصورة لإظهار الرسالة ✨
+            </div>
+
+            <!-- لوحة الصورة المبعثرة -->
+            <div class="flex flex-col items-center gap-4 w-full">
+                
+                <div id="puzzleBoardWrapper" class="relative w-56 h-56 md:w-64 md:h-64">
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1.5 p-2 bg-white/40 rounded-2xl border border-pink-200 w-full h-full shadow-inner">
+                    </div>
+
+                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-400 shadow-xl">
+                        <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
+                    </div>
+                </div>
+
+                <!-- الأزرار المجاورة -->
+                <div class="flex items-center justify-center gap-3 w-full max-w-xs pt-1">
+                    <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                        <span>تم الإنهاء</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+
+                    <button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-sm rounded-xl flex items-center justify-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>إعادة</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- البرمجة السكريبت -->
     <script>
-        /* --- 1. المؤثرات الصوتية العامة --- */
+        /* --- 1. المؤثرات الصوتية --- */
         class SoundFX {
             constructor() { this.ctx = null; }
             init() {
@@ -702,7 +707,7 @@
 
         const soundFX = new SoundFX();
 
-        /* --- 2. منطق الواجهة الرئيسية والمغلف --- */
+        /* --- 2. التحكم بالمغلف والرئيسية --- */
         const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
         let index = 0;
         const speed = 45; 
@@ -731,7 +736,7 @@
             }
         });
 
-        // إدارة فتح وإغلاق النوافذ المنبثقة
+        // فتح وإغلاق الألغاز
         const puzzle1Btn = document.getElementById('puzzle1Btn');
         const puzzle2Btn = document.getElementById('puzzle2Btn');
         const puzzle1Modal = document.getElementById('puzzle1Modal');
@@ -757,7 +762,7 @@
             });
         });
 
-        /* --- 3. منطق اللغز الأول (ترتيب الحروف) --- */
+        /* --- 3. منطق اللغز الأول --- */
         const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
         const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
         const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
@@ -774,13 +779,6 @@
         const p1_tvScreen = document.getElementById('p1_tvScreen');
         const p1_screenOffContent = document.getElementById('p1_screenOffContent');
         const p1_screenOnContent = document.getElementById('p1_screenOnContent');
-        
-        const p1_eyesNeutral = document.getElementById('p1_eyesNeutral');
-        const p1_eyesSad = document.getElementById('p1_eyesSad');
-        const p1_eyesHappy = document.getElementById('p1_eyesHappy');
-        const p1_mouthNeutral = document.getElementById('p1_mouthNeutral');
-        const p1_mouthSad = document.getElementById('p1_mouthSad');
-        const p1_mouthHappy = document.getElementById('p1_mouthHappy');
         const p1_speech = document.getElementById('p1_speech');
 
         function shuffleArray(array) {
@@ -801,7 +799,7 @@
                 char: char
             }));
 
-            setP1AssistantState('neutral');
+            setP1RobotState('neutral');
             resetP1Screen();
             resetP1ButtonStyles();
             renderP1Board();
@@ -823,7 +821,7 @@
             p1_lettersBank.innerHTML = '';
             availablePool.forEach((item) => {
                 const btn = document.createElement('button');
-                btn.className = 'letter-btn font-extrabold text-lg md:text-xl w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center cursor-pointer shadow-sm';
+                btn.className = 'letter-btn font-extrabold text-base md:text-lg w-9 h-9 md:w-10 md:h-10 rounded-xl flex items-center justify-center cursor-pointer shadow-sm';
                 btn.innerText = item.char;
                 btn.onclick = () => {
                     soundFX.playTap();
@@ -835,11 +833,11 @@
 
         function createSlotElement(item, onClick) {
             const slot = document.createElement('div');
-            slot.className = 'letter-slot w-10 h-10 md:w-11 md:h-11 flex items-center justify-center';
+            slot.className = 'letter-slot-mini';
             
             if (item) {
                 const letterBtn = document.createElement('button');
-                letterBtn.className = 'letter-btn bg-pink-500/30 border-pink-300/50 text-white font-extrabold text-lg md:text-xl w-full h-full rounded-xl shadow-sm flex items-center justify-center cursor-pointer';
+                letterBtn.className = 'letter-btn bg-pink-400 text-white font-extrabold text-xs md:text-sm w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
                 letterBtn.innerText = item.char;
                 letterBtn.onclick = () => {
                     soundFX.playTap();
@@ -850,6 +848,7 @@
             return slot;
         }
 
+        /* الإضافة تبدأ من الكلمة الأولى من اليمين ثم الكلمة الثانية */
         function addLetterToNextAvailable(item) {
             const emptyW1Index = currentWord1.findIndex(slot => slot === null);
             if (emptyW1Index !== -1) {
@@ -884,34 +883,24 @@
             }
         }
 
-        function setP1AssistantState(state) {
-            p1_eyesNeutral.classList.add('hidden');
-            p1_eyesSad.classList.add('hidden');
-            p1_eyesHappy.classList.add('hidden');
-            p1_mouthNeutral.classList.add('hidden');
-            p1_mouthSad.classList.add('hidden');
-            p1_mouthHappy.classList.add('hidden');
-
+        function setP1RobotState(state) {
+            const pxMouth = document.getElementById('p1_pxMouth');
             if (state === 'sad') {
-                p1_eyesSad.classList.remove('hidden');
-                p1_mouthSad.classList.remove('hidden');
+                pxMouth.setAttribute('fill', '#ef4444');
                 p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
-                p1_speech.className = "bg-rose-500/20 border border-rose-300/40 text-rose-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md animate-bounce";
+                p1_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm animate-bounce";
             } else if (state === 'happy') {
-                p1_eyesHappy.classList.remove('hidden');
-                p1_mouthHappy.classList.remove('hidden');
+                pxMouth.setAttribute('fill', '#10b981');
                 p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
-                p1_speech.className = "bg-emerald-500/20 border border-emerald-300/40 text-emerald-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md";
+                p1_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
             } else {
-                p1_eyesNeutral.classList.remove('hidden');
-                p1_mouthNeutral.classList.remove('hidden');
-                p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة الزجاجية ✨";
-                p1_speech.className = "bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-2 rounded-full backdrop-blur-md";
+                pxMouth.setAttribute('fill', '#c2185b');
+                p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨";
+                p1_speech.className = "bg-white/60 border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
             }
         }
 
         function activateP1Screen() {
-            p1_tvScreen.classList.remove('broken');
             p1_tvScreen.classList.add('active');
             p1_screenOffContent.classList.add('hidden');
             p1_screenOnContent.classList.remove('hidden');
@@ -919,13 +908,12 @@
 
         function resetP1Screen() {
             p1_tvScreen.classList.remove('active');
-            p1_tvScreen.classList.add('broken');
             p1_screenOffContent.classList.remove('hidden');
             p1_screenOnContent.classList.add('hidden');
         }
 
         function resetP1ButtonStyles() {
-            p1_finishBtn.className = "glass-btn-primary w-full sm:w-auto px-8 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2";
+            p1_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5";
         }
 
         p1_finishBtn.addEventListener('click', () => {
@@ -941,7 +929,7 @@
 
             if (isCorrect) {
                 soundFX.playSuccess();
-                setP1AssistantState('happy');
+                setP1RobotState('happy');
                 activateP1Screen();
                 p1_finishBtn.classList.add('btn-shake-green');
 
@@ -949,14 +937,13 @@
                     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 }
 
-                // العودة للرئيسية تلقائياً بعد 3 ثوانٍ
                 setTimeout(() => {
                     puzzle1Modal.classList.remove('active');
                 }, 3000);
 
             } else {
                 soundFX.playError();
-                setP1AssistantState('sad');
+                setP1RobotState('sad');
                 resetP1Screen();
                 p1_finishBtn.classList.add('btn-shake-red');
 
@@ -971,7 +958,7 @@
             initP1Game();
         });
 
-        /* --- 4. منطق اللغز الثاني (الصورة المبعثرة) --- */
+        /* --- 4. منطق اللغز الثاني --- */
         const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
         const GRID_SIZE = 3;
         const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
@@ -1056,20 +1043,23 @@
         }
 
         function setP2SpeechState(state) {
+            const pxMouth = document.getElementById('p2_pxMouth');
             if (state === 'sad') {
+                pxMouth.setAttribute('fill', '#ef4444');
                 p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
-                p2_speech.className = "bg-rose-500/20 border border-rose-300/40 text-rose-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md animate-bounce";
+                p2_speech.className = "bg-rose-100 border border-rose-300 text-rose-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm animate-bounce";
             } else if (state === 'happy') {
+                pxMouth.setAttribute('fill', '#10b981');
                 p2_speech.innerText = "مذهل! اكتملت الصورة واشتغلت الشاشة ✨";
-                p2_speech.className = "bg-emerald-500/20 border border-emerald-300/40 text-emerald-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md";
+                p2_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
             } else {
-                p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة الزجاجية ✨";
-                p2_speech.className = "bg-white/10 border border-white/20 text-pink-100 text-xs md:text-sm font-medium px-5 py-1.5 rounded-full backdrop-blur-md";
+                pxMouth.setAttribute('fill', '#c2185b');
+                p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة ✨";
+                p2_speech.className = "bg-white/60 border border-pink-200 text-pink-700 text-xs md:text-sm font-bold px-5 py-1.5 rounded-full shadow-sm";
             }
         }
 
         function activateP2Screen() {
-            p2_tvScreen.classList.remove('broken');
             p2_tvScreen.classList.add('active');
             p2_screenOffContent.classList.add('hidden');
             p2_screenOnContent.classList.remove('hidden');
@@ -1077,13 +1067,12 @@
 
         function resetP2Screen() {
             p2_tvScreen.classList.remove('active');
-            p2_tvScreen.classList.add('broken');
             p2_screenOffContent.classList.remove('hidden');
             p2_screenOnContent.classList.add('hidden');
         }
 
         function resetP2ButtonStyles() {
-            p2_finishBtn.className = "glass-btn-primary flex-1 py-3 text-white font-bold text-sm md:text-base rounded-xl flex items-center justify-center gap-2";
+            p2_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-1.5";
         }
 
         p2_finishBtn.addEventListener('click', () => {
@@ -1104,7 +1093,6 @@
                     confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 } });
                 }
 
-                // العودة التلقائية للشاشة الرئيسية بعد 3 ثوانٍ
                 setTimeout(() => {
                     puzzle2Modal.classList.remove('active');
                 }, 3000);
