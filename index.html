@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>واجهة الرسالة الإلكترونية ولغز الحروف</title>
+    <title>واجهة الرسالة الإلكترونية والألغاز - علويتي رتاج</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,7 +70,7 @@
             transition: transform 0.4s ease, opacity 0.8s ease, background 0.8s ease, border-color 0.8s ease;
         }
 
-        /* غطاء المغلف العلوي الوردي */
+        /* غطاء المغلف العلوي */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
@@ -86,7 +86,7 @@
             z-index: 5;
         }
 
-        /* جيب المغلف السفلي الوردي */
+        /* جيب المغلف السفلي */
         .envelope-wrapper::after {
             content: '';
             position: absolute;
@@ -178,7 +178,6 @@
             display: block;
         }
 
-        /* حاوية النص والخط الرئيسي */
         .typing-container {
             padding: 0 2px;
             min-height: 38px;
@@ -204,7 +203,6 @@
             50% { border-color: #ffffff; }
         }
 
-        /* أزرار الألغاز */
         .games-container {
             position: absolute;
             top: 100%;
@@ -239,15 +237,15 @@
         }
 
         /* ==========================================
-           أنماط اللغز الأول (Puzzle Modal Layer)
+           أنماط الألغاز (Modal Layers)
            ========================================== */
-        #puzzleModal {
+        .puzzle-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(186, 230, 253, 0.95) 50%, rgba(240, 249, 255, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(224, 242, 254, 0.98) 0%, rgba(186, 230, 253, 0.98) 50%, rgba(240, 249, 255, 0.98) 100%);
             z-index: 50;
             display: flex;
             flex-direction: column;
@@ -259,12 +257,17 @@
             overflow-y: auto;
         }
 
-        #puzzleModal.active {
+        .puzzle-modal.active {
             opacity: 1;
             pointer-events: auto;
         }
 
         /* TV Screen Styles */
+        .tv-frame {
+            position: relative;
+            perspective: 1000px;
+        }
+
         .tv-screen {
             background-color: #0f172a;
             position: relative;
@@ -295,13 +298,13 @@
             40% { transform: translate(-2px, -2px); text-shadow: 2px 0 #ff0055, -2px 0 #00e5ff; }
             60% { transform: translate(2px, 2px); }
             80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); text-shadow: -2px 0 #ff0055, 2px 0 #00e5ff; }
+            100% { transform: translate(0); text-shadow: -2px 0 #ff0055, -2px 0 #00e5ff; }
         }
 
         .tv-screen.active {
-            background: linear-gradient(45deg, #0284c7, #38bdf8);
+            background: #0f172a;
             border-color: #38bdf8;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.6);
         }
 
         .floating-answer {
@@ -316,12 +319,27 @@
             100% { transform: translate(-5%, 8%) scale(1.03) rotate(-1deg); }
         }
 
+        /* 3D Bear Styling for Puzzle 2 */
+        .bear-3d-wrapper {
+            position: absolute;
+            top: -28px;
+            right: -20px;
+            z-index: 30;
+            filter: drop-shadow(0 15px 12px rgba(0, 0, 0, 0.45));
+            transform: translateZ(30px) rotate(-4deg);
+            transition: transform 0.4s ease;
+        }
+
+        .bear-3d-wrapper:hover {
+            transform: translateZ(45px) rotate(0deg) scale(1.05);
+        }
+
         .bear-container {
             transition: transform 0.3s ease;
         }
 
         .bear-sad {
-            animation: headShake 0.8s ease-in-out, droop 0.5s forwards;
+            animation: headShake 0.8s ease-in-out;
         }
 
         .bear-happy {
@@ -341,6 +359,7 @@
             100% { transform: translateY(-12px) scale(1.05); }
         }
 
+        /* Button Animations */
         .btn-shake-red {
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
@@ -370,6 +389,34 @@
             100% { transform: scale(1); }
         }
 
+        /* Image Puzzle Tiles */
+        .puzzle-tile {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            touch-action: manipulation;
+            background-repeat: no-repeat;
+        }
+
+        .puzzle-tile:hover {
+            transform: scale(1.03);
+            filter: brightness(1.05);
+        }
+
+        .selected-tile {
+            outline: 3px solid #0284c7;
+            outline-offset: -3px;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.8);
+        }
+
+        .connected-image {
+            animation: popConnected 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popConnected {
+            0% { transform: scale(0.92); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Letter Puzzle Elements */
         .letter-slot {
             transition: all 0.25s ease;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
@@ -410,15 +457,15 @@
 
             <div class="games-container">
                 <button class="small-btn" id="puzzle1Btn">اللغز الأول</button>
-                <button class="small-btn">اللغز الثاني</button>
+                <button class="small-btn" id="puzzle2Btn">اللغز الثاني</button>
                 <button class="small-btn">اللغز الثالث</button>
             </div>
         </div>
     </div>
 
-    <div id="puzzleModal" class="p-3 md:p-6 text-slate-800">
+    <div id="puzzle1Modal" class="puzzle-modal p-3 md:p-6 text-slate-800">
         
-        <button id="closeModalBtn" class="absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
+        <button class="closeModalBtn absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
             ✕ العودة للرئيسية
         </button>
 
@@ -427,36 +474,36 @@
             <div class="w-full flex flex-col md:flex-row items-center justify-center gap-4">
                 
                 <div class="flex flex-col items-center shrink-0">
-                    <div id="bearContainer" class="bear-container w-24 h-24 md:w-28 md:h-28 relative">
-                        <svg id="bearSvg" viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
+                    <div id="p1_bearContainer" class="bear-container w-24 h-24 md:w-28 md:h-28 relative">
+                        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
                             <circle cx="100" cy="110" r="75" fill="#38bdf8" opacity="0.15" />
-                            <circle id="leftEar" cx="45" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
+                            <circle cx="45" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
                             <circle cx="45" cy="55" r="13" fill="#bae6fd" />
-                            <circle id="rightEar" cx="155" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
+                            <circle cx="155" cy="55" r="24" fill="#0284c7" stroke="#e0f2fe" stroke-width="5" />
                             <circle cx="155" cy="55" r="13" fill="#bae6fd" />
                             
                             <line x1="100" y1="40" x2="100" y2="18" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
-                            <circle id="antennaBall" cx="100" cy="14" r="9" fill="#38bdf8" class="animate-pulse" />
+                            <circle id="p1_antennaBall" cx="100" cy="14" r="9" fill="#38bdf8" class="animate-pulse" />
 
                             <rect x="35" y="45" width="130" height="120" rx="45" fill="#f0f9ff" stroke="#0284c7" stroke-width="6" />
                             
                             <circle cx="62" cy="118" r="10" fill="#f472b6" opacity="0.5" />
                             <circle cx="138" cy="118" r="10" fill="#f472b6" opacity="0.5" />
 
-                            <g id="eyesNeutral">
+                            <g id="p1_eyesNeutral">
                                 <circle cx="70" cy="95" r="10" fill="#0f172a" />
                                 <circle cx="73" cy="92" r="3" fill="#ffffff" />
                                 <circle cx="130" cy="95" r="10" fill="#0f172a" />
                                 <circle cx="133" cy="92" r="3" fill="#ffffff" />
                             </g>
 
-                            <g id="eyesSad" class="hidden">
+                            <g id="p1_eyesSad" class="hidden">
                                 <path d="M 60 90 Q 70 102 80 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
                                 <path d="M 120 90 Q 130 102 140 90" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
                                 <path d="M 58 100 C 55 110, 62 118, 62 118 C 62 118, 68 110, 65 100 Z" fill="#38bdf8" />
                             </g>
 
-                            <g id="eyesHappy" class="hidden">
+                            <g id="p1_eyesHappy" class="hidden">
                                 <path d="M 60 98 Q 70 82 80 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
                                 <path d="M 120 98 Q 130 82 140 98" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
                                 <path d="M 100 65 L 102 72 L 109 74 L 102 76 L 100 83 L 98 76 L 91 74 L 98 72 Z" fill="#f59e0b" />
@@ -465,16 +512,16 @@
                             <ellipse cx="100" cy="115" rx="22" ry="16" fill="#bae6fd" />
                             <ellipse cx="100" cy="110" rx="8" ry="5" fill="#0369a1" />
 
-                            <path id="mouthNeutral" d="M 94 120 Q 100 125 106 120" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
-                            <path id="mouthSad" d="M 92 125 Q 100 116 108 125" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
-                            <path id="mouthHappy" d="M 90 118 Q 100 132 110 118 Z" fill="#0369a1" class="hidden" />
+                            <path id="p1_mouthNeutral" d="M 94 120 Q 100 125 106 120" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
+                            <path id="p1_mouthSad" d="M 92 125 Q 100 116 108 125" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
+                            <path id="p1_mouthHappy" d="M 90 118 Q 100 132 110 118 Z" fill="#0369a1" class="hidden" />
                         </svg>
                     </div>
                 </div>
 
                 <div class="w-full max-w-md">
-                    <div id="tvScreen" class="tv-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
-                        <div id="screenOffContent" class="flex flex-col items-center gap-1">
+                    <div id="p1_tvScreen" class="tv-screen broken rounded-2xl h-24 md:h-28 flex flex-col items-center justify-center p-3 text-center">
+                        <div id="p1_screenOffContent" class="flex flex-col items-center gap-1">
                             <div class="flex items-center gap-1.5 text-slate-400">
                                 <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
@@ -484,7 +531,7 @@
                             <p class="glitch-text text-sky-300/60 text-[10px] md:text-xs font-mono">=== NO SIGNAL ===</p>
                         </div>
 
-                        <div id="screenOnContent" class="hidden w-full h-full flex items-center justify-center overflow-hidden">
+                        <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center overflow-hidden">
                             <span class="floating-answer text-white font-black text-2xl md:text-3xl tracking-widest drop-shadow-lg">
                                 علويتي رتاج
                             </span>
@@ -494,7 +541,7 @@
 
             </div>
 
-            <div id="bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm transition-all duration-300">
+            <div id="p1_bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm transition-all duration-300">
                 رتب الحروف لأستعيد تشغيل الشاشة! 🤖
             </div>
 
@@ -510,14 +557,14 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
-                    <button id="finishBtn" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                    <button id="p1_finishBtn" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
                         <span>تم الإنهاء</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </button>
 
-                    <button id="resetBtn" class="w-full sm:w-auto px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-2">
+                    <button id="p1_resetBtn" class="w-full sm:w-auto px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
@@ -529,68 +576,135 @@
         </div>
     </div>
 
+    <div id="puzzle2Modal" class="puzzle-modal p-3 md:p-6 text-slate-800">
+        
+        <button class="closeModalBtn absolute top-4 right-4 bg-white/80 hover:bg-white text-slate-700 font-bold px-3 py-1.5 rounded-xl shadow border border-sky-200 text-xs md:text-sm z-10 transition">
+            ✕ العودة للرئيسية
+        </button>
+
+        <div class="w-full max-w-2xl flex flex-col items-center gap-5 my-auto">
+            
+            <div class="w-full tv-frame">
+                
+                <div id="p2_bearContainer" class="bear-3d-wrapper w-28 h-28 md:w-36 md:h-36 pointer-events-none">
+                    <svg viewBox="0 0 200 200" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="bearBodyGrad" cx="30%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="60%" stop-color="#bae6fd"/>
+                                <stop offset="100%" stop-color="#0284c7"/>
+                            </radialGradient>
+                            <radialGradient id="earGrad" cx="30%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#38bdf8"/>
+                                <stop offset="100%" stop-color="#0369a1"/>
+                            </radialGradient>
+                            <filter id="shadow3d" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+                            </filter>
+                        </defs>
+
+                        <circle cx="40" cy="50" r="24" fill="url(#earGrad)" stroke="#e0f2fe" stroke-width="4" filter="url(#shadow3d)" />
+                        <circle cx="40" cy="50" r="12" fill="#bae6fd" />
+                        <circle cx="160" cy="50" r="24" fill="url(#earGrad)" stroke="#e0f2fe" stroke-width="4" filter="url(#shadow3d)" />
+                        <circle cx="160" cy="50" r="12" fill="#bae6fd" />
+                        
+                        <line x1="100" y1="38" x2="100" y2="16" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                        <circle id="p2_antennaBall" cx="100" cy="12" r="10" fill="#38bdf8" filter="url(#shadow3d)" class="animate-pulse" />
+
+                        <rect x="30" y="40" width="140" height="130" rx="50" fill="url(#bearBodyGrad)" stroke="#0284c7" stroke-width="5" filter="url(#shadow3d)" />
+                        
+                        <circle cx="58" cy="120" r="11" fill="#f472b6" opacity="0.6" />
+                        <circle cx="142" cy="120" r="11" fill="#f472b6" opacity="0.6" />
+
+                        <g id="p2_eyesNeutral">
+                            <ellipse cx="68" cy="95" rx="9" ry="11" fill="#0f172a" />
+                            <circle cx="71" cy="91" r="3.5" fill="#ffffff" />
+                            <ellipse cx="132" cy="95" rx="9" ry="11" fill="#0f172a" />
+                            <circle cx="135" cy="91" r="3.5" fill="#ffffff" />
+                        </g>
+
+                        <g id="p2_eyesSad" class="hidden">
+                            <path d="M 58 92 Q 68 104 78 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                            <path d="M 122 92 Q 132 104 142 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                            <path d="M 56 102 C 53 112, 60 120, 60 120 C 60 120, 66 112, 63 102 Z" fill="#38bdf8" />
+                        </g>
+
+                        <g id="p2_eyesHappy" class="hidden">
+                            <path d="M 58 100 Q 68 82 78 100" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                            <path d="M 122 100 Q 132 82 142 100" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+                            <path d="M 100 60 L 103 68 L 110 70 L 103 72 L 100 80 L 97 72 L 90 70 L 97 68 Z" fill="#f59e0b" />
+                        </g>
+
+                        <ellipse cx="100" cy="118" rx="22" ry="15" fill="#f0f9ff" />
+                        <ellipse cx="100" cy="112" rx="8" ry="5" fill="#0369a1" />
+
+                        <path id="p2_mouthNeutral" d="M 93 122 Q 100 127 107 122" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" />
+                        <path id="p2_mouthSad" d="M 92 126 Q 100 117 108 126" fill="none" stroke="#0369a1" stroke-width="4" stroke-linecap="round" class="hidden" />
+                        <path id="p2_mouthHappy" d="M 90 120 Q 100 135 110 120 Z" fill="#0369a1" class="hidden" />
+                    </svg>
+                </div>
+
+                <div id="p2_tvScreen" class="tv-screen broken rounded-3xl h-36 md:h-44 flex flex-col items-center justify-center p-4 text-center">
+                    
+                    <div id="p2_screenOffContent" class="flex flex-col items-center gap-1 mt-2">
+                        <div class="flex items-center gap-1.5 text-slate-400">
+                            <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                            </svg>
+                            <span class="text-xs md:text-sm font-bold tracking-wider opacity-80">الشاشة معطلة</span>
+                        </div>
+                        <p class="glitch-text text-sky-300/70 text-xs md:text-sm font-mono font-bold">=== NO SIGNAL ===</p>
+                    </div>
+
+                    <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+                        <img id="p2_fullPreviewImage" class="w-full h-full object-cover rounded-xl shadow-md" alt="Completed Image" />
+                        <div class="absolute bottom-2 bg-black/70 backdrop-blur-sm text-white text-xs px-4 py-1 rounded-full font-bold">
+                            علويتي رتاج ✨
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="p2_bearSpeech" class="bg-white/90 backdrop-blur border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm transition-all duration-300">
+                رتب أجزاء الصورة المبعثرة لإعادة تشغيل الشاشة! 🤖
+            </div>
+
+            <div class="w-full bg-white/80 backdrop-blur-md rounded-3xl p-4 md:p-6 shadow-xl border border-sky-100 flex flex-col items-center gap-5">
+                
+                <div id="puzzleBoardWrapper" class="relative w-64 h-64 md:w-80 md:h-80">
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1.5 p-2 bg-sky-500/10 rounded-2xl border-2 border-dashed border-sky-300 w-full h-full shadow-inner">
+                    </div>
+
+                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-4 border-emerald-400 shadow-2xl connected-image">
+                        <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-500/20 to-transparent pointer-events-none"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center gap-3 pt-1 w-full max-w-sm">
+                    <button id="p2_finishBtn" class="flex-1 py-3.5 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-sm md:text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+                        <span>تم الإنهاء</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+
+                    <button id="p2_resetBtn" class="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm rounded-2xl transition-all duration-200 flex items-center justify-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>إعادة المحاولة</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
     <script>
-        /* ==========================================
-           1. منطق الواجهة الرئيسية والمغلف
-           ========================================== */
-        const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
-        let index = 0;
-        const speed = 45; 
-        let isOpened = false;
-
-        function typeWriter() {
-            if (index < text.length) {
-                document.getElementById("typewriter").textContent += text.charAt(index);
-                index++;
-                setTimeout(typeWriter, speed);
-            } else {
-                setTimeout(() => {
-                    document.getElementById("envelope").classList.add("hide-envelope");
-                }, 2000);
-            }
-        }
-
-        const envelope = document.getElementById("envelope");
-
-        envelope.addEventListener("click", (e) => {
-            // منع فتح المغلف عند الضغط على أزرار الألغاز نفسها
-            if(e.target.classList.contains('small-btn')) return;
-
-            if (!isOpened) {
-                isOpened = true;
-                envelope.classList.add("open");
-                setTimeout(typeWriter, 800);
-            }
-        });
-
-        /* ==========================================
-           2. الربط بين الصفحة الرئيسية واللغز
-           ========================================== */
-        const puzzle1Btn = document.getElementById('puzzle1Btn');
-        const puzzleModal = document.getElementById('puzzleModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
-        puzzle1Btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            initGame();
-            puzzleModal.classList.add('active');
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            puzzleModal.classList.remove('active');
-        });
-
-        /* ==========================================
-           3. منطق اللغز الأول (ترتيب الحروف)
-           ========================================== */
-        const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
-        const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
-        const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
-
-        let currentWord1 = new Array(6).fill(null);
-        let currentWord2 = new Array(4).fill(null);
-        let availablePool = [];
-
+        /* --- 1. المؤثرات الصوتية العامة --- */
         class SoundFX {
             constructor() { this.ctx = null; }
             init() {
@@ -604,8 +718,8 @@
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(400, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(850, this.ctx.currentTime + 0.08);
                 gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
                 osc.connect(gain);
@@ -649,24 +763,88 @@
 
         const soundFX = new SoundFX();
 
-        const word1Container = document.getElementById('word1Container');
-        const word2Container = document.getElementById('word2Container');
-        const lettersBank = document.getElementById('lettersBank');
-        const finishBtn = document.getElementById('finishBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const tvScreen = document.getElementById('tvScreen');
-        const screenOffContent = document.getElementById('screenOffContent');
-        const screenOnContent = document.getElementById('screenOnContent');
+        /* --- 2. منطق الواجهة الرئيسية والمغلف --- */
+        const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
+        let index = 0;
+        const speed = 45; 
+        let isOpened = false;
+
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").textContent += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("envelope").classList.add("hide-envelope");
+                }, 2000);
+            }
+        }
+
+        const envelope = document.getElementById("envelope");
+
+        envelope.addEventListener("click", (e) => {
+            if(e.target.classList.contains('small-btn')) return;
+            if (!isOpened) {
+                isOpened = true;
+                envelope.classList.add("open");
+                setTimeout(typeWriter, 800);
+            }
+        });
+
+        // إدارة فتح وإغلاق النوافذ المنبثقة
+        const puzzle1Btn = document.getElementById('puzzle1Btn');
+        const puzzle2Btn = document.getElementById('puzzle2Btn');
+        const puzzle1Modal = document.getElementById('puzzle1Modal');
+        const puzzle2Modal = document.getElementById('puzzle2Modal');
+        const closeBtns = document.querySelectorAll('.closeModalBtn');
+
+        puzzle1Btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            initP1Game();
+            puzzle1Modal.classList.add('active');
+        });
+
+        puzzle2Btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            initP2Game();
+            puzzle2Modal.classList.add('active');
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                puzzle1Modal.classList.remove('active');
+                puzzle2Modal.classList.remove('active');
+            });
+        });
+
+        /* --- 3. منطق اللغز الأول (ترتيب الحروف) --- */
+        const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
+        const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
+        const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
+
+        let currentWord1 = new Array(6).fill(null);
+        let currentWord2 = new Array(4).fill(null);
+        let availablePool = [];
+
+        const p1_word1Container = document.getElementById('word1Container');
+        const p1_word2Container = document.getElementById('word2Container');
+        const p1_lettersBank = document.getElementById('lettersBank');
+        const p1_finishBtn = document.getElementById('p1_finishBtn');
+        const p1_resetBtn = document.getElementById('p1_resetBtn');
+        const p1_tvScreen = document.getElementById('p1_tvScreen');
+        const p1_screenOffContent = document.getElementById('p1_screenOffContent');
+        const p1_screenOnContent = document.getElementById('p1_screenOnContent');
         
-        const bearContainer = document.getElementById('bearContainer');
-        const eyesNeutral = document.getElementById('eyesNeutral');
-        const eyesSad = document.getElementById('eyesSad');
-        const eyesHappy = document.getElementById('eyesHappy');
-        const mouthNeutral = document.getElementById('mouthNeutral');
-        const mouthSad = document.getElementById('mouthSad');
-        const mouthHappy = document.getElementById('mouthHappy');
-        const bearSpeech = document.getElementById('bearSpeech');
-        const antennaBall = document.getElementById('antennaBall');
+        const p1_bearContainer = document.getElementById('p1_bearContainer');
+        const p1_eyesNeutral = document.getElementById('p1_eyesNeutral');
+        const p1_eyesSad = document.getElementById('p1_eyesSad');
+        const p1_eyesHappy = document.getElementById('p1_eyesHappy');
+        const p1_mouthNeutral = document.getElementById('p1_mouthNeutral');
+        const p1_mouthSad = document.getElementById('p1_mouthSad');
+        const p1_mouthHappy = document.getElementById('p1_mouthHappy');
+        const p1_bearSpeech = document.getElementById('p1_bearSpeech');
+        const p1_antennaBall = document.getElementById('p1_antennaBall');
 
         function shuffleArray(array) {
             const arr = [...array];
@@ -677,7 +855,7 @@
             return arr;
         }
 
-        function initGame() {
+        function initP1Game() {
             currentWord1 = new Array(6).fill(null);
             currentWord2 = new Array(4).fill(null);
             
@@ -686,26 +864,26 @@
                 char: char
             }));
 
-            setBearState('neutral');
-            resetScreen();
-            resetButtonStyles();
-            renderBoard();
+            setP1BearState('neutral');
+            resetP1Screen();
+            resetP1ButtonStyles();
+            renderP1Board();
         }
 
-        function renderBoard() {
-            word1Container.innerHTML = '';
+        function renderP1Board() {
+            p1_word1Container.innerHTML = '';
             currentWord1.forEach((item, index) => {
                 const slot = createSlotElement(item, () => removeLetterFromWord(1, index));
-                word1Container.appendChild(slot);
+                p1_word1Container.appendChild(slot);
             });
 
-            word2Container.innerHTML = '';
+            p1_word2Container.innerHTML = '';
             currentWord2.forEach((item, index) => {
                 const slot = createSlotElement(item, () => removeLetterFromWord(2, index));
-                word2Container.appendChild(slot);
+                p1_word2Container.appendChild(slot);
             });
 
-            lettersBank.innerHTML = '';
+            p1_lettersBank.innerHTML = '';
             availablePool.forEach((item) => {
                 const btn = document.createElement('button');
                 btn.className = 'letter-btn bg-white hover:bg-sky-50 text-sky-700 font-extrabold text-lg md:text-xl w-10 h-10 md:w-12 md:h-12 rounded-xl border-2 border-sky-200 shadow-sm flex items-center justify-center cursor-pointer';
@@ -714,7 +892,7 @@
                     soundFX.playTap();
                     addLetterToNextAvailable(item);
                 };
-                lettersBank.appendChild(btn);
+                p1_lettersBank.appendChild(btn);
             });
         }
 
@@ -740,7 +918,7 @@
             if (emptyW1Index !== -1) {
                 currentWord1[emptyW1Index] = item;
                 availablePool = availablePool.filter(p => p.id !== item.id);
-                renderBoard();
+                renderP1Board();
                 return;
             }
 
@@ -748,7 +926,7 @@
             if (emptyW2Index !== -1) {
                 currentWord2[emptyW2Index] = item;
                 availablePool = availablePool.filter(p => p.id !== item.id);
-                renderBoard();
+                renderP1Board();
                 return;
             }
         }
@@ -765,62 +943,62 @@
 
             if (item) {
                 availablePool.push(item);
-                renderBoard();
+                renderP1Board();
             }
         }
 
-        function setBearState(state) {
-            bearContainer.classList.remove('bear-sad', 'bear-happy');
-            eyesNeutral.classList.add('hidden');
-            eyesSad.classList.add('hidden');
-            eyesHappy.classList.add('hidden');
-            mouthNeutral.classList.add('hidden');
-            mouthSad.classList.add('hidden');
-            mouthHappy.classList.add('hidden');
+        function setP1BearState(state) {
+            p1_bearContainer.classList.remove('bear-sad', 'bear-happy');
+            p1_eyesNeutral.classList.add('hidden');
+            p1_eyesSad.classList.add('hidden');
+            p1_eyesHappy.classList.add('hidden');
+            p1_mouthNeutral.classList.add('hidden');
+            p1_mouthSad.classList.add('hidden');
+            p1_mouthHappy.classList.add('hidden');
 
             if (state === 'sad') {
-                bearContainer.classList.add('bear-sad');
-                eyesSad.classList.remove('hidden');
-                mouthSad.classList.remove('hidden');
-                bearSpeech.innerText = "أوووه! الترتيب غير صحيح 😢 جرب ثانية!";
-                bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm animate-bounce";
-                antennaBall.setAttribute('fill', '#ef4444');
+                p1_bearContainer.classList.add('bear-sad');
+                p1_eyesSad.classList.remove('hidden');
+                p1_mouthSad.classList.remove('hidden');
+                p1_bearSpeech.innerText = "أوووه! الترتيب غير صحيح 😢 جرب ثانية!";
+                p1_bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm animate-bounce";
+                p1_antennaBall.setAttribute('fill', '#ef4444');
             } else if (state === 'happy') {
-                bearContainer.classList.add('bear-happy');
-                eyesHappy.classList.remove('hidden');
-                mouthHappy.classList.remove('hidden');
-                bearSpeech.innerText = "ممتاز جداً! الشاشة اشتغلت 🎉 أحسنت!";
-                bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
-                antennaBall.setAttribute('fill', '#10b981');
+                p1_bearContainer.classList.add('bear-happy');
+                p1_eyesHappy.classList.remove('hidden');
+                p1_mouthHappy.classList.remove('hidden');
+                p1_bearSpeech.innerText = "ممتاز جداً! الشاشة اشتغلت 🎉 أحسنت!";
+                p1_bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
+                p1_antennaBall.setAttribute('fill', '#10b981');
             } else {
-                eyesNeutral.classList.remove('hidden');
-                mouthNeutral.classList.remove('hidden');
-                bearSpeech.innerText = "رتب الحروف لأستعيد تشغيل الشاشة! 🤖";
-                bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
-                antennaBall.setAttribute('fill', '#38bdf8');
+                p1_eyesNeutral.classList.remove('hidden');
+                p1_mouthNeutral.classList.remove('hidden');
+                p1_bearSpeech.innerText = "رتب الحروف لأستعيد تشغيل الشاشة! 🤖";
+                p1_bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-4 py-1.5 rounded-full shadow-sm";
+                p1_antennaBall.setAttribute('fill', '#38bdf8');
             }
         }
 
-        function activateScreen() {
-            tvScreen.classList.remove('broken');
-            tvScreen.classList.add('active');
-            screenOffContent.classList.add('hidden');
-            screenOnContent.classList.remove('hidden');
+        function activateP1Screen() {
+            p1_tvScreen.classList.remove('broken');
+            p1_tvScreen.classList.add('active');
+            p1_screenOffContent.classList.add('hidden');
+            p1_screenOnContent.classList.remove('hidden');
         }
 
-        function resetScreen() {
-            tvScreen.classList.remove('active');
-            tvScreen.classList.add('broken');
-            screenOffContent.classList.remove('hidden');
-            screenOnContent.classList.add('hidden');
+        function resetP1Screen() {
+            p1_tvScreen.classList.remove('active');
+            p1_tvScreen.classList.add('broken');
+            p1_screenOffContent.classList.remove('hidden');
+            p1_screenOnContent.classList.add('hidden');
         }
 
-        function resetButtonStyles() {
-            finishBtn.className = "w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
+        function resetP1ButtonStyles() {
+            p1_finishBtn.className = "w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
         }
 
-        function checkAnswer() {
-            resetButtonStyles();
+        p1_finishBtn.addEventListener('click', () => {
+            resetP1ButtonStyles();
 
             const userWord1 = currentWord1.map(i => i ? i.char : '').join('');
             const userWord2 = currentWord2.map(i => i ? i.char : '').join('');
@@ -832,39 +1010,217 @@
 
             if (isCorrect) {
                 soundFX.playSuccess();
-                setBearState('happy');
-                activateScreen();
-                finishBtn.classList.add('btn-shake-green');
+                setP1BearState('happy');
+                activateP1Screen();
+                p1_finishBtn.classList.add('btn-shake-green');
 
                 if (window.confetti) {
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 }
 
-                // العودة التلقائية للشاشة الرئيسية بعد 3 ثوانٍ من النجاح
+                // العودة للرئيسية تلقائياً بعد 3 ثوانٍ
                 setTimeout(() => {
-                    puzzleModal.classList.remove('active');
+                    puzzle1Modal.classList.remove('active');
                 }, 3000);
 
             } else {
                 soundFX.playError();
-                setBearState('sad');
-                resetScreen();
-                finishBtn.classList.add('btn-shake-red');
+                setP1BearState('sad');
+                resetP1Screen();
+                p1_finishBtn.classList.add('btn-shake-red');
 
                 setTimeout(() => {
-                    finishBtn.classList.remove('btn-shake-red');
+                    p1_finishBtn.classList.remove('btn-shake-red');
                 }, 700);
+            }
+        });
+
+        p1_resetBtn.addEventListener('click', () => {
+            soundFX.playTap();
+            initP1Game();
+        });
+
+        /* --- 4. منطق اللغز الثاني (الصورة المبعثرة) --- */
+        const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
+        const GRID_SIZE = 3;
+        const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
+        const TARGET_BOARD = [2, 1, 0, 5, 4, 3, 8, 7, 6];
+
+        let currentP2Board = [];
+        let selectedTileIndex = null;
+
+        const puzzleBoard = document.getElementById('puzzleBoard');
+        const connectedBoard = document.getElementById('connectedBoard');
+        const completedPuzzleImg = document.getElementById('completedPuzzleImg');
+        const p2_finishBtn = document.getElementById('p2_finishBtn');
+        const p2_resetBtn = document.getElementById('p2_resetBtn');
+        const p2_tvScreen = document.getElementById('p2_tvScreen');
+        const p2_screenOffContent = document.getElementById('p2_screenOffContent');
+        const p2_screenOnContent = document.getElementById('p2_screenOnContent');
+        const p2_fullPreviewImage = document.getElementById('p2_fullPreviewImage');
+
+        const p2_bearContainer = document.getElementById('p2_bearContainer');
+        const p2_eyesNeutral = document.getElementById('p2_eyesNeutral');
+        const p2_eyesSad = document.getElementById('p2_eyesSad');
+        const p2_eyesHappy = document.getElementById('p2_eyesHappy');
+        const p2_mouthNeutral = document.getElementById('p2_mouthNeutral');
+        const p2_mouthSad = document.getElementById('p2_mouthSad');
+        const p2_mouthHappy = document.getElementById('p2_mouthHappy');
+        const p2_bearSpeech = document.getElementById('p2_bearSpeech');
+        const p2_antennaBall = document.getElementById('p2_antennaBall');
+
+        p2_fullPreviewImage.src = PUZZLE_IMAGE_URL;
+        completedPuzzleImg.src = PUZZLE_IMAGE_URL;
+
+        function initP2Game() {
+            selectedTileIndex = null;
+            let solved = true;
+            while (solved) {
+                const indexes = Array.from({ length: TOTAL_TILES }, (_, i) => i);
+                currentP2Board = shuffleArray(indexes);
+                solved = currentP2Board.every((val, idx) => val === TARGET_BOARD[idx]);
+            }
+
+            puzzleBoard.classList.remove('hidden');
+            connectedBoard.classList.add('hidden');
+
+            setP2BearState('neutral');
+            resetP2Screen();
+            resetP2ButtonStyles();
+            renderP2Board();
+        }
+
+        function renderP2Board() {
+            puzzleBoard.innerHTML = '';
+
+            currentP2Board.forEach((originalIndex, boardPosition) => {
+                const tile = document.createElement('div');
+                tile.className = 'puzzle-tile w-full h-full rounded-xl cursor-pointer border-2 border-white/60 shadow-md relative overflow-hidden select-none';
+
+                const row = Math.floor(originalIndex / GRID_SIZE);
+                const col = originalIndex % GRID_SIZE;
+                
+                const posX = col * 50;
+                const posY = row * 50;
+
+                tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
+                tile.style.backgroundSize = '300% 300%';
+                tile.style.backgroundPosition = `${posX}% ${posY}%`;
+
+                if (selectedTileIndex === boardPosition) {
+                    tile.classList.add('selected-tile');
+                }
+
+                tile.onclick = () => handleP2TileClick(boardPosition);
+                puzzleBoard.appendChild(tile);
+            });
+        }
+
+        function handleP2TileClick(position) {
+            soundFX.playTap();
+
+            if (selectedTileIndex === null) {
+                selectedTileIndex = position;
+            } else if (selectedTileIndex === position) {
+                selectedTileIndex = null;
+            } else {
+                const temp = currentP2Board[selectedTileIndex];
+                currentP2Board[selectedTileIndex] = currentP2Board[position];
+                currentP2Board[position] = temp;
+                selectedTileIndex = null;
+            }
+
+            renderP2Board();
+        }
+
+        function setP2BearState(state) {
+            p2_bearContainer.classList.remove('bear-sad', 'bear-happy');
+            p2_eyesNeutral.classList.add('hidden');
+            p2_eyesSad.classList.add('hidden');
+            p2_eyesHappy.classList.add('hidden');
+            p2_mouthNeutral.classList.add('hidden');
+            p2_mouthSad.classList.add('hidden');
+            p2_mouthHappy.classList.add('hidden');
+
+            if (state === 'sad') {
+                p2_bearContainer.classList.add('bear-sad');
+                p2_eyesSad.classList.remove('hidden');
+                p2_mouthSad.classList.remove('hidden');
+                p2_bearSpeech.innerText = "أوووه! ترتيب الصورة غير صحيح 😢 حاول مجدداً!";
+                p2_bearSpeech.className = "bg-rose-50 border border-rose-200 text-rose-700 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm animate-bounce";
+                p2_antennaBall.setAttribute('fill', '#ef4444');
+            } else if (state === 'happy') {
+                p2_bearContainer.classList.add('bear-happy');
+                p2_eyesHappy.classList.remove('hidden');
+                p2_mouthHappy.classList.remove('hidden');
+                p2_bearSpeech.innerText = "مذهل جداً! اكتملت الصورة واشتغلت الشاشة 🎉";
+                p2_bearSpeech.className = "bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm";
+                p2_antennaBall.setAttribute('fill', '#10b981');
+            } else {
+                p2_eyesNeutral.classList.remove('hidden');
+                p2_mouthNeutral.classList.remove('hidden');
+                p2_bearSpeech.innerText = "رتب أجزاء الصورة المبعثرة لإعادة تشغيل الشاشة! 🤖";
+                p2_bearSpeech.className = "bg-white/90 border border-sky-200 text-sky-900 text-xs md:text-sm font-bold px-5 py-2 rounded-full shadow-sm";
+                p2_antennaBall.setAttribute('fill', '#38bdf8');
             }
         }
 
-        finishBtn.addEventListener('click', checkAnswer);
-        resetBtn.addEventListener('click', () => {
+        function activateP2Screen() {
+            p2_tvScreen.classList.remove('broken');
+            p2_tvScreen.classList.add('active');
+            p2_screenOffContent.classList.add('hidden');
+            p2_screenOnContent.classList.remove('hidden');
+        }
+
+        function resetP2Screen() {
+            p2_tvScreen.classList.remove('active');
+            p2_tvScreen.classList.add('broken');
+            p2_screenOffContent.classList.remove('hidden');
+            p2_screenOnContent.classList.add('hidden');
+        }
+
+        function resetP2ButtonStyles() {
+            p2_finishBtn.className = "flex-1 py-3.5 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-black text-sm md:text-base rounded-2xl shadow-lg shadow-sky-300/50 transform active:scale-95 transition-all duration-200 flex items-center justify-center gap-2";
+        }
+
+        p2_finishBtn.addEventListener('click', () => {
+            resetP2ButtonStyles();
+
+            const isCorrect = currentP2Board.every((val, index) => val === TARGET_BOARD[index]);
+
+            if (isCorrect) {
+                soundFX.playSuccess();
+                setP2BearState('happy');
+                activateP2Screen();
+                p2_finishBtn.classList.add('btn-shake-green');
+
+                puzzleBoard.classList.add('hidden');
+                connectedBoard.classList.remove('hidden');
+
+                if (window.confetti) {
+                    confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 } });
+                }
+
+                // العودة التلقائية للشاشة الرئيسية بعد 3 ثوانٍ
+                setTimeout(() => {
+                    puzzle2Modal.classList.remove('active');
+                }, 3000);
+
+            } else {
+                soundFX.playError();
+                setP2BearState('sad');
+                resetP2Screen();
+                p2_finishBtn.classList.add('btn-shake-red');
+
+                setTimeout(() => {
+                    p2_finishBtn.classList.remove('btn-shake-red');
+                }, 700);
+            }
+        });
+
+        p2_resetBtn.addEventListener('click', () => {
             soundFX.playTap();
-            initGame();
+            initP2Game();
         });
     </script>
 </body>
