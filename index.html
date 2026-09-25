@@ -27,13 +27,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* خلفية بتدرج الأبيض والأوف وايت */
             background: linear-gradient(135deg, #ffffff 0%, #faf9f6 50%, #f5f2eb 100%);
             user-select: none;
             position: relative;
         }
 
-        /* زخرفة شبكة المربعات الكبيرة الشفافة */
         .grid-pattern {
             position: absolute;
             inset: 0;
@@ -45,19 +43,19 @@
             pointer-events: none;
         }
 
-        /* حاوية عناصر النباتات والأزهار في الجانب الأيمن - تم زيادة العرض لكثافة أكثر */
+        /* حاوية النباتات في الجانب الأيمن */
         .nature-right-panel {
             position: absolute;
             right: 0;
             bottom: 0;
             top: 0;
-            width: 450px;
+            width: 380px;
             z-index: 2;
             pointer-events: none;
             overflow: hidden;
         }
 
-        /* أنيميشن حركة النمو من الأسفل إلى الأعلى */
+        /* تبطيء حركة النمو (4 ثوانٍ بدلاً من ثانتين) */
         @keyframes grassGrow {
             0% {
                 transform: scaleY(0);
@@ -69,36 +67,40 @@
             }
         }
 
-        /* أنيميشن حركة النسيم للأعشاب والورود */
+        /* تبطيء حركة النسيم لتصبح انسيابية وهادئة */
         @keyframes gentleSway {
             0% { transform: rotate(0deg) skewX(0deg); }
-            50% { transform: rotate(2.5deg) skewX(1.5deg); }
+            50% { transform: rotate(1.8deg) skewX(1deg); }
             100% { transform: rotate(0deg) skewX(0deg); }
         }
 
         @keyframes flowerFloat {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(3deg); }
+            50% { transform: translateY(-6px) rotate(4deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
 
-        /* تطبيق حركة النمو والاهتزاز على العشب */
+        /* توهج الأزهار السماوية */
+        @keyframes cyanGlow {
+            0%, 100% { filter: drop-shadow(0 0 4px rgba(77, 208, 225, 0.6)) drop-shadow(0 0 8px rgba(0, 229, 255, 0.4)); }
+            50% { filter: drop-shadow(0 0 10px rgba(77, 208, 225, 0.9)) drop-shadow(0 0 18px rgba(0, 229, 255, 0.7)); }
+        }
+
         .swaying-plant {
             transform-origin: bottom right;
-            animation: grassGrow 2s cubic-bezier(0.25, 1, 0.5, 1) forwards, gentleSway 5s ease-in-out 2s infinite;
+            animation: grassGrow 4s cubic-bezier(0.25, 1, 0.5, 1) forwards, gentleSway 8s ease-in-out 4s infinite;
         }
 
         .grass-blade {
             transform-origin: bottom;
-            animation: grassGrow 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: grassGrow 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .floating-flower {
             transform-origin: center;
-            animation: flowerFloat 4s ease-in-out infinite;
+            animation: flowerFloat 6s ease-in-out infinite, cyanGlow 3s ease-in-out infinite alternate;
         }
 
-        /* طبقة تظليل خفيفة جداً */
         .overlay {
             position: absolute;
             top: 0;
@@ -110,7 +112,6 @@
             pointer-events: none;
         }
 
-        /* حاوية المغلف الوردي الشفاف */
         .envelope-wrapper {
             position: relative;
             z-index: 3;
@@ -127,7 +128,6 @@
             transition: transform 0.4s ease, opacity 0.8s ease, background 0.8s ease, border-color 0.8s ease;
         }
 
-        /* غطاء المغلف العلوي */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
@@ -143,7 +143,6 @@
             z-index: 5;
         }
 
-        /* جيب المغلف السفلي */
         .envelope-wrapper::after {
             content: '';
             position: absolute;
@@ -160,7 +159,6 @@
             transition: opacity 0.8s ease;
         }
 
-        /* تصميم كارت الزجاج المصغر */
         .glass-card {
             position: absolute;
             bottom: 5px;
@@ -182,7 +180,6 @@
                         background 0.3s ease;
         }
 
-        /* انيميشن فتح المغلف */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 2;
@@ -194,7 +191,6 @@
             z-index: 6;
         }
 
-        /* مرحلة انبثاق الكارت للأمام واختفاء الظرف */
         .envelope-wrapper.hide-envelope {
             background-color: transparent !important;
             border-color: transparent !important;
@@ -294,9 +290,6 @@
             transform: translateY(-1px);
         }
 
-        /* ==========================================
-           كروت الألغاز
-           ========================================== */
         .puzzle-modal {
             position: fixed;
             inset: 0;
@@ -491,77 +484,119 @@
     <div class="grid-pattern"></div>
 
     <div class="nature-right-panel">
-        <svg class="w-full h-full" viewBox="0 0 450 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g class="swaying-plant">
-                <path class="grass-blade" style="animation-delay: 0.1s;" d="M 440 800 Q 380 500 420 200 Q 430 100 410 0" stroke="#2e7d32" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.2s;" d="M 420 800 Q 340 450 370 150 Q 380 50 360 -20" stroke="#1b5e20" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.15s;" d="M 390 800 Q 310 520 350 280" stroke="#33691e" stroke-width="7" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.3s;" d="M 450 800 Q 320 600 280 800" fill="#2e7d32" opacity="0.6"/>
-                <path class="grass-blade" style="animation-delay: 0.25s;" d="M 400 800 Q 250 550 320 800" fill="#1b5e20" opacity="0.5"/>
+        <svg class="w-full h-full" viewBox="0 0 380 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            
+            <g class="swaying-plant" style="animation-delay: 0.1s;">
+                <path class="grass-blade" style="animation-delay: 0.2s;" d="M 380 800 Q 320 520 360 220 Q 370 120 350 10" stroke="#1b5e20" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.4s;" d="M 370 800 Q 290 480 330 180 Q 340 80 320 -10" stroke="#2e7d32" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.3s;" d="M 360 800 Q 270 540 310 300" stroke="#33691e" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 380 800 Q 280 620 240 800" fill="#1b5e20" opacity="0.4"/>
+                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 350 800 Q 220 580 280 800" fill="#2e7d32" opacity="0.35"/>
             </g>
 
-            <g class="swaying-plant" style="animation-delay: 0.2s;">
-                <path class="grass-blade" style="animation-delay: 0.35s;" d="M 430 800 Q 350 400 410 100" stroke="#4caf50" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.4s;" d="M 410 800 Q 310 350 330 180" stroke="#43a047" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.45s;" d="M 380 800 Q 280 480 300 250" stroke="#558b2f" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 360 800 Q 240 420 280 120" stroke="#689f38" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.3s;" d="M 340 800 Q 220 500 250 280" stroke="#388e3c" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <g class="swaying-plant" style="animation-delay: 0.5s;">
+                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 380 800 Q 310 420 350 140" stroke="#388e3c" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.8s;" d="M 370 800 Q 280 380 300 200" stroke="#43a047" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.9s;" d="M 350 800 Q 250 500 270 280" stroke="#4caf50" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.0s;" d="M 330 800 Q 220 450 250 160" stroke="#558b2f" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.1s;" d="M 310 800 Q 200 520 220 310" stroke="#689f38" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                 
-                <path class="grass-blade" style="animation-delay: 0.2s;" d="M 430 800 Q 280 620 360 800" fill="#4caf50" opacity="0.75"/>
-                <path class="grass-blade" style="animation-delay: 0.35s;" d="M 370 800 Q 220 580 300 800" fill="#66bb6a" opacity="0.7"/>
-                <path class="grass-blade" style="animation-delay: 0.4s;" d="M 320 800 Q 180 640 240 800" fill="#558b2f" opacity="0.65"/>
-                
-                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 405 400 Q 350 380 360 420 Q 395 425 405 400 Z" fill="#81c784"/>
-                <path class="grass-blade" style="animation-delay: 0.55s;" d="M 412 320 Q 360 290 370 330 Q 392 335 412 320 Z" fill="#66bb6a"/>
-                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 330 350 Q 270 330 285 370 Q 315 372 330 350 Z" fill="#81c784"/>
-                <path class="grass-blade" style="animation-delay: 0.65s;" d="M 280 280 Q 220 260 235 300 Q 265 302 280 280 Z" fill="#a5d6a7"/>
+                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 380 800 Q 250 640 320 800" fill="#4caf50" opacity="0.6"/>
+                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 340 800 Q 200 600 270 800" fill="#66bb6a" opacity="0.55"/>
+                <path class="grass-blade" style="animation-delay: 0.9s;" d="M 300 800 Q 160 660 210 800" fill="#558b2f" opacity="0.5"/>
+
+                <path class="grass-blade" style="animation-delay: 1.2s;" d="M 355 420 Q 320 400 325 435 Q 350 438 355 420 Z" fill="#81c784"/>
+                <path class="grass-blade" style="animation-delay: 1.3s;" d="M 358 330 Q 320 300 328 340 Q 348 345 358 330 Z" fill="#66bb6a"/>
+                <path class="grass-blade" style="animation-delay: 1.4s;" d="M 295 360 Q 250 340 262 380 Q 285 382 295 360 Z" fill="#81c784"/>
+                <path class="grass-blade" style="animation-delay: 1.5s;" d="M 252 290 Q 202 270 215 310 Q 240 312 252 290 Z" fill="#a5d6a7"/>
+                <path class="grass-blade" style="animation-delay: 1.6s;" d="M 315 220 Q 275 195 285 230 Q 305 232 315 220 Z" fill="#81c784"/>
+                <path class="grass-blade" style="animation-delay: 1.7s;" d="M 225 330 Q 185 310 195 345 Q 215 348 225 330 Z" fill="#a5d6a7"/>
             </g>
 
-            <g class="swaying-plant" style="animation-delay: 0.4s;">
-                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 445 800 Q 390 300 425 50" stroke="#81c784" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.65s;" d="M 425 800 Q 330 250 375 80" stroke="#a5d6a7" stroke-width="3" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 395 800 Q 290 320 315 110" stroke="#80e27e" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.75s;" d="M 365 800 Q 250 380 275 160" stroke="#81c784" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.8s;" d="M 335 800 Q 210 440 230 220" stroke="#b9f6ca" stroke-width="3" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.85s;" d="M 300 800 Q 180 500 200 300" stroke="#a5d6a7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <path class="grass-blade" style="animation-delay: 0.9s;" d="M 260 800 Q 150 560 170 380" stroke="#66bb6a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <g class="swaying-plant" style="animation-delay: 0.9s;">
+                <path class="grass-blade" style="animation-delay: 1.1s;" d="M 380 800 Q 330 320 365 70" stroke="#81c784" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.2s;" d="M 365 800 Q 290 280 325 100" stroke="#a5d6a7" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.3s;" d="M 345 800 Q 260 340 280 130" stroke="#80e27e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.4s;" d="M 325 800 Q 220 400 240 180" stroke="#81c784" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.5s;" d="M 300 800 Q 180 460 200 240" stroke="#b9f6ca" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.6s;" d="M 270 800 Q 150 520 170 320" stroke="#a5d6a7" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 1.7s;" d="M 230 800 Q 120 580 140 400" stroke="#66bb6a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
 
-                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 450 800 Q 330 700 400 800" fill="#a5d6a7" opacity="0.8"/>
-                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 400 800 Q 260 680 330 800" fill="#81c784" opacity="0.85"/>
-                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 340 800 Q 200 690 270 800" fill="#b9f6ca" opacity="0.75"/>
-                <path class="grass-blade" style="animation-delay: 0.8s;" d="M 280 800 Q 140 710 200 800" fill="#66bb6a" opacity="0.8"/>
+                <path class="grass-blade" style="animation-delay: 1.0s;" d="M 380 800 Q 280 710 340 800" fill="#a5d6a7" opacity="0.7"/>
+                <path class="grass-blade" style="animation-delay: 1.2s;" d="M 330 800 Q 220 690 280 800" fill="#81c784" opacity="0.75"/>
+                <path class="grass-blade" style="animation-delay: 1.4s;" d="M 280 800 Q 160 710 220 800" fill="#b9f6ca" opacity="0.65"/>
+                <path class="grass-blade" style="animation-delay: 1.6s;" d="M 220 800 Q 100 720 150 800" fill="#66bb6a" opacity="0.7"/>
             </g>
 
             <g class="floating-flower" style="animation-delay: 0s;">
-                <circle cx="380" cy="180" r="14" fill="#80deea" opacity="0.9"/>
-                <circle cx="366" cy="180" r="12" fill="#b2ebf2"/>
-                <circle cx="394" cy="180" r="12" fill="#b2ebf2"/>
-                <circle cx="380" cy="166" r="12" fill="#b2ebf2"/>
-                <circle cx="380" cy="194" r="12" fill="#b2ebf2"/>
-                <circle cx="380" cy="180" r="7" fill="#fff9c4"/>
+                <circle cx="340" cy="180" r="12" fill="#00e5ff" opacity="0.95"/>
+                <circle cx="328" cy="180" r="10" fill="#80d8ff"/>
+                <circle cx="352" cy="180" r="10" fill="#80d8ff"/>
+                <circle cx="340" cy="168" r="10" fill="#80d8ff"/>
+                <circle cx="340" cy="192" r="10" fill="#80d8ff"/>
+                <circle cx="340" cy="180" r="6" fill="#ffffff"/>
             </g>
 
-            <g class="floating-flower" style="animation-delay: 1.2s;">
-                <circle cx="320" cy="350" r="18" fill="#4dd0e1" opacity="0.85"/>
-                <circle cx="302" cy="350" r="15" fill="#80deea"/>
-                <circle cx="338" cy="350" r="15" fill="#80deea"/>
-                <circle cx="320" cy="332" r="15" fill="#80deea"/>
-                <circle cx="320" cy="368" r="15" fill="#80deea"/>
-                <circle cx="320" cy="350" r="9" fill="#fff59d"/>
+            <g class="floating-flower" style="animation-delay: 1.5s;">
+                <circle cx="280" cy="330" r="15" fill="#00b0ff" opacity="0.9"/>
+                <circle cx="265" cy="330" r="12" fill="#40c4ff"/>
+                <circle cx="295" cy="330" r="12" fill="#40c4ff"/>
+                <circle cx="280" cy="315" r="12" fill="#40c4ff"/>
+                <circle cx="280" cy="345" r="12" fill="#40c4ff"/>
+                <circle cx="280" cy="330" r="7" fill="#e0f7fa"/>
             </g>
 
-            <g class="floating-flower" style="animation-delay: 2.5s;">
-                <circle cx="260" cy="550" r="16" fill="#26c6da" opacity="0.85"/>
-                <circle cx="244" cy="550" r="13" fill="#80deea"/>
-                <circle cx="276" cy="550" r="13" fill="#80deea"/>
-                <circle cx="260" cy="534" r="13" fill="#80deea"/>
-                <circle cx="260" cy="566" r="13" fill="#80deea"/>
-                <circle cx="260" cy="550" r="8" fill="#fff59d"/>
+            <g class="floating-flower" style="animation-delay: 3s;">
+                <circle cx="220" cy="510" r="13" fill="#00e5ff" opacity="0.95"/>
+                <circle cx="207" cy="510" r="10" fill="#80d8ff"/>
+                <circle cx="233" cy="510" r="10" fill="#80d8ff"/>
+                <circle cx="220" cy="497" r="10" fill="#80d8ff"/>
+                <circle cx="220" cy="523" r="10" fill="#80d8ff"/>
+                <circle cx="220" cy="510" r="6" fill="#ffffff"/>
             </g>
 
-            <g class="floating-flower" style="animation-delay: 0.7s;">
-                <circle cx="410" cy="100" r="9" fill="#80deea"/>
-                <circle cx="410" cy="100" r="4" fill="#e0f7fa"/>
+            <g class="floating-flower" style="animation-delay: 0.8s;">
+                <circle cx="310" cy="110" r="10" fill="#18ffff" opacity="0.95"/>
+                <circle cx="300" cy="110" r="8" fill="#a7ffeb"/>
+                <circle cx="320" cy="110" r="8" fill="#a7ffeb"/>
+                <circle cx="310" cy="100" r="8" fill="#a7ffeb"/>
+                <circle cx="310" cy="120" r="8" fill="#a7ffeb"/>
+                <circle cx="310" cy="110" r="4.5" fill="#ffffff"/>
+            </g>
+
+            <g class="floating-flower" style="animation-delay: 2.2s;">
+                <circle cx="180" cy="380" r="11" fill="#00b0ff" opacity="0.9"/>
+                <circle cx="169" cy="380" r="9" fill="#80d8ff"/>
+                <circle cx="191" cy="380" r="9" fill="#80d8ff"/>
+                <circle cx="180" cy="369" r="9" fill="#80d8ff"/>
+                <circle cx="180" cy="391" r="9" fill="#80d8ff"/>
+                <circle cx="180" cy="380" r="5" fill="#ffffff"/>
+            </g>
+
+            <g class="floating-flower" style="animation-delay: 4.1s;">
+                <circle cx="140" cy="580" r="12" fill="#00e5ff" opacity="0.95"/>
+                <circle cx="129" cy="580" r="9.5" fill="#80d8ff"/>
+                <circle cx="151" cy="580" r="9.5" fill="#80d8ff"/>
+                <circle cx="140" cy="569" r="9.5" fill="#80d8ff"/>
+                <circle cx="140" cy="591" r="9.5" fill="#80d8ff"/>
+                <circle cx="140" cy="580" r="5.5" fill="#e0f7fa"/>
+            </g>
+
+            <g class="floating-flower" style="animation-delay: 1.1s;">
+                <circle cx="360" cy="80" r="7" fill="#80d8ff"/>
+                <circle cx="360" cy="80" r="3" fill="#ffffff"/>
+            </g>
+            <g class="floating-flower" style="animation-delay: 2.7s;">
+                <circle cx="240" cy="240" r="8" fill="#00e5ff"/>
+                <circle cx="240" cy="240" r="3.5" fill="#ffffff"/>
+            </g>
+            <g class="floating-flower" style="animation-delay: 3.5s;">
+                <circle cx="160" cy="450" r="6.5" fill="#80d8ff"/>
+                <circle cx="160" cy="450" r="2.5" fill="#ffffff"/>
+            </g>
+            <g class="floating-flower" style="animation-delay: 1.8s;">
+                <circle cx="290" cy="440" r="7" fill="#00b0ff"/>
+                <circle cx="290" cy="440" r="3" fill="#ffffff"/>
             </g>
         </svg>
     </div>
@@ -728,7 +763,6 @@
     </div>
 
     <script>
-        /* --- 1. المؤثرات الصوتية --- */
         class SoundFX {
             constructor() { this.ctx = null; }
             init() {
@@ -787,7 +821,6 @@
 
         const soundFX = new SoundFX();
 
-        /* --- 2. التحكم بالمغلف والرئيسية --- */
         const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
         let index = 0;
         const speed = 45; 
@@ -816,7 +849,6 @@
             }
         });
 
-        // فتح وإغلاق الألغاز
         const puzzle1Btn = document.getElementById('puzzle1Btn');
         const puzzle2Btn = document.getElementById('puzzle2Btn');
         const puzzle1Modal = document.getElementById('puzzle1Modal');
@@ -842,7 +874,6 @@
             });
         });
 
-        /* --- 3. منطق اللغز الأول --- */
         const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
         const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
         const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
@@ -1037,7 +1068,6 @@
             initP1Game();
         });
 
-        /* --- 4. منطق اللغز الثاني --- */
         const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
         const GRID_SIZE = 3;
         const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
