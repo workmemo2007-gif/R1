@@ -45,16 +45,28 @@
             pointer-events: none;
         }
 
-        /* حاوية عناصر النباتات والأزهار في الجانب الأيمن */
+        /* حاوية عناصر النباتات والأزهار في الجانب الأيمن - تم زيادة العرض لكثافة أكثر */
         .nature-right-panel {
             position: absolute;
             right: 0;
             bottom: 0;
             top: 0;
-            width: 320px;
+            width: 450px;
             z-index: 2;
             pointer-events: none;
             overflow: hidden;
+        }
+
+        /* أنيميشن حركة النمو من الأسفل إلى الأعلى */
+        @keyframes grassGrow {
+            0% {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
         }
 
         /* أنيميشن حركة النسيم للأعشاب والورود */
@@ -70,9 +82,15 @@
             100% { transform: translateY(0px) rotate(0deg); }
         }
 
+        /* تطبيق حركة النمو والاهتزاز على العشب */
         .swaying-plant {
             transform-origin: bottom right;
-            animation: gentleSway 5s ease-in-out infinite;
+            animation: grassGrow 2s cubic-bezier(0.25, 1, 0.5, 1) forwards, gentleSway 5s ease-in-out 2s infinite;
+        }
+
+        .grass-blade {
+            transform-origin: bottom;
+            animation: grassGrow 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .floating-flower {
@@ -473,49 +491,77 @@
     <div class="grid-pattern"></div>
 
     <div class="nature-right-panel">
-        <svg class="w-full h-full" viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-full h-full" viewBox="0 0 450 800" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g class="swaying-plant">
-                <path d="M 280 800 Q 220 500 250 200 Q 260 100 240 0" stroke="#81c784" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path d="M 300 800 Q 200 650 180 800" fill="#a5d6a7" opacity="0.7"/>
-                <path d="M 270 800 Q 170 600 220 800" fill="#66bb6a" opacity="0.6"/>
-                <path d="M 250 800 Q 230 450 280 300" stroke="#4caf50" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.1s;" d="M 440 800 Q 380 500 420 200 Q 430 100 410 0" stroke="#2e7d32" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.2s;" d="M 420 800 Q 340 450 370 150 Q 380 50 360 -20" stroke="#1b5e20" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.15s;" d="M 390 800 Q 310 520 350 280" stroke="#33691e" stroke-width="7" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.3s;" d="M 450 800 Q 320 600 280 800" fill="#2e7d32" opacity="0.6"/>
+                <path class="grass-blade" style="animation-delay: 0.25s;" d="M 400 800 Q 250 550 320 800" fill="#1b5e20" opacity="0.5"/>
+            </g>
+
+            <g class="swaying-plant" style="animation-delay: 0.2s;">
+                <path class="grass-blade" style="animation-delay: 0.35s;" d="M 430 800 Q 350 400 410 100" stroke="#4caf50" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.4s;" d="M 410 800 Q 310 350 330 180" stroke="#43a047" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.45s;" d="M 380 800 Q 280 480 300 250" stroke="#558b2f" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 360 800 Q 240 420 280 120" stroke="#689f38" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.3s;" d="M 340 800 Q 220 500 250 280" stroke="#388e3c" stroke-width="4" fill="none" stroke-linecap="round"/>
                 
-                <path d="M 245 400 Q 200 380 210 420 Q 235 425 245 400 Z" fill="#81c784"/>
-                <path d="M 252 320 Q 210 290 220 330 Q 242 335 252 320 Z" fill="#66bb6a"/>
-                <path d="M 255 220 Q 215 200 225 235 Q 248 238 255 220 Z" fill="#a5d6a7"/>
-                <path d="M 260 520 Q 200 500 215 540 Q 248 545 260 520 Z" fill="#4caf50"/>
+                <path class="grass-blade" style="animation-delay: 0.2s;" d="M 430 800 Q 280 620 360 800" fill="#4caf50" opacity="0.75"/>
+                <path class="grass-blade" style="animation-delay: 0.35s;" d="M 370 800 Q 220 580 300 800" fill="#66bb6a" opacity="0.7"/>
+                <path class="grass-blade" style="animation-delay: 0.4s;" d="M 320 800 Q 180 640 240 800" fill="#558b2f" opacity="0.65"/>
+                
+                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 405 400 Q 350 380 360 420 Q 395 425 405 400 Z" fill="#81c784"/>
+                <path class="grass-blade" style="animation-delay: 0.55s;" d="M 412 320 Q 360 290 370 330 Q 392 335 412 320 Z" fill="#66bb6a"/>
+                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 330 350 Q 270 330 285 370 Q 315 372 330 350 Z" fill="#81c784"/>
+                <path class="grass-blade" style="animation-delay: 0.65s;" d="M 280 280 Q 220 260 235 300 Q 265 302 280 280 Z" fill="#a5d6a7"/>
+            </g>
+
+            <g class="swaying-plant" style="animation-delay: 0.4s;">
+                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 445 800 Q 390 300 425 50" stroke="#81c784" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.65s;" d="M 425 800 Q 330 250 375 80" stroke="#a5d6a7" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 395 800 Q 290 320 315 110" stroke="#80e27e" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.75s;" d="M 365 800 Q 250 380 275 160" stroke="#81c784" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.8s;" d="M 335 800 Q 210 440 230 220" stroke="#b9f6ca" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.85s;" d="M 300 800 Q 180 500 200 300" stroke="#a5d6a7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path class="grass-blade" style="animation-delay: 0.9s;" d="M 260 800 Q 150 560 170 380" stroke="#66bb6a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+                <path class="grass-blade" style="animation-delay: 0.5s;" d="M 450 800 Q 330 700 400 800" fill="#a5d6a7" opacity="0.8"/>
+                <path class="grass-blade" style="animation-delay: 0.6s;" d="M 400 800 Q 260 680 330 800" fill="#81c784" opacity="0.85"/>
+                <path class="grass-blade" style="animation-delay: 0.7s;" d="M 340 800 Q 200 690 270 800" fill="#b9f6ca" opacity="0.75"/>
+                <path class="grass-blade" style="animation-delay: 0.8s;" d="M 280 800 Q 140 710 200 800" fill="#66bb6a" opacity="0.8"/>
             </g>
 
             <g class="floating-flower" style="animation-delay: 0s;">
-                <circle cx="240" cy="180" r="14" fill="#80deea" opacity="0.9"/>
-                <circle cx="226" cy="180" r="12" fill="#b2ebf2"/>
-                <circle cx="254" cy="180" r="12" fill="#b2ebf2"/>
-                <circle cx="240" cy="166" r="12" fill="#b2ebf2"/>
-                <circle cx="240" cy="194" r="12" fill="#b2ebf2"/>
-                <circle cx="240" cy="180" r="7" fill="#fff9c4"/>
+                <circle cx="380" cy="180" r="14" fill="#80deea" opacity="0.9"/>
+                <circle cx="366" cy="180" r="12" fill="#b2ebf2"/>
+                <circle cx="394" cy="180" r="12" fill="#b2ebf2"/>
+                <circle cx="380" cy="166" r="12" fill="#b2ebf2"/>
+                <circle cx="380" cy="194" r="12" fill="#b2ebf2"/>
+                <circle cx="380" cy="180" r="7" fill="#fff9c4"/>
             </g>
 
             <g class="floating-flower" style="animation-delay: 1.2s;">
-                <circle cx="220" cy="350" r="18" fill="#4dd0e1" opacity="0.85"/>
-                <circle cx="202" cy="350" r="15" fill="#80deea"/>
-                <circle cx="238" cy="350" r="15" fill="#80deea"/>
-                <circle cx="220" cy="332" r="15" fill="#80deea"/>
-                <circle cx="220" cy="368" r="15" fill="#80deea"/>
-                <circle cx="220" cy="350" r="9" fill="#fff59d"/>
+                <circle cx="320" cy="350" r="18" fill="#4dd0e1" opacity="0.85"/>
+                <circle cx="302" cy="350" r="15" fill="#80deea"/>
+                <circle cx="338" cy="350" r="15" fill="#80deea"/>
+                <circle cx="320" cy="332" r="15" fill="#80deea"/>
+                <circle cx="320" cy="368" r="15" fill="#80deea"/>
+                <circle cx="320" cy="350" r="9" fill="#fff59d"/>
             </g>
 
             <g class="floating-flower" style="animation-delay: 2.5s;">
-                <circle cx="200" cy="550" r="16" fill="#26c6da" opacity="0.85"/>
-                <circle cx="184" cy="550" r="13" fill="#80deea"/>
-                <circle cx="216" cy="550" r="13" fill="#80deea"/>
-                <circle cx="200" cy="534" r="13" fill="#80deea"/>
-                <circle cx="200" cy="566" r="13" fill="#80deea"/>
-                <circle cx="200" cy="550" r="8" fill="#fff59d"/>
+                <circle cx="260" cy="550" r="16" fill="#26c6da" opacity="0.85"/>
+                <circle cx="244" cy="550" r="13" fill="#80deea"/>
+                <circle cx="276" cy="550" r="13" fill="#80deea"/>
+                <circle cx="260" cy="534" r="13" fill="#80deea"/>
+                <circle cx="260" cy="566" r="13" fill="#80deea"/>
+                <circle cx="260" cy="550" r="8" fill="#fff59d"/>
             </g>
 
             <g class="floating-flower" style="animation-delay: 0.7s;">
-                <circle cx="260" cy="100" r="9" fill="#80deea"/>
-                <circle cx="260" cy="100" r="4" fill="#e0f7fa"/>
+                <circle cx="410" cy="100" r="9" fill="#80deea"/>
+                <circle cx="410" cy="100" r="4" fill="#e0f7fa"/>
             </g>
         </svg>
     </div>
