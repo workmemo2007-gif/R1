@@ -29,6 +29,7 @@
             align-items: center;
             background-color: #000000;
             user-select: none;
+            touch-action: none;
         }
 
         /* فيديو الخلفية */
@@ -157,6 +158,13 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
+        /* حالة إخفاء الكارت بالكامل عند اللغز الثالث */
+        .envelope-wrapper.hide-card-completely {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.5) !important;
+        }
+
         .card-cover {
             width: 100%;
             height: 75px;
@@ -238,15 +246,13 @@
             transform: translateY(-1px);
         }
 
-        /* ==========================================
-           تعديل كروت الألغاز لتكون متصلة بأسفل الشاشة وحوافها وتصعد لمنتصف الشاشة
-           ========================================== */
+        /* مودال الألغاز */
         .puzzle-modal {
             position: fixed;
             inset: 0;
             z-index: 50;
             display: flex;
-            align-items: flex-end; /* المحاذاة للأسفل تماماً */
+            align-items: flex-end;
             justify-content: center;
             padding: 0;
             opacity: 0;
@@ -259,9 +265,8 @@
             pointer-events: auto;
         }
 
-        /* الكارت متصل بالحواف السفلى والجانبية ويمتد لمنتصف الشاشة */
         .glass-panel-white {
-            background: rgba(255, 255, 255, 0.55); /* درجة شفافية مرتفعة عالية الجودة */
+            background: rgba(255, 255, 255, 0.55);
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
             border-top: 1.5px solid rgba(255, 255, 255, 0.85);
@@ -269,29 +274,24 @@
             border-right: 1.5px solid rgba(255, 255, 255, 0.6);
             border-bottom: none;
             box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15), 0 -5px 15px rgba(255, 105, 180, 0.2);
-            border-radius: 28px 28px 0 0; /* انحناء من الأعلى فقط واستقامة ملتصقة للأسفل */
-            width: 100vw; /* ملاصق تماماً لجوانب الشاشة */
-            height: 55vh; /* يمتد تماماً حتى منتصف الشاشة تقريباً */
+            border-radius: 28px 28px 0 0;
+            width: 100vw;
+            height: 55vh;
             padding: 1.25rem 1rem 1rem 1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            transform: translateY(100%); /* تأثير الصعود السلس من الأسفل */
-            transition: transform 0.45 cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(100%);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
             scrollbar-width: none;
-        }
-
-        .glass-panel-white::-webkit-scrollbar {
-            display: none;
         }
 
         .puzzle-modal.active .glass-panel-white {
             transform: translateY(0);
         }
 
-        /* الشاشة الكبيرة البيضاء الشفافة */
         .holo-screen-white {
             background: rgba(255, 255, 255, 0.45);
             border: 1.5px solid rgba(255, 182, 193, 0.6);
@@ -301,13 +301,6 @@
             transition: all 0.5s ease;
         }
 
-        .holo-screen-white.active {
-            background: rgba(255, 240, 245, 0.85);
-            border-color: #ff69b4;
-            box-shadow: 0 0 20px rgba(255, 105, 180, 0.35);
-        }
-
-        /* الشاشة المربعة للروبوت البكسلي */
         .pixel-robot-box {
             width: 42px;
             height: 42px;
@@ -337,17 +330,11 @@
             100% { transform: translate(3%, 2%) scale(1.03); }
         }
 
-        /* الأزرار العلوية والتحكم */
         .glass-btn-primary {
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
             transition: all 0.3s ease;
-        }
-
-        .glass-btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
         }
 
         .glass-btn-secondary {
@@ -357,15 +344,10 @@
             transition: all 0.3s ease;
         }
 
-        .glass-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: #ff69b4;
-        }
-
         .btn-shake-red {
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important;
+            box-shadow: 0 0 15px rgba(239, 44, 44, 0.4) !important;
             color: #ffffff !important;
         }
 
@@ -383,25 +365,11 @@
             color: #ffffff !important;
         }
 
-        @keyframes shakeGreen {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* عناصر اللغز والأحرف */
         .letter-btn {
             background: rgba(255, 255, 255, 0.85);
             border: 1.5px solid rgba(255, 182, 193, 0.8);
             color: #c2185b;
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .letter-btn:hover {
-            background: #ffb6c1;
-            color: #ffffff;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
         }
 
         .letter-slot-mini {
@@ -422,16 +390,56 @@
             transition: all 0.25s ease;
         }
 
-        .glass-tile:hover {
-            border-color: #ff69b4;
-            transform: scale(1.03);
-            box-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
-        }
-
         .selected-tile {
             border-color: #ff1493 !important;
             box-shadow: 0 0 15px rgba(255, 20, 147, 0.8) !important;
             transform: scale(0.96);
+        }
+
+        /* ==========================================
+           أنماط اللغز الثالث: القلوب والأسهم والتنشيب
+           ========================================== */
+        #puzzle3Canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #puzzle3Canvas.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .p3-instruction-badge {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 45;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 192, 203, 0.5);
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .p3-instruction-badge.active {
+            opacity: 1;
         }
     </style>
 </head>
@@ -457,15 +465,13 @@
             <div class="games-container">
                 <button class="small-btn" id="puzzle1Btn">اللغز الأول</button>
                 <button class="small-btn" id="puzzle2Btn">اللغز الثاني</button>
-                <button class="small-btn">اللغز الثالث</button>
+                <button class="small-btn" id="puzzle3Btn">اللغز الثالث</button>
             </div>
         </div>
     </div>
 
-    <!-- اللغز الأول - منبثق متصل بالطرف الأسفل للشاشة وممتد لمنتصف الشاشة -->
     <div id="puzzle1Modal" class="puzzle-modal text-gray-800">
         <div class="glass-panel-white relative max-w-md mx-auto">
-            
             <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
                 ✕ العودة
             </button>
@@ -518,26 +524,17 @@
             <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
                 <button id="p1_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
                     <span>تم الإنهاء</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                    </svg>
                 </button>
 
                 <button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                    </svg>
                     <span>إعادة</span>
                 </button>
             </div>
-
         </div>
     </div>
 
-    <!-- اللغز الثاني - منبثق متصل بالطرف الأسفل للشاشة وممتد لمنتصف الشاشة -->
     <div id="puzzle2Modal" class="puzzle-modal text-gray-800">
         <div class="glass-panel-white relative max-w-md mx-auto">
-            
             <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
                 ✕ العودة
             </button>
@@ -577,8 +574,7 @@
 
             <div class="flex flex-col items-center gap-2 w-full px-2">
                 <div id="puzzleBoardWrapper" class="relative w-36 h-36">
-                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-pink-50/50 rounded-2xl border border-pink-200/60 w-full h-full shadow-inner">
-                    </div>
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-pink-50/50 rounded-2xl border border-pink-200/60 w-full h-full shadow-inner"></div>
 
                     <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-400 shadow-xl">
                         <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
@@ -589,21 +585,19 @@
             <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
                 <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
                     <span>تم الإنهاء</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                    </svg>
                 </button>
 
                 <button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                    </svg>
                     <span>إعادة</span>
                 </button>
             </div>
-
         </div>
     </div>
+
+    <div id="p3Badge" class="p3-instruction-badge">
+        اخفقي 10 قلوب باسم "رتاج" بالسهم! (المتبقي: <span id="p3Count">10</span>) 🏹
+    </div>
+    <canvas id="puzzle3Canvas"></canvas>
 
     <script>
         /* --- 1. المؤثرات الصوتية --- */
@@ -628,6 +622,21 @@
                 gain.connect(this.ctx.destination);
                 osc.start();
                 osc.stop(this.ctx.currentTime + 0.08);
+            }
+            playPop() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.1);
             }
             playError() {
                 this.init();
@@ -697,6 +706,8 @@
         // فتح وإغلاق الألغاز
         const puzzle1Btn = document.getElementById('puzzle1Btn');
         const puzzle2Btn = document.getElementById('puzzle2Btn');
+        const puzzle3Btn = document.getElementById('puzzle3Btn');
+
         const puzzle1Modal = document.getElementById('puzzle1Modal');
         const puzzle2Modal = document.getElementById('puzzle2Modal');
         const closeBtns = document.querySelectorAll('.closeModalBtn');
@@ -711,6 +722,11 @@
             e.stopPropagation();
             initP2Game();
             puzzle2Modal.classList.add('active');
+        });
+
+        puzzle3Btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startPuzzle3Game();
         });
 
         closeBtns.forEach(btn => {
@@ -1070,6 +1086,351 @@
             soundFX.playTap();
             initP2Game();
         });
+
+        /* --- 5. منطق اللغز الثالث (فرقعة البالونات بالرمي بالسهم) --- */
+        const canvas = document.getElementById('puzzle3Canvas');
+        const ctx = canvas.getContext('2d');
+        const p3Badge = document.getElementById('p3Badge');
+        const p3Count = document.getElementById('p3Count');
+
+        let p3Active = false;
+        let p3AnimId = null;
+        let p3Balloons = [];
+        let p3Arrows = [];
+        let p3Particles = [];
+
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        let dragCurrent = { x: 0, y: 0 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        class HeartBalloon {
+            constructor() {
+                this.x = Math.random() * (canvas.width - 100) + 50;
+                this.y = canvas.height + Math.random() * 200 + 50;
+                this.size = Math.random() * 12 + 28; 
+                this.speedY = Math.random() * 1.5 + 1.2;
+                this.floatAmp = Math.random() * 2 + 1;
+                this.floatAngle = Math.random() * Math.PI * 2;
+                this.color = `hsl(${330 + Math.random() * 25}, 100%, ${65 + Math.random() * 15}%)`;
+                this.popped = false;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.floatAngle += 0.03;
+                this.x += Math.sin(this.floatAngle) * this.floatAmp;
+
+                if (this.y < -80) {
+                    this.y = canvas.height + 60;
+                    this.x = Math.random() * (canvas.width - 100) + 50;
+                }
+            }
+
+            draw() {
+                if (this.popped) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // رسم الخيط
+                ctx.beginPath();
+                ctx.moveTo(0, this.size);
+                ctx.quadraticCurveTo(5, this.size + 15, 0, this.size + 30);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // رسم القلب
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(0, topCurveHeight);
+                ctx.bezierCurveTo(0, 0, -this.size, 0, -this.size, topCurveHeight);
+                ctx.bezierCurveTo(-this.size, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size * 1.25);
+                ctx.bezierCurveTo(0, this.size, this.size, (this.size + topCurveHeight) / 2, this.size, topCurveHeight);
+                ctx.bezierCurveTo(this.size, 0, 0, 0, 0, topCurveHeight);
+                ctx.closePath();
+
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = 'rgba(255, 105, 180, 0.5)';
+                ctx.shadowBlur = 12;
+                ctx.fill();
+
+                // لمعة زجاجية
+                ctx.beginPath();
+                ctx.arc(-this.size * 0.35, topCurveHeight * 0.8, this.size * 0.2, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+                ctx.fill();
+
+                // اسم "رتاج"
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `900 ${Math.floor(this.size * 0.55)}px Tajawal`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('رتاج', 0, this.size * 0.5);
+
+                ctx.restore();
+            }
+        }
+
+        class Arrow {
+            constructor(x, y, vx, vy) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.length = 45;
+                this.angle = Math.atan2(vy, vx);
+                this.active = true;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.angle = Math.atan2(this.vy, this.vx);
+
+                if (this.x < -100 || this.x > canvas.width + 100 || this.y < -100 || this.y > canvas.height + 100) {
+                    this.active = false;
+                }
+            }
+
+            draw() {
+                if (!this.active) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                // ساق السهم
+                ctx.beginPath();
+                ctx.moveTo(-this.length, 0);
+                ctx.lineTo(0, 0);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3.5;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                // رأس السهم
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-12, -7);
+                ctx.lineTo(-8, 0);
+                ctx.lineTo(-12, 7);
+                ctx.closePath();
+                ctx.fillStyle = '#ff1493';
+                ctx.fill();
+
+                // ريش السهم الخلفية
+                ctx.beginPath();
+                ctx.moveTo(-this.length, 0);
+                ctx.lineTo(-this.length - 8, -6);
+                ctx.lineTo(-this.length - 4, 0);
+                ctx.lineTo(-this.length - 8, 6);
+                ctx.closePath();
+                ctx.fillStyle = '#ffb6c1';
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        class PopParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.size = Math.random() * 4 + 2;
+                this.color = color;
+                this.alpha = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 0.03;
+            }
+
+            draw() {
+                if (this.alpha <= 0) return;
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function startPuzzle3Game() {
+            resizeCanvas();
+            p3Active = true;
+            envelope.classList.add('hide-card-completely');
+            canvas.classList.add('active');
+            p3Badge.classList.add('active');
+
+            p3Balloons = [];
+            p3Arrows = [];
+            p3Particles = [];
+
+            for (let i = 0; i < 10; i++) {
+                p3Balloons.push(new HeartBalloon());
+            }
+
+            p3Count.innerText = p3Balloons.length;
+            p3Loop();
+        }
+
+        function createPopParticles(x, y, color) {
+            for (let i = 0; i < 18; i++) {
+                p3Particles.push(new PopParticle(x, y, color));
+            }
+        }
+
+        function p3Loop() {
+            if (!p3Active) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // تحديث ورسم البالونات
+            p3Balloons.forEach(b => {
+                b.update();
+                b.draw();
+            });
+
+            // تحديث ورسم الأسهم
+            p3Arrows.forEach(a => {
+                a.update();
+                a.draw();
+
+                // فحص الاصطدام بالبالونات
+                p3Balloons.forEach(b => {
+                    if (!b.popped && a.active) {
+                        const dist = Math.hypot(a.x - b.x, a.y - (b.y + b.size * 0.5));
+                        if (dist < b.size * 1.1) {
+                            b.popped = true;
+                            a.active = false;
+                            soundFX.playPop();
+                            createPopParticles(b.x, b.y + b.size * 0.5, b.color);
+                        }
+                    }
+                });
+            });
+
+            // تنظيف البالونات المفرقعة والأسهم غير النشطة
+            p3Balloons = p3Balloons.filter(b => !b.popped);
+            p3Arrows = p3Arrows.filter(a => a.active);
+
+            // تحديث ورسم الجسيمات
+            p3Particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            p3Particles = p3Particles.filter(p => p.alpha > 0);
+
+            p3Count.innerText = p3Balloons.length;
+
+            // رسم مسار السهم / القوس أثناء السحب بالأصبع
+            if (isDragging) {
+                const dx = dragStart.x - dragCurrent.x;
+                const dy = dragStart.y - dragCurrent.y;
+                const angle = Math.atan2(dy, dx);
+                const power = Math.min(Math.hypot(dx, dy), 120);
+
+                ctx.save();
+                ctx.translate(dragStart.x, dragStart.y);
+                ctx.rotate(angle);
+
+                // رسم الوتر والقوس الشفاف
+                ctx.beginPath();
+                ctx.arc(0, 0, 35, -Math.PI / 2, Math.PI / 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, -35);
+                ctx.lineTo(-power * 0.5, 0);
+                ctx.lineTo(0, 35);
+                ctx.strokeStyle = '#ff69b4';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // السهم الجاهز للإطلاق
+                ctx.beginPath();
+                ctx.moveTo(-power * 0.5, 0);
+                ctx.lineTo(40, 0);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3.5;
+                ctx.stroke();
+
+                ctx.restore();
+            }
+
+            // فحص الفوز
+            if (p3Balloons.length === 0) {
+                p3Active = false;
+                soundFX.playSuccess();
+                p3Badge.innerText = "مبروك! خرقتِ القلوب العشرة بنجاح ✨👑";
+
+                if (window.confetti) {
+                    confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+                }
+
+                setTimeout(() => {
+                    canvas.classList.remove('active');
+                    p3Badge.classList.remove('active');
+                    envelope.classList.remove('hide-card-completely');
+                }, 2800);
+                return;
+            }
+
+            p3AnimId = requestAnimationFrame(p3Loop);
+        }
+
+        // معالجة اللمس والتنشيب بالرمي
+        function handlePointerDown(e) {
+            if (!p3Active) return;
+            isDragging = true;
+            dragStart = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
+            dragCurrent = { ...dragStart };
+        }
+
+        function handlePointerMove(e) {
+            if (!isDragging) return;
+            dragCurrent = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
+        }
+
+        function handlePointerUp() {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const dx = dragStart.x - dragCurrent.x;
+            const dy = dragStart.y - dragCurrent.y;
+            const dist = Math.hypot(dx, dy);
+
+            if (dist > 15) {
+                const speed = Math.min(dist * 0.22, 28);
+                const angle = Math.atan2(dy, dx);
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+
+                p3Arrows.push(new Arrow(dragStart.x, dragStart.y, vx, vy));
+                soundFX.playTap();
+            }
+        }
+
+        window.addEventListener('mousedown', handlePointerDown);
+        window.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('mouseup', handlePointerUp);
+
+        window.addEventListener('touchstart', handlePointerDown);
+        window.addEventListener('touchmove', handlePointerMove);
+        window.addEventListener('touchend', handlePointerUp);
     </script>
 </body>
 </html>
