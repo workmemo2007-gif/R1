@@ -27,12 +27,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000000;
+            background-color: #030712;
             user-select: none;
             touch-action: none;
         }
 
-        /* صورة الخلفية الجديدة */
         .bg-image {
             position: absolute;
             top: 0;
@@ -44,35 +43,32 @@
             z-index: 1;
         }
 
-        /* طبقة تظليل سوداء ناعمة لزيادة التباين */
         .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(3, 10, 26, 0.45);
             z-index: 2;
         }
 
-        /* حاوية المغلف الوردي الشفاف */
+        /* الظرف الأزرق غير الشفاف مع تطريز أبيض */
         .envelope-wrapper {
             position: relative;
             z-index: 3;
             width: 220px;
             height: 130px;
-            background-color: rgba(255, 182, 193, 0.25);
+            background-color: #0e2a47;
             border-radius: 12px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 192, 203, 0.45);
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            border: 2px dashed rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 30px rgba(0, 150, 255, 0.3), 0 0 15px rgba(212, 175, 55, 0.2);
             margin-top: 100px;
             cursor: pointer;
             transition: transform 0.4s ease, opacity 0.8s ease, background 0.8s ease, border-color 0.8s ease;
         }
 
-        /* غطاء المغلف العلوي */
+        /* غطاء المغلف العلوي مع الترقيع الأبيض */
         .envelope-wrapper::before {
             content: '';
             position: absolute;
@@ -80,9 +76,10 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 110px solid transparent;
-            border-right: 110px solid transparent;
-            border-top: 70px solid rgba(255, 182, 193, 0.45);
+            border-left: 108px solid transparent;
+            border-right: 108px solid transparent;
+            border-top: 68px solid #143d66;
+            filter: drop-shadow(0px 2px 0px rgba(255, 255, 255, 0.8));
             transform-origin: top;
             transition: transform 0.6s ease 0.2s, z-index 0.2s ease 0.4s, opacity 0.8s ease;
             z-index: 5;
@@ -96,16 +93,16 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 110px solid rgba(255, 182, 193, 0.3);
-            border-right: 110px solid rgba(255, 182, 193, 0.3);
-            border-bottom: 65px solid rgba(255, 182, 193, 0.4);
-            border-radius: 0 0 12px 12px;
+            border-left: 108px solid #0a2038;
+            border-right: 108px solid #0a2038;
+            border-bottom: 63px solid #103357;
+            border-radius: 0 0 10px 10px;
             z-index: 4;
             pointer-events: none;
             transition: opacity 0.8s ease;
         }
 
-        /* تصميم كارت الزجاج المصغر */
+        /* تصميم كارت الزجاج المصغر بلون سماوي وأزرق */
         .glass-card {
             position: absolute;
             bottom: 5px;
@@ -114,11 +111,11 @@
             width: 200px;
             padding: 8px;
             border-radius: 12px;
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(14px) saturate(160%);
-            -webkit-backdrop-filter: blur(14px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border: 1px solid rgba(135, 206, 250, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 100, 220, 0.3), inset 0 0 10px rgba(212, 175, 55, 0.2);
             color: #ffffff;
             z-index: 3;
             opacity: 0;
@@ -127,7 +124,6 @@
                         background 0.3s ease;
         }
 
-        /* انيميشن فتح المغلف */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 2;
@@ -139,13 +135,10 @@
             z-index: 6;
         }
 
-        /* مرحلة انبثاق الكارت للأمام واختفاء الظرف */
         .envelope-wrapper.hide-envelope {
             background-color: transparent !important;
             border-color: transparent !important;
             box-shadow: none !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
         }
 
         .envelope-wrapper.hide-envelope::before,
@@ -155,11 +148,10 @@
 
         .envelope-wrapper.hide-envelope .glass-card {
             transform: translateX(-50%) translateY(10px) scale(1.15);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 120, 255, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+            background: rgba(8, 25, 50, 0.65);
         }
 
-        /* حالة إخفاء الكارت بالكامل عند اللغز الثالث */
         .envelope-wrapper.hide-card-completely {
             opacity: 0 !important;
             pointer-events: none !important;
@@ -172,8 +164,8 @@
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 6px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(135, 206, 250, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -196,11 +188,11 @@
             font-size: 0.52rem;
             font-weight: 500;
             line-height: 1.35;
-            color: #ffffff;
+            color: #e0f2fe;
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
             margin-bottom: 2px;
             text-align: right;
-            border-left: 1.5px solid #ffffff;
+            border-left: 1.5px solid #38bdf8;
             white-space: pre-wrap;
             display: inline;
             animation: blink 0.75s step-end infinite;
@@ -208,7 +200,7 @@
 
         @keyframes blink {
             from, to { border-color: transparent }
-            50% { border-color: #ffffff; }
+            50% { border-color: #38bdf8; }
         }
 
         .games-container {
@@ -222,14 +214,15 @@
             margin-top: 8px;
         }
 
+        /* الأزرار باللون الأبيض الشفاف والتطريز السماوي الذهبي */
         .small-btn {
             flex: 1;
             padding: 5px 0;
             font-size: 0.52rem;
             font-weight: 700;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 192, 203, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(125, 211, 252, 0.5);
             border-radius: 6px;
             cursor: pointer;
             backdrop-filter: blur(10px);
@@ -237,17 +230,35 @@
             transition: all 0.3s ease;
             text-align: center;
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .small-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+
+        .small-btn:hover::after {
+            left: 100%;
         }
 
         .small-btn:hover {
-            background: rgba(255, 182, 193, 0.35);
-            border-color: rgba(255, 192, 203, 0.8);
-            box-shadow: 0 0 12px rgba(255, 182, 193, 0.5);
+            background: rgba(56, 189, 248, 0.3);
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.6), 0 0 6px rgba(255, 215, 0, 0.4);
             transform: translateY(-1px);
         }
 
-        /* مودال الألغاز */
+        /* مودال الألغاز شفاف مع توهج أزرق وذهبي */
         .puzzle-modal {
             position: fixed;
             inset: 0;
@@ -267,14 +278,14 @@
         }
 
         .glass-panel-white {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(15, 30, 55, 0.75);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border-top: 1.5px solid rgba(255, 255, 255, 0.9);
-            border-left: 1.5px solid rgba(255, 255, 255, 0.7);
-            border-right: 1.5px solid rgba(255, 255, 255, 0.7);
+            border-top: 1.5px solid rgba(186, 230, 253, 0.8);
+            border-left: 1.5px solid rgba(186, 230, 253, 0.5);
+            border-right: 1.5px solid rgba(186, 230, 253, 0.5);
             border-bottom: none;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2), 0 -5px 15px rgba(255, 105, 180, 0.25);
+            box-shadow: 0 -10px 35px rgba(0, 100, 250, 0.3), 0 -2px 15px rgba(255, 215, 0, 0.25);
             border-radius: 28px 28px 0 0;
             width: 100vw;
             height: 55vh;
@@ -287,6 +298,7 @@
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
             scrollbar-width: none;
+            color: #f0f9ff;
         }
 
         .puzzle-modal.active .glass-panel-white {
@@ -294,9 +306,9 @@
         }
 
         .holo-screen-white {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1.5px solid rgba(255, 182, 193, 0.7);
-            box-shadow: inset 0 0 10px rgba(255, 105, 180, 0.15);
+            background: rgba(12, 45, 84, 0.6);
+            border: 1.5px solid rgba(56, 189, 248, 0.7);
+            box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.3), 0 0 10px rgba(255, 215, 0, 0.2);
             position: relative;
             overflow: hidden;
             transition: all 0.5s ease;
@@ -305,14 +317,15 @@
         .pixel-robot-box {
             width: 42px;
             height: 42px;
-            background: rgba(255, 255, 255, 0.75);
-            border: 1.5px solid rgba(255, 182, 193, 0.9);
-            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(125, 211, 252, 0.8);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            backdrop-filter: blur(8px);
         }
 
         .pixel-art {
@@ -322,8 +335,8 @@
         .floating-answer {
             display: inline-block;
             animation: bounceAndMove 4s ease-in-out infinite alternate;
-            color: #d81b60;
-            text-shadow: 0 0 8px rgba(255, 182, 193, 0.8);
+            color: #7dd3fc;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.9), 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         @keyframes bounceAndMove {
@@ -332,23 +345,24 @@
         }
 
         .glass-btn-primary {
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.35);
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            border: 1px solid rgba(186, 230, 253, 0.8);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4), 0 0 10px rgba(255, 215, 0, 0.2);
             transition: all 0.3s ease;
         }
 
         .glass-btn-secondary {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1.5px solid rgba(255, 182, 193, 0.7);
-            color: #d81b60;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(125, 211, 252, 0.6);
+            color: #bae6fd;
             transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
         }
 
         .btn-shake-red {
             animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            box-shadow: 0 0 15px rgba(239, 44, 44, 0.4) !important;
+            box-shadow: 0 0 15px rgba(239, 44, 44, 0.5) !important;
             color: #ffffff !important;
         }
 
@@ -362,22 +376,24 @@
         .btn-shake-green {
             animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
             background: linear-gradient(135deg, #10b981, #059669) !important;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 10px rgba(255, 215, 0, 0.4) !important;
             color: #ffffff !important;
         }
 
         .letter-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1.5px solid rgba(255, 182, 193, 0.85);
-            color: #c2185b;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(125, 211, 252, 0.7);
+            color: #e0f2fe;
+            backdrop-filter: blur(6px);
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .letter-slot-mini {
             width: 28px;
             height: 32px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1.5px dashed rgba(255, 105, 180, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px dashed rgba(56, 189, 248, 0.6);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -386,18 +402,17 @@
         }
 
         .glass-tile {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(186, 230, 253, 0.6);
             transition: all 0.25s ease;
         }
 
         .selected-tile {
-            border-color: #ff1493 !important;
-            box-shadow: 0 0 15px rgba(255, 20, 147, 0.8) !important;
+            border-color: #ffd700 !important;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 10px rgba(56, 189, 248, 0.6) !important;
             transform: scale(0.96);
         }
 
-        /* أنماط اللغز الثالث */
         #puzzle3Canvas {
             position: fixed;
             top: 0;
@@ -421,17 +436,17 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 45;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 192, 203, 0.6);
+            background: rgba(10, 25, 50, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(125, 211, 252, 0.7);
             color: #ffffff;
             padding: 8px 20px;
             border-radius: 30px;
             font-size: 0.85rem;
             font-weight: 700;
             text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4), 0 0 10px rgba(255, 215, 0, 0.3);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -466,7 +481,7 @@
         </div>
     </div>
 
-    <div id="puzzle1Modal" class="puzzle-modal text-gray-800">
+    <div id="puzzle1Modal" class="puzzle-modal text-sky-100">
         <div class="glass-panel-white relative max-w-md mx-auto">
             <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
                 ✕ العودة
@@ -475,20 +490,20 @@
             <div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
                 <div class="pixel-robot-box shrink-0">
                     <svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
-                        <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
-                        <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
-                        <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
-                        <rect id="p1_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#c2185b" />
-                        <rect id="p1_pxEyeRight" x="9" y="6" width="2" height="2" fill="#c2185b" />
-                        <rect id="p1_pxMouth" x="6" y="9" width="4" height="1" fill="#c2185b" />
+                        <rect x="3" y="3" width="10" height="9" fill="#38bdf8" />
+                        <rect x="4" y="4" width="8" height="7" fill="#0f172a" />
+                        <rect x="7" y="1" width="2" height="2" fill="#ffd700" />
+                        <rect id="p1_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#38bdf8" />
+                        <rect id="p1_pxEyeRight" x="9" y="6" width="2" height="2" fill="#38bdf8" />
+                        <rect id="p1_pxMouth" x="6" y="9" width="4" height="1" fill="#38bdf8" />
                     </svg>
                 </div>
 
                 <div class="flex-1">
                     <div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-12 flex flex-col items-center justify-center p-1 text-center">
                         <div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
-                            <span class="text-[10px] font-bold tracking-wider text-pink-600 uppercase">الشاشة قيد الانتظار</span>
-                            <p class="text-pink-400 text-[8px] font-mono">=== WAITING ===</p>
+                            <span class="text-[10px] font-bold tracking-wider text-sky-400 uppercase">الشاشة قيد الانتظار</span>
+                            <p class="text-sky-300/60 text-[8px] font-mono">=== WAITING ===</p>
                         </div>
 
                         <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
@@ -500,19 +515,19 @@
                 </div>
             </div>
 
-            <div id="p1_speech" class="bg-white/80 border border-pink-200 text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12">
+            <div id="p1_speech" class="bg-sky-950/60 border border-sky-400/40 text-sky-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md">
                 رتب الحروف لإلغاء قفل الشاشة ✨
             </div>
 
             <div class="w-full flex flex-col items-center gap-2 px-2">
-                <div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-pink-50/50 rounded-2xl border border-pink-200/60 shadow-inner overflow-x-auto">
+                <div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-sky-950/30 rounded-2xl border border-sky-400/30 shadow-inner overflow-x-auto">
                     <div id="word1Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
-                    <div class="w-0.5 h-6 bg-pink-300/60 rounded-full shrink-0 mx-0.5"></div>
+                    <div class="w-0.5 h-6 bg-sky-400/40 rounded-full shrink-0 mx-0.5"></div>
                     <div id="word2Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
                 </div>
 
                 <div class="flex flex-col items-center gap-1 w-full">
-                    <span class="text-[11px] font-bold text-gray-700">الحروف المبعثرة (انقر للترتيب):</span>
+                    <span class="text-[11px] font-bold text-sky-200">الحروف المبعثرة (انقر للترتيب):</span>
                     <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-1.5 min-h-[36px] p-0.5"></div>
                 </div>
             </div>
@@ -529,7 +544,7 @@
         </div>
     </div>
 
-    <div id="puzzle2Modal" class="puzzle-modal text-gray-800">
+    <div id="puzzle2Modal" class="puzzle-modal text-sky-100">
         <div class="glass-panel-white relative max-w-md mx-auto">
             <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
                 ✕ العودة
@@ -538,25 +553,25 @@
             <div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
                 <div class="pixel-robot-box shrink-0">
                     <svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
-                        <rect x="3" y="3" width="10" height="9" fill="#ff69b4" />
-                        <rect x="4" y="4" width="8" height="7" fill="#ffffff" />
-                        <rect x="7" y="1" width="2" height="2" fill="#ff1493" />
-                        <rect id="p2_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#c2185b" />
-                        <rect id="p2_pxEyeRight" x="9" y="6" width="2" height="2" fill="#c2185b" />
-                        <rect id="p2_pxMouth" x="6" y="9" width="4" height="1" fill="#c2185b" />
+                        <rect x="3" y="3" width="10" height="9" fill="#38bdf8" />
+                        <rect x="4" y="4" width="8" height="7" fill="#0f172a" />
+                        <rect x="7" y="1" width="2" height="2" fill="#ffd700" />
+                        <rect id="p2_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#38bdf8" />
+                        <rect id="p2_pxEyeRight" x="9" y="6" width="2" height="2" fill="#38bdf8" />
+                        <rect id="p2_pxMouth" x="6" y="9" width="4" height="1" fill="#38bdf8" />
                     </svg>
                 </div>
 
                 <div class="flex-1">
                     <div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-12 flex flex-col items-center justify-center p-1 text-center">
                         <div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
-                            <span class="text-[10px] font-bold tracking-wider text-pink-600 uppercase">الصورة مشفرة</span>
-                            <p class="text-pink-400 text-[8px] font-mono">=== REASSEMBLE TILES ===</p>
+                            <span class="text-[10px] font-bold tracking-wider text-sky-400 uppercase">الصورة مشفرة</span>
+                            <p class="text-sky-300/60 text-[8px] font-mono">=== REASSEMBLE TILES ===</p>
                         </div>
 
                         <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
                             <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
-                            <div class="absolute bottom-0.5 bg-white/90 text-pink-700 text-[8px] px-2 py-0.5 rounded-full font-extrabold border border-pink-300">
+                            <div class="absolute bottom-0.5 bg-sky-950/90 text-sky-200 text-[8px] px-2 py-0.5 rounded-full font-extrabold border border-sky-400/50">
                                 علويتي رتاج ✨
                             </div>
                         </div>
@@ -564,15 +579,15 @@
                 </div>
             </div>
 
-            <div id="p2_speech" class="bg-white/80 border border-pink-200 text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12">
+            <div id="p2_speech" class="bg-sky-950/60 border border-sky-400/40 text-sky-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md">
                 رتب أجزاء الصورة لإظهار الرسالة ✨
             </div>
 
             <div class="flex flex-col items-center gap-2 w-full px-2">
                 <div id="puzzleBoardWrapper" class="relative w-36 h-36">
-                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-pink-50/50 rounded-2xl border border-pink-200/60 w-full h-full shadow-inner"></div>
+                    <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-sky-950/30 rounded-2xl border border-sky-400/30 w-full h-full shadow-inner"></div>
 
-                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-pink-400 shadow-xl">
+                    <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-sky-400 shadow-xl">
                         <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
                     </div>
                 </div>
@@ -807,7 +822,7 @@
             
             if (item) {
                 const letterBtn = document.createElement('button');
-                letterBtn.className = 'letter-btn bg-pink-400 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
+                letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
                 letterBtn.innerText = item.char;
                 letterBtn.onclick = () => {
                     soundFX.playTap();
@@ -857,15 +872,15 @@
             if (state === 'sad') {
                 pxMouth.setAttribute('fill', '#ef4444');
                 p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
-                p1_speech.className = "bg-rose-100/80 border border-rose-300 text-rose-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
+                p1_speech.className = "bg-rose-950/60 border border-rose-400/40 text-rose-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12 backdrop-blur-md";
             } else if (state === 'happy') {
                 pxMouth.setAttribute('fill', '#10b981');
                 p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
-                p1_speech.className = "bg-emerald-100/80 border border-emerald-300 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+                p1_speech.className = "bg-emerald-950/60 border border-emerald-400/40 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md";
             } else {
-                pxMouth.setAttribute('fill', '#c2185b');
+                pxMouth.setAttribute('fill', '#38bdf8');
                 p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨";
-                p1_speech.className = "bg-white/80 border border-pink-200 text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+                p1_speech.className = "bg-sky-950/60 border border-sky-400/40 text-sky-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md";
             }
         }
 
@@ -1016,15 +1031,15 @@
             if (state === 'sad') {
                 pxMouth.setAttribute('fill', '#ef4444');
                 p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
-                p2_speech.className = "bg-rose-100/80 border border-rose-300 text-rose-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
+                p2_speech.className = "bg-rose-950/60 border border-rose-400/40 text-rose-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12 backdrop-blur-md";
             } else if (state === 'happy') {
                 pxMouth.setAttribute('fill', '#10b981');
-                p2_speech.innerText = "مذهل! اكتملت الصورة وااشتغلت الشاشة ✨";
-                p2_speech.className = "bg-emerald-100/80 border border-emerald-300 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+                p2_speech.innerText = "مذهل! اكتملت الصورة واشتغل الشاشة ✨";
+                p2_speech.className = "bg-emerald-950/60 border border-emerald-400/40 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md";
             } else {
-                pxMouth.setAttribute('fill', '#c2185b');
+                pxMouth.setAttribute('fill', '#38bdf8');
                 p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة ✨";
-                p2_speech.className = "bg-white/80 border border-pink-200 text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+                p2_speech.className = "bg-sky-950/60 border border-sky-400/40 text-sky-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12 backdrop-blur-md";
             }
         }
 
@@ -1083,7 +1098,7 @@
             initP2Game();
         });
 
-        /* --- 5. منطق اللغز الثالث (فرقعة البالونات بالرمي بالسهم) --- */
+        /* --- 5. منطق اللغز الثالث (بالونات شفافة بدرجات الأزرق والسماوي) --- */
         const canvas = document.getElementById('puzzle3Canvas');
         const ctx = canvas.getContext('2d');
         const p3Badge = document.getElementById('p3Badge');
@@ -1113,7 +1128,9 @@
                 this.speedY = Math.random() * 1.5 + 1.2;
                 this.floatAmp = Math.random() * 2 + 1;
                 this.floatAngle = Math.random() * Math.PI * 2;
-                this.color = `hsl(${330 + Math.random() * 25}, 100%, ${65 + Math.random() * 15}%)`;
+                // درجات الأزرق والسماوي الشفافة
+                this.hue = 190 + Math.random() * 30;
+                this.color = `hsla(${this.hue}, 90%, 65%, 0.7)`;
                 this.popped = false;
             }
 
@@ -1133,15 +1150,15 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                // رسم الخيط
+                // الخيط الأبيض المتوهج
                 ctx.beginPath();
                 ctx.moveTo(0, this.size);
                 ctx.quadraticCurveTo(5, this.size + 15, 0, this.size + 30);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
 
-                // رسم القلب
+                // رسم القلب الزجاجي
                 ctx.beginPath();
                 const topCurveHeight = this.size * 0.3;
                 ctx.moveTo(0, topCurveHeight);
@@ -1152,14 +1169,18 @@
                 ctx.closePath();
 
                 ctx.fillStyle = this.color;
-                ctx.shadowColor = 'rgba(255, 105, 180, 0.5)';
-                ctx.shadowBlur = 12;
+                ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
+                ctx.shadowBlur = 15;
                 ctx.fill();
 
-                // لمعة زجاجية
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // لمعة زجاجية ونشاط ذهبي
                 ctx.beginPath();
-                ctx.arc(-this.size * 0.35, topCurveHeight * 0.8, this.size * 0.2, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+                ctx.arc(-this.size * 0.35, topCurveHeight * 0.8, this.size * 0.22, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                 ctx.fill();
 
                 // اسم "رتاج"
@@ -1208,26 +1229,30 @@
                 ctx.strokeStyle = '#ffffff';
                 ctx.lineWidth = 3.5;
                 ctx.lineCap = 'round';
+                ctx.shadowColor = '#38bdf8';
+                ctx.shadowBlur = 8;
                 ctx.stroke();
 
-                // رأس السهم
+                // رأس السهم الذهبي
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.lineTo(-12, -7);
                 ctx.lineTo(-8, 0);
                 ctx.lineTo(-12, 7);
                 ctx.closePath();
-                ctx.fillStyle = '#ff1493';
+                ctx.fillStyle = '#ffd700';
+                ctx.shadowColor = '#ffd700';
+                ctx.shadowBlur = 10;
                 ctx.fill();
 
-                // ريش السهم الخلفية
+                // ريش السهم الخلفية السماوية
                 ctx.beginPath();
                 ctx.moveTo(-this.length, 0);
                 ctx.lineTo(-this.length - 8, -6);
                 ctx.lineTo(-this.length - 4, 0);
                 ctx.lineTo(-this.length - 8, 6);
                 ctx.closePath();
-                ctx.fillStyle = '#ffb6c1';
+                ctx.fillStyle = '#7dd3fc';
                 ctx.fill();
 
                 ctx.restore();
@@ -1235,13 +1260,13 @@
         }
 
         class PopParticle {
-            constructor(x, y, color) {
+            constructor(x, y, isGold = false) {
                 this.x = x;
                 this.y = y;
                 this.vx = (Math.random() - 0.5) * 8;
                 this.vy = (Math.random() - 0.5) * 8;
                 this.size = Math.random() * 4 + 2;
-                this.color = color;
+                this.color = isGold ? '#ffd700' : `hsla(${190 + Math.random() * 30}, 100%, 75%, 0.9)`;
                 this.alpha = 1;
             }
 
@@ -1258,6 +1283,8 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 6;
                 ctx.fill();
                 ctx.restore();
             }
@@ -1282,9 +1309,12 @@
             p3Loop();
         }
 
-        function createPopParticles(x, y, color) {
-            for (let i = 0; i < 18; i++) {
-                p3Particles.push(new PopParticle(x, y, color));
+        function createPopParticles(x, y) {
+            for (let i = 0; i < 15; i++) {
+                p3Particles.push(new PopParticle(x, y, false));
+            }
+            for (let i = 0; i < 8; i++) {
+                p3Particles.push(new PopParticle(x, y, true));
             }
         }
 
@@ -1311,17 +1341,16 @@
                             b.popped = true;
                             a.active = false;
                             soundFX.playPop();
-                            createPopParticles(b.x, b.y + b.size * 0.5, b.color);
+                            createPopParticles(b.x, b.y + b.size * 0.5);
                         }
                     }
                 });
             });
 
-            // تنظيف البالونات المفرقعة والأسهم غير النشطة
             p3Balloons = p3Balloons.filter(b => !b.popped);
             p3Arrows = p3Arrows.filter(a => a.active);
 
-            // تحديث ورسم الجسيمات
+            // تحديث ورسم الجسيمات الأزرق والذهبي
             p3Particles.forEach(p => {
                 p.update();
                 p.draw();
@@ -1330,7 +1359,7 @@
 
             p3Count.innerText = p3Balloons.length;
 
-            // رسم مسار السهم / القوس أثناء السحب بالأصبع
+            // رسم القوس والسهم عند السحب
             if (isDragging) {
                 const dx = dragStart.x - dragCurrent.x;
                 const dy = dragStart.y - dragCurrent.y;
@@ -1341,22 +1370,22 @@
                 ctx.translate(dragStart.x, dragStart.y);
                 ctx.rotate(angle);
 
-                // رسم الوتر والقوس الشفاف
                 ctx.beginPath();
                 ctx.arc(0, 0, 35, -Math.PI / 2, Math.PI / 2);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
                 ctx.lineWidth = 3;
+                ctx.shadowColor = '#ffd700';
+                ctx.shadowBlur = 8;
                 ctx.stroke();
 
                 ctx.beginPath();
                 ctx.moveTo(0, -35);
                 ctx.lineTo(-power * 0.5, 0);
                 ctx.lineTo(0, 35);
-                ctx.strokeStyle = '#ff69b4';
+                ctx.strokeStyle = '#38bdf8';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // السهم الجاهز للإطلاق
                 ctx.beginPath();
                 ctx.moveTo(-power * 0.5, 0);
                 ctx.lineTo(40, 0);
@@ -1367,7 +1396,6 @@
                 ctx.restore();
             }
 
-            // فحص الفوز
             if (p3Balloons.length === 0) {
                 p3Active = false;
                 soundFX.playSuccess();
@@ -1388,7 +1416,6 @@
             p3AnimId = requestAnimationFrame(p3Loop);
         }
 
-        // معالجة اللمس والتنشيب بالرمي
         function handlePointerDown(e) {
             if (!p3Active) return;
             isDragging = true;
