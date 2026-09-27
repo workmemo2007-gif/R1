@@ -37,7 +37,10 @@ height: 100%;
 object-fit: cover;
 object-position: center;
 z-index: 1;
+transition: opacity .22s ease;
 }
+body.envelope-transition .bg-image,
+body.envelope-transition .cover-img { opacity: 0; }
 #petalsCanvas {
 position: absolute;
 top: 0;
@@ -87,27 +90,27 @@ transition: transform .8s ease, opacity .8s ease;
 position: absolute;
 z-index: 2;
 left: 4%;
-bottom: 94px;
+bottom: 64px;
 width: 92%;
-height: auto;
+height: 248px;
 min-height: 0;
-max-height: min(270px, 46vh);
-padding: clamp(12px, 3.2vw, 16px);
+max-height: min(248px, 48vh);
+padding: 11px 12px;
 border-radius: 22px;
 overflow: hidden;
 display: flex;
 flex-direction: column;
 justify-content: flex-start;
-gap: 10px;
+gap: 6px;
 color: #263044;
 background:
 radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.98), transparent 40%),
 linear-gradient(145deg, #fffdf8 0%, #f8f0df 54%, #fffaf0 100%);
 border: 1px solid rgba(211,174,105,.72);
 box-shadow: 0 18px 40px rgba(12,20,40,.32), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
-transform: translateY(145px) scale(.94);
+transform: translateY(10px) scale(.96);
 opacity: 0;
-transition: transform 900ms cubic-bezier(.16,1,.3,1), opacity .55s ease, box-shadow .7s ease;
+transition: transform 1500ms cubic-bezier(.22,.61,.36,1), opacity .8s ease, box-shadow .9s ease;
 pointer-events: none;
 }
 .letter-card::before,
@@ -133,7 +136,7 @@ box-shadow: 0 0 0 12px rgba(190,151,80,.045), 0 0 0 25px rgba(190,151,80,.035);
 .envelope-container.is-open .letter-card {
 z-index: 6;
 opacity: 1;
-transform: translateY(-128px) scale(1);
+transform: translateY(-12px) scale(1);
 pointer-events: auto;
 box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
 }
@@ -143,7 +146,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 gap: 8px;
-margin: 0 2px 10px;
+margin: 0 2px 4px;
 color: #9a7130;
 font-size: .66rem;
 font-weight: 900;
@@ -152,10 +155,12 @@ letter-spacing: .09em;
 .letter-heading span:last-child { color: #aa8b59; font-weight: 700; letter-spacing: 0; }
 .card-cover {
 width: 100%;
-height: clamp(46px, 8vh, 60px);
+height: clamp(68px, 10vh, 82px);
+flex: 0 0 auto;
 border-radius: 13px;
 overflow: hidden;
-margin-bottom: 10px;
+margin-bottom: 4px;
+padding: 4px;
 background: linear-gradient(135deg, #efe4cc, #fffaf0);
 border: 1px solid rgba(178,139,71,.34);
 box-shadow: 0 5px 14px rgba(113,83,34,.10);
@@ -163,11 +168,11 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-.cover-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.cover-img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; transition: opacity .22s ease; }
 .typing-container {
 padding: 0 2px;
 min-height: 0;
-max-height: 58px;
+max-height: 44px;
 overflow: auto;
 scrollbar-width: thin;
 scrollbar-color: rgba(163,126,62,.35) transparent;
@@ -190,7 +195,7 @@ width: 100%;
 display: flex;
 justify-content: space-between;
 gap: 7px;
-margin-top: 12px;
+margin-top: 4px;
 }
 .small-btn {
 flex: 1;
@@ -221,7 +226,7 @@ z-index: 4;
 left: 0;
 bottom: 64px;
 width: 100%;
-height: clamp(150px, 37vw, 235px);
+height: clamp(220px, 58vw, 285px);
 border-radius: 18px;
 background: linear-gradient(145deg, #203653 0%, #101d32 55%, #192b44 100%);
 border: 1px solid rgba(230,198,127,.72);
@@ -279,7 +284,7 @@ background: linear-gradient(160deg, #405b7a 0%, #243c5c 54%, #182c47 100%);
 clip-path: polygon(0 0, 100% 0, 50% 59%);
 transform-origin: 50% 0;
 transform: rotateX(0deg);
-transition: transform 760ms cubic-bezier(.2,.75,.2,1), filter .7s ease;
+transition: transform 1050ms cubic-bezier(.2,.75,.2,1), filter .9s ease;
 backface-visibility: visible;
 pointer-events: none;
 filter: drop-shadow(0 4px 6px rgba(2,8,20,.18));
@@ -344,14 +349,17 @@ animation: hintFloat 2.4s ease-in-out infinite;
 .hide-completely { opacity: 0 !important; pointer-events: none !important; transform: scale(.5) !important; }
 @media (max-height: 650px) {
 .envelope-stage { height: 82vh; min-height: 340px; }
-.letter-card { height: auto; max-height: min(230px, 43vh); bottom: 78px; }
-.envelope-container.is-open .letter-card { transform: translateY(-112px) scale(1); }
-.envelope-shell { bottom: 42px; height: clamp(138px, 34vw, 205px); }
+.letter-card { height: min(230px, 47vh); max-height: min(230px, 47vh); bottom: 42px; padding: 9px 10px; }
+.envelope-container.is-open .letter-card { transform: translateY(-10px) scale(1); }
+.card-cover { height: clamp(54px, 10vh, 68px); }
+.typing-container { max-height: 38px; }
+.envelope-shell { bottom: 42px; height: clamp(200px, 55vw, 260px); }
 .envelope-shadow { bottom: 26px; }
 }
 @media (max-width: 380px) {
 .envelope-stage { min-height: 360px; }
-.letter-card { padding: 13px; }
+.letter-card { padding: 9px; }
+.card-cover { height: 62px; }
 .games-container { gap: 5px; }
 .small-btn { font-size: .59rem; padding-inline: 3px; }
 }
@@ -833,7 +841,14 @@ const envelopeWrapper = document.getElementById("envelopeWrapper");
 const envelopeStage = document.getElementById("envelopeStage");
 const envelopeToggle = document.getElementById("envelopeToggle");
 const gestureHint = document.getElementById("gestureHint");
+let envelopeTransitionTimer = null;
+const ENVELOPE_TRANSITION_MS = 1600;
 function setEnvelopeOpen(open) {
+clearTimeout(envelopeTransitionTimer);
+document.body.classList.add('envelope-transition');
+envelopeTransitionTimer = setTimeout(() => {
+document.body.classList.remove('envelope-transition');
+}, ENVELOPE_TRANSITION_MS);
 envelopeIsOpen = open;
 envelopeWrapper.classList.toggle('is-open', open);
 envelopeToggle.setAttribute('aria-expanded', String(open));
@@ -866,7 +881,8 @@ const dy = event.clientY - gestureStart.y;
 if (Math.hypot(dx, dy) > 7) gestureMoved = true;
 rotateY = Math.max(-180, Math.min(180, gestureStart.rotateY + dx * 1.2));
 rotateX = Math.max(-180, Math.min(180, gestureStart.rotateX - dy * 1.2));
-envelopeStage.style.setProperty('--rotate-x', `<LaTex>{rotateX}deg`); envelopeStage.style.setProperty('--rotate-y', `</LaTex>{rotateY}deg`);
+envelopeStage.style.setProperty('--rotate-x', `${rotateX}deg`);
+envelopeStage.style.setProperty('--rotate-y', `${rotateY}deg`);
 });
 function resetEnvelopeRotation() {
 rotateX = 0;
@@ -953,7 +969,7 @@ function initP1Game() {
 currentWord1 = new Array(6).fill(null);
 currentWord2 = new Array(4).fill(null);
 availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
-id: `char-<LaTex>{Date.now()}-</LaTex>{index}-${Math.random().toString(36).slice(2, 8)}`,
+id: `char-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
 char: char
 }));
 setP1RobotState('neutral');
@@ -1126,17 +1142,22 @@ resetP2ButtonStyles();
 renderP2Board();
 }
 function renderP2Board() {
+puzzleBoard.style.gridTemplateColumns = `repeat(${GRID_SIZE}, minmax(0, 1fr))`;
+puzzleBoard.style.gridTemplateRows = `repeat(${GRID_SIZE}, minmax(0, 1fr))`;
 puzzleBoard.innerHTML = '';
 currentP2Board.forEach((originalIndex, boardPosition) => {
 const tile = document.createElement('div');
-tile.className = 'glass-tile w-full h-full rounded-xl cursor-pointer relative overflow-hidden select-none';
+tile.className = 'glass-tile rounded-xl cursor-pointer relative overflow-hidden select-none min-w-0 min-h-0';
 const row = Math.floor(originalIndex / GRID_SIZE);
 const col = originalIndex % GRID_SIZE;
-const posX = col * 50;
-const posY = row * 50;
+const posX = (col / (GRID_SIZE - 1)) * 100;
+const posY = (row / (GRID_SIZE - 1)) * 100;
+tile.style.width = '100%';
+tile.style.height = '100%';
 tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
-tile.style.backgroundSize = '300% 300%';
-tile.style.backgroundPosition = `<LaTex>{posX}%</LaTex>{posY}%`;
+tile.style.backgroundSize = `${GRID_SIZE * 100}% ${GRID_SIZE * 100}%`;
+tile.style.backgroundPosition = `${posX}% ${posY}%`;
+tile.style.backgroundRepeat = 'no-repeat';
 if (selectedTileIndex === boardPosition) {
 tile.classList.add('selected-tile');
 }
