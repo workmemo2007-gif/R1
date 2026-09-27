@@ -89,13 +89,16 @@ z-index: 2;
 left: 4%;
 bottom: 94px;
 width: 92%;
-height: clamp(240px, 43vh, 320px);
-padding: clamp(14px, 4vw, 22px);
+height: auto;
+min-height: 0;
+max-height: min(270px, 46vh);
+padding: clamp(12px, 3.2vw, 16px);
 border-radius: 22px;
 overflow: hidden;
 display: flex;
 flex-direction: column;
-justify-content: space-between;
+justify-content: flex-start;
+gap: 10px;
 color: #263044;
 background:
 radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.98), transparent 40%),
@@ -138,7 +141,7 @@ box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48)
 .letter-heading {
 display: flex;
 align-items: center;
-justify-content: space-between;
+justify-content: center;
 gap: 8px;
 margin: 0 2px 10px;
 color: #9a7130;
@@ -149,7 +152,7 @@ letter-spacing: .09em;
 .letter-heading span:last-child { color: #aa8b59; font-weight: 700; letter-spacing: 0; }
 .card-cover {
 width: 100%;
-height: clamp(58px, 10vh, 78px);
+height: clamp(46px, 8vh, 60px);
 border-radius: 13px;
 overflow: hidden;
 margin-bottom: 10px;
@@ -163,8 +166,8 @@ justify-content: center;
 .cover-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
 .typing-container {
 padding: 0 2px;
-min-height: 55px;
-max-height: 78px;
+min-height: 0;
+max-height: 58px;
 overflow: auto;
 scrollbar-width: thin;
 scrollbar-color: rgba(163,126,62,.35) transparent;
@@ -341,7 +344,7 @@ animation: hintFloat 2.4s ease-in-out infinite;
 .hide-completely { opacity: 0 !important; pointer-events: none !important; transform: scale(.5) !important; }
 @media (max-height: 650px) {
 .envelope-stage { height: 82vh; min-height: 340px; }
-.letter-card { height: clamp(220px, 48vh, 285px); bottom: 78px; }
+.letter-card { height: auto; max-height: min(230px, 43vh); bottom: 78px; }
 .envelope-container.is-open .letter-card { transform: translateY(-112px) scale(1); }
 .envelope-shell { bottom: 42px; height: clamp(138px, 34vw, 205px); }
 .envelope-shadow { bottom: 26px; }
@@ -543,7 +546,6 @@ transform: scale(0.5) !important;
 <div class="letter-content">
 <div class="letter-heading">
 <span>✦ رسالة خاصة ✦</span>
-<span>إلى العلوية رتاج</span>
 </div>
 <div class="card-cover">
 <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الرسالة" class="cover-img">
@@ -862,10 +864,16 @@ if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
 const dy = event.clientY - gestureStart.y;
 if (Math.hypot(dx, dy) > 7) gestureMoved = true;
-rotateY = Math.max(-38, Math.min(38, gestureStart.rotateY + dx * 0.42));
-rotateX = Math.max(-24, Math.min(24, gestureStart.rotateX - dy * 0.22));
+rotateY = Math.max(-180, Math.min(180, gestureStart.rotateY + dx * 1.2));
+rotateX = Math.max(-180, Math.min(180, gestureStart.rotateX - dy * 1.2));
 envelopeStage.style.setProperty('--rotate-x', `<LaTex>{rotateX}deg`); envelopeStage.style.setProperty('--rotate-y', `</LaTex>{rotateY}deg`);
 });
+function resetEnvelopeRotation() {
+rotateX = 0;
+rotateY = 0;
+envelopeStage.style.setProperty('--rotate-x', '0deg');
+envelopeStage.style.setProperty('--rotate-y', '0deg');
+}
 function finishEnvelopeGesture(event) {
 if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
@@ -878,15 +886,18 @@ soundFX.playTap();
 setEnvelopeOpen(!envelopeIsOpen);
 soundFX.playTap();
 }
+resetEnvelopeRotation();
 gestureStart = null;
 }
 envelopeWrapper.addEventListener('pointerup', finishEnvelopeGesture);
-envelopeWrapper.addEventListener('pointercancel', (event) => {
+envelopeWrapper.addEventListener('pointercancel', () => {
 envelopeWrapper.classList.remove('is-dragging');
+resetEnvelopeRotation();
 gestureStart = null;
 });
 envelopeWrapper.addEventListener('lostpointercapture', () => {
 envelopeWrapper.classList.remove('is-dragging');
+resetEnvelopeRotation();
 gestureStart = null;
 });
 const puzzle1Btn = document.getElementById('puzzle1Btn');
@@ -942,7 +953,7 @@ function initP1Game() {
 currentWord1 = new Array(6).fill(null);
 currentWord2 = new Array(4).fill(null);
 availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
-id: `char-<LaTex>{index}-</LaTex>{Date.now()}`,
+id: `char-<LaTex>{Date.now()}-</LaTex>{index}-${Math.random().toString(36).slice(2, 8)}`,
 char: char
 }));
 setP1RobotState('neutral');
@@ -964,6 +975,7 @@ p1_word2Container.appendChild(slot);
 p1_lettersBank.innerHTML = '';
 availablePool.forEach((item) => {
 const btn = document.createElement('button');
+btn.type = 'button';
 btn.className = 'letter-btn font-extrabold text-xs w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer shadow-sm';
 btn.innerText = item.char;
 btn.onclick = () => {
@@ -978,6 +990,7 @@ const slot = document.createElement('div');
 slot.className = 'letter-slot-mini';
 if (item) {
 const letterBtn = document.createElement('button');
+letterBtn.type = 'button';
 letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
 letterBtn.innerText = item.char;
 letterBtn.onclick = () => {
@@ -992,14 +1005,14 @@ function addLetterToNextAvailable(item) {
 const emptyW1Index = currentWord1.findIndex(slot => slot === null);
 if (emptyW1Index !== -1) {
 currentWord1[emptyW1Index] = item;
-availablePool = availablePool.filter(p => p.id !== item.id);
+availablePool = availablePool.filter(p => p !== item);
 renderP1Board();
 return;
 }
 const emptyW2Index = currentWord2.findIndex(slot => slot === null);
 if (emptyW2Index !== -1) {
 currentWord2[emptyW2Index] = item;
-availablePool = availablePool.filter(p => p.id !== item.id);
+availablePool = availablePool.filter(p => p !== item);
 renderP1Board();
 return;
 }
@@ -1079,7 +1092,7 @@ p1_resetBtn.addEventListener('click', () => {
 soundFX.playTap();
 initP1Game();
 });
-const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
+const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/1929d167d0681025f67a2fa9cde3be5a9a52daf9/IMG_2540.jpeg';
 const GRID_SIZE = 3;
 const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
 const TARGET_BOARD = [2, 1, 0, 5, 4, 3, 8, 7, 6];
@@ -1121,7 +1134,9 @@ const row = Math.floor(originalIndex / GRID_SIZE);
 const col = originalIndex % GRID_SIZE;
 const posX = col * 50;
 const posY = row * 50;
-tile.style.backgroundImage = `url('<LaTex>{PUZZLE_IMAGE_URL}')`; tile.style.backgroundSize = '300% 300%'; tile.style.backgroundPosition = `</LaTex>{posX}% ${posY}%`;
+tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
+tile.style.backgroundSize = '300% 300%';
+tile.style.backgroundPosition = `<LaTex>{posX}%</LaTex>{posY}%`;
 if (selectedTileIndex === boardPosition) {
 tile.classList.add('selected-tile');
 }
