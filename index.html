@@ -54,6 +54,7 @@ width: min(92vw, 440px);
 touch-action: none;
 user-select: none;
 -webkit-user-select: none;
+transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .envelope-stage {
 --rotate-x: 0deg;
@@ -89,13 +90,15 @@ z-index: 2;
 left: 4%;
 bottom: 94px;
 width: 92%;
-height: clamp(240px, 43vh, 320px);
-padding: clamp(14px, 4vw, 22px);
+height: auto;
+max-height: 270px;
+padding: 12px 14px;
 border-radius: 22px;
 overflow: hidden;
 display: flex;
 flex-direction: column;
-justify-content: space-between;
+justify-content: flex-start;
+gap: 8px;
 color: #263044;
 background:
 radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.98), transparent 40%),
@@ -114,15 +117,15 @@ position: absolute;
 pointer-events: none;
 }
 .letter-card::before {
-inset: 13px;
+inset: 8px;
 border: 1px solid rgba(185,143,69,.24);
 border-radius: 14px;
 }
 .letter-card::after {
-width: 140px;
-height: 140px;
-left: -74px;
-bottom: -85px;
+width: 120px;
+height: 120px;
+left: -60px;
+bottom: -70px;
 border: 1px solid rgba(190,151,80,.2);
 border-radius: 50%;
 box-shadow: 0 0 0 12px rgba(190,151,80,.045), 0 0 0 25px rgba(190,151,80,.035);
@@ -134,45 +137,33 @@ transform: translateY(-128px) scale(1);
 pointer-events: auto;
 box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
 }
-.letter-content { position: relative; z-index: 1; width: 100%; min-height: 0; }
-.letter-heading {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 8px;
-margin: 0 2px 10px;
-color: #9a7130;
-font-size: .66rem;
-font-weight: 900;
-letter-spacing: .09em;
-}
-.letter-heading span:last-child { color: #aa8b59; font-weight: 700; letter-spacing: 0; }
+.letter-content { position: relative; z-index: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+
 .card-cover {
 width: 100%;
-height: clamp(58px, 10vh, 78px);
-border-radius: 13px;
+height: 75px;
+border-radius: 12px;
 overflow: hidden;
-margin-bottom: 10px;
 background: linear-gradient(135deg, #efe4cc, #fffaf0);
 border: 1px solid rgba(178,139,71,.34);
-box-shadow: 0 5px 14px rgba(113,83,34,.10);
+box-shadow: 0 4px 10px rgba(113,83,34,.10);
 display: flex;
 align-items: center;
 justify-content: center;
+flex-shrink: 0;
 }
-.cover-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.cover-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .typing-container {
 padding: 0 2px;
-min-height: 55px;
-max-height: 78px;
-overflow: auto;
+max-height: 85px;
+overflow-y: auto;
 scrollbar-width: thin;
 scrollbar-color: rgba(163,126,62,.35) transparent;
 }
 .typing-text {
-font-size: clamp(.68rem, 2.3vw, .8rem);
+font-size: 0.75rem;
 font-weight: 700;
-line-height: 1.75;
+line-height: 1.6;
 color: #3f4653;
 text-align: right;
 white-space: pre-wrap;
@@ -186,19 +177,19 @@ z-index: 1;
 width: 100%;
 display: flex;
 justify-content: space-between;
-gap: 7px;
-margin-top: 12px;
+gap: 6px;
+margin-top: 2px;
 }
 .small-btn {
 flex: 1;
-min-height: 38px;
-padding: 7px 5px;
-font-size: clamp(.62rem, 2.2vw, .72rem);
+min-height: 34px;
+padding: 5px 4px;
+font-size: 0.7rem;
 font-weight: 800;
 color: #76562b;
 background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(246,237,217,.95));
 border: 1px solid rgba(180,140,70,.48);
-border-radius: 11px;
+border-radius: 10px;
 cursor: pointer;
 transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
 text-align: center;
@@ -339,22 +330,7 @@ animation: hintFloat 2.4s ease-in-out infinite;
 }
 @keyframes hintFloat { 50% { transform: translateY(-4px); opacity: .72; } }
 .hide-completely { opacity: 0 !important; pointer-events: none !important; transform: scale(.5) !important; }
-@media (max-height: 650px) {
-.envelope-stage { height: 82vh; min-height: 340px; }
-.letter-card { height: clamp(220px, 48vh, 285px); bottom: 78px; }
-.envelope-container.is-open .letter-card { transform: translateY(-112px) scale(1); }
-.envelope-shell { bottom: 42px; height: clamp(138px, 34vw, 205px); }
-.envelope-shadow { bottom: 26px; }
-}
-@media (max-width: 380px) {
-.envelope-stage { min-height: 360px; }
-.letter-card { padding: 13px; }
-.games-container { gap: 5px; }
-.small-btn { font-size: .59rem; padding-inline: 3px; }
-}
-@media (prefers-reduced-motion: reduce) {
-.envelope-stage, .letter-card, .envelope-flap, .envelope-seal, .gesture-hint { transition-duration: .01ms !important; animation-duration: .01ms !important; }
-}
+
 .puzzle-modal {
 position: fixed;
 inset: 0;
@@ -526,11 +502,6 @@ transition: opacity 0.5s ease;
 .p3-instruction-badge.active {
 opacity: 1;
 }
-.hide-completely {
-opacity: 0 !important;
-pointer-events: none !important;
-transform: scale(0.5) !important;
-}
 </style>
 </head>
 <body>
@@ -541,10 +512,6 @@ transform: scale(0.5) !important;
 <div class="envelope-shadow" aria-hidden="true"></div>
 <article class="letter-card" id="letterCard" aria-label="رسالة إلى رتاج">
 <div class="letter-content">
-<div class="letter-heading">
-<span>✦ رسالة خاصة ✦</span>
-<span>إلى العلوية رتاج</span>
-</div>
 <div class="card-cover">
 <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الرسالة" class="cover-img">
 </div>
@@ -569,6 +536,7 @@ transform: scale(0.5) !important;
 </div>
 <p class="gesture-hint" id="gestureHint">اسحبي الظرف للتدوير · اسحبي للأعلى لفتحه</p>
 </div>
+
 <div id="puzzle1Modal" class="puzzle-modal">
 <div class="glass-panel-white relative max-w-md mx-auto">
 <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
@@ -623,6 +591,7 @@ transform: scale(0.5) !important;
 </div>
 </div>
 </div>
+
 <div id="puzzle2Modal" class="puzzle-modal">
 <div class="glass-panel-white relative max-w-md mx-auto">
 <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
@@ -675,10 +644,12 @@ transform: scale(0.5) !important;
 </div>
 </div>
 </div>
+
 <div id="p3Badge" class="p3-instruction-badge">
 اخفقي 10 قلوب باسم "رتاج" بالسهم! (المتبقي: <span id="p3Count">10</span>) 🏹
 </div>
 <canvas id="puzzle3Canvas"></canvas>
+
 <script>
 const petalsCanvas = document.getElementById('petalsCanvas');
 const pCtx = petalsCanvas.getContext('2d');
@@ -689,6 +660,7 @@ petalsCanvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizePetalCanvas);
 resizePetalCanvas();
+
 class Petal {
 constructor() {
 this.reset();
@@ -740,6 +712,7 @@ p.draw();
 requestAnimationFrame(animatePetals);
 }
 animatePetals();
+
 class SoundFX {
 constructor() { this.ctx = null; }
 init() {
@@ -820,6 +793,7 @@ let rotateX = 0;
 let rotateY = 0;
 let gestureStart = null;
 let gestureMoved = false;
+
 function typeWriter() {
 if (index < text.length) {
 document.getElementById("typewriter").textContent += text.charAt(index);
@@ -827,10 +801,12 @@ index++;
 setTimeout(typeWriter, speed);
 }
 }
+
 const envelopeWrapper = document.getElementById("envelopeWrapper");
 const envelopeStage = document.getElementById("envelopeStage");
 const envelopeToggle = document.getElementById("envelopeToggle");
 const gestureHint = document.getElementById("gestureHint");
+
 function setEnvelopeOpen(open) {
 envelopeIsOpen = open;
 envelopeWrapper.classList.toggle('is-open', open);
@@ -844,11 +820,13 @@ isOpened = true;
 setTimeout(typeWriter, 550);
 }
 }
+
 envelopeToggle.addEventListener('click', (event) => {
 event.stopPropagation();
 soundFX.playTap();
 setEnvelopeOpen(!envelopeIsOpen);
 });
+
 envelopeWrapper.addEventListener('pointerdown', (event) => {
 if (event.target.closest('button')) return;
 if (event.pointerType === 'mouse' && event.button !== 0) return;
@@ -857,6 +835,7 @@ gestureMoved = false;
 envelopeWrapper.classList.add('is-dragging');
 envelopeWrapper.setPointerCapture?.(event.pointerId);
 });
+
 envelopeWrapper.addEventListener('pointermove', (event) => {
 if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
@@ -864,8 +843,10 @@ const dy = event.clientY - gestureStart.y;
 if (Math.hypot(dx, dy) > 7) gestureMoved = true;
 rotateY = Math.max(-38, Math.min(38, gestureStart.rotateY + dx * 0.42));
 rotateX = Math.max(-24, Math.min(24, gestureStart.rotateX - dy * 0.22));
-envelopeStage.style.setProperty('--rotate-x', `<LaTex>{rotateX}deg`); envelopeStage.style.setProperty('--rotate-y', `</LaTex>{rotateY}deg`);
+envelopeStage.style.setProperty('--rotate-x', `${rotateX}deg`);
+envelopeStage.style.setProperty('--rotate-y', `${rotateY}deg`);
 });
+
 function finishEnvelopeGesture(event) {
 if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
@@ -880,8 +861,9 @@ soundFX.playTap();
 }
 gestureStart = null;
 }
+
 envelopeWrapper.addEventListener('pointerup', finishEnvelopeGesture);
-envelopeWrapper.addEventListener('pointercancel', (event) => {
+envelopeWrapper.addEventListener('pointercancel', () => {
 envelopeWrapper.classList.remove('is-dragging');
 gestureStart = null;
 });
@@ -889,38 +871,48 @@ envelopeWrapper.addEventListener('lostpointercapture', () => {
 envelopeWrapper.classList.remove('is-dragging');
 gestureStart = null;
 });
+
 const puzzle1Btn = document.getElementById('puzzle1Btn');
 const puzzle2Btn = document.getElementById('puzzle2Btn');
 const puzzle3Btn = document.getElementById('puzzle3Btn');
 const puzzle1Modal = document.getElementById('puzzle1Modal');
 const puzzle2Modal = document.getElementById('puzzle2Modal');
 const closeBtns = document.querySelectorAll('.closeModalBtn');
+
 puzzle1Btn.addEventListener('click', (e) => {
 e.stopPropagation();
+envelopeWrapper.classList.add('hide-completely');
 initP1Game();
 puzzle1Modal.classList.add('active');
 });
+
 puzzle2Btn.addEventListener('click', (e) => {
 e.stopPropagation();
+envelopeWrapper.classList.add('hide-completely');
 initP2Game();
 puzzle2Modal.classList.add('active');
 });
+
 puzzle3Btn.addEventListener('click', (e) => {
 e.stopPropagation();
 startPuzzle3Game();
 });
+
 closeBtns.forEach(btn => {
 btn.addEventListener('click', () => {
 puzzle1Modal.classList.remove('active');
 puzzle2Modal.classList.remove('active');
+envelopeWrapper.classList.remove('hide-completely');
 });
 });
+
 const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
 const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
 const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
 let currentWord1 = new Array(6).fill(null);
 let currentWord2 = new Array(4).fill(null);
 let availablePool = [];
+
 const p1_word1Container = document.getElementById('word1Container');
 const p1_word2Container = document.getElementById('word2Container');
 const p1_lettersBank = document.getElementById('lettersBank');
@@ -930,6 +922,7 @@ const p1_tvScreen = document.getElementById('p1_tvScreen');
 const p1_screenOffContent = document.getElementById('p1_screenOffContent');
 const p1_screenOnContent = document.getElementById('p1_screenOnContent');
 const p1_speech = document.getElementById('p1_speech');
+
 function shuffleArray(array) {
 const arr = [...array];
 for (let i = arr.length - 1; i > 0; i--) {
@@ -938,11 +931,12 @@ const j = Math.floor(Math.random() * (i + 1));
 }
 return arr;
 }
+
 function initP1Game() {
 currentWord1 = new Array(6).fill(null);
 currentWord2 = new Array(4).fill(null);
 availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
-id: `char-<LaTex>{index}-</LaTex>{Date.now()}`,
+id: `char-${index}-${Date.now()}-${Math.random()}`,
 char: char
 }));
 setP1RobotState('neutral');
@@ -950,17 +944,20 @@ resetP1Screen();
 resetP1ButtonStyles();
 renderP1Board();
 }
+
 function renderP1Board() {
 p1_word1Container.innerHTML = '';
 currentWord1.forEach((item, index) => {
 const slot = createSlotElement(item, () => removeLetterFromWord(1, index));
 p1_word1Container.appendChild(slot);
 });
+
 p1_word2Container.innerHTML = '';
 currentWord2.forEach((item, index) => {
 const slot = createSlotElement(item, () => removeLetterFromWord(2, index));
 p1_word2Container.appendChild(slot);
 });
+
 p1_lettersBank.innerHTML = '';
 availablePool.forEach((item) => {
 const btn = document.createElement('button');
@@ -973,6 +970,7 @@ addLetterToNextAvailable(item);
 p1_lettersBank.appendChild(btn);
 });
 }
+
 function createSlotElement(item, onClick) {
 const slot = document.createElement('div');
 slot.className = 'letter-slot-mini';
@@ -988,6 +986,7 @@ slot.appendChild(letterBtn);
 }
 return slot;
 }
+
 function addLetterToNextAvailable(item) {
 const emptyW1Index = currentWord1.findIndex(slot => slot === null);
 if (emptyW1Index !== -1) {
@@ -1004,6 +1003,7 @@ renderP1Board();
 return;
 }
 }
+
 function removeLetterFromWord(wordNumber, index) {
 let item = null;
 if (wordNumber === 1) {
@@ -1018,6 +1018,7 @@ availablePool.push(item);
 renderP1Board();
 }
 }
+
 function setP1RobotState(state) {
 const pxMouth = document.getElementById('p1_pxMouth');
 if (state === 'sad') {
@@ -1034,19 +1035,23 @@ p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨"
 p1_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
 }
 }
+
 function activateP1Screen() {
 p1_tvScreen.classList.add('active');
 p1_screenOffContent.classList.add('hidden');
 p1_screenOnContent.classList.remove('hidden');
 }
+
 function resetP1Screen() {
 p1_tvScreen.classList.remove('active');
 p1_screenOffContent.classList.remove('hidden');
 p1_screenOnContent.classList.add('hidden');
 }
+
 function resetP1ButtonStyles() {
 p1_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5";
 }
+
 p1_finishBtn.addEventListener('click', () => {
 resetP1ButtonStyles();
 const userWord1 = currentWord1.map(i => i ? i.char : '').join('');
@@ -1054,6 +1059,7 @@ const userWord2 = currentWord2.map(i => i ? i.char : '').join('');
 const target1 = WORD1_TARGET.join('');
 const target2 = WORD2_TARGET.join('');
 const isCorrect = (userWord1 === target1) && (userWord2 === target2);
+
 if (isCorrect) {
 soundFX.playSuccess();
 setP1RobotState('happy');
@@ -1064,6 +1070,7 @@ confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
 }
 setTimeout(() => {
 puzzle1Modal.classList.remove('active');
+envelopeWrapper.classList.remove('hide-completely');
 }, 3000);
 } else {
 soundFX.playError();
@@ -1075,16 +1082,19 @@ p1_finishBtn.classList.remove('btn-shake-red');
 }, 700);
 }
 });
+
 p1_resetBtn.addEventListener('click', () => {
 soundFX.playTap();
 initP1Game();
 });
-const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
+
+const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/5c2b467eaf755e06469004f8e8a4fa5b7ba38b4e/IMG_2565.jpeg';
 const GRID_SIZE = 3;
 const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
 const TARGET_BOARD = [2, 1, 0, 5, 4, 3, 8, 7, 6];
 let currentP2Board = [];
 let selectedTileIndex = null;
+
 const puzzleBoard = document.getElementById('puzzleBoard');
 const connectedBoard = document.getElementById('connectedBoard');
 const completedPuzzleImg = document.getElementById('completedPuzzleImg');
@@ -1095,8 +1105,10 @@ const p2_screenOffContent = document.getElementById('p2_screenOffContent');
 const p2_screenOnContent = document.getElementById('p2_screenOnContent');
 const p2_fullPreviewImage = document.getElementById('p2_fullPreviewImage');
 const p2_speech = document.getElementById('p2_speech');
+
 p2_fullPreviewImage.src = PUZZLE_IMAGE_URL;
 completedPuzzleImg.src = PUZZLE_IMAGE_URL;
+
 function initP2Game() {
 selectedTileIndex = null;
 let solved = true;
@@ -1112,6 +1124,7 @@ resetP2Screen();
 resetP2ButtonStyles();
 renderP2Board();
 }
+
 function renderP2Board() {
 puzzleBoard.innerHTML = '';
 currentP2Board.forEach((originalIndex, boardPosition) => {
@@ -1121,7 +1134,10 @@ const row = Math.floor(originalIndex / GRID_SIZE);
 const col = originalIndex % GRID_SIZE;
 const posX = col * 50;
 const posY = row * 50;
-tile.style.backgroundImage = `url('<LaTex>{PUZZLE_IMAGE_URL}')`; tile.style.backgroundSize = '300% 300%'; tile.style.backgroundPosition = `</LaTex>{posX}% ${posY}%`;
+tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
+tile.style.backgroundSize = '300% 300%';
+tile.style.backgroundPosition = `${posX}% ${posY}%`;
+
 if (selectedTileIndex === boardPosition) {
 tile.classList.add('selected-tile');
 }
@@ -1129,6 +1145,7 @@ tile.onclick = () => handleP2TileClick(boardPosition);
 puzzleBoard.appendChild(tile);
 });
 }
+
 function handleP2TileClick(position) {
 soundFX.playTap();
 if (selectedTileIndex === null) {
@@ -1143,6 +1160,7 @@ selectedTileIndex = null;
 }
 renderP2Board();
 }
+
 function setP2SpeechState(state) {
 const pxMouth = document.getElementById('p2_pxMouth');
 if (state === 'sad') {
@@ -1159,19 +1177,23 @@ p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسال�
 p2_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
 }
 }
+
 function activateP2Screen() {
 p2_tvScreen.classList.add('active');
 p2_screenOffContent.classList.add('hidden');
 p2_screenOnContent.classList.remove('hidden');
 }
+
 function resetP2Screen() {
 p2_tvScreen.classList.remove('active');
 p2_screenOffContent.classList.remove('hidden');
 p2_screenOnContent.classList.add('hidden');
 }
+
 function resetP2ButtonStyles() {
 p2_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5";
 }
+
 p2_finishBtn.addEventListener('click', () => {
 resetP2ButtonStyles();
 const isCorrect = currentP2Board.every((val, index) => val === TARGET_BOARD[index]);
@@ -1187,6 +1209,7 @@ confetti({ particleCount: 130, spread: 85, origin: { y: 0.5 } });
 }
 setTimeout(() => {
 puzzle2Modal.classList.remove('active');
+envelopeWrapper.classList.remove('hide-completely');
 }, 3000);
 } else {
 soundFX.playError();
@@ -1198,27 +1221,30 @@ p2_finishBtn.classList.remove('btn-shake-red');
 }, 700);
 }
 });
+
 p2_resetBtn.addEventListener('click', () => {
 soundFX.playTap();
 initP2Game();
 });
+
 const canvas = document.getElementById('puzzle3Canvas');
 const ctx = canvas.getContext('2d');
 const p3Badge = document.getElementById('p3Badge');
 const p3Count = document.getElementById('p3Count');
 let p3Active = false;
-let p3AnimId = null;
 let p3Balloons = [];
 let p3Arrows = [];
 let p3Particles = [];
 let isDragging = false;
 let dragStart = { x: 0, y: 0 };
 let dragCurrent = { x: 0, y: 0 };
+
 function resizeCanvas() {
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizeCanvas);
+
 class HeartBalloon {
 constructor() {
 this.x = Math.random() * (canvas.width - 100) + 50;
@@ -1278,6 +1304,7 @@ ctx.fillText('رتاج', 0, this.size * 0.5);
 ctx.restore();
 }
 }
+
 class Arrow {
 constructor(x, y, vx, vy) {
 this.x = x;
@@ -1331,6 +1358,7 @@ ctx.fill();
 ctx.restore();
 }
 }
+
 class PopParticle {
 constructor(x, y, isGold = false) {
 this.x = x;
@@ -1359,6 +1387,7 @@ ctx.fill();
 ctx.restore();
 }
 }
+
 function startPuzzle3Game() {
 resizeCanvas();
 p3Active = true;
@@ -1374,6 +1403,7 @@ p3Balloons.push(new HeartBalloon());
 p3Count.innerText = p3Balloons.length;
 p3Loop();
 }
+
 function createPopParticles(x, y) {
 for (let i = 0; i < 15; i++) {
 p3Particles.push(new PopParticle(x, y, false));
@@ -1382,6 +1412,7 @@ for (let i = 0; i < 8; i++) {
 p3Particles.push(new PopParticle(x, y, true));
 }
 }
+
 function p3Loop() {
 if (!p3Active) return;
 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1412,6 +1443,7 @@ p.draw();
 });
 p3Particles = p3Particles.filter(p => p.alpha > 0);
 p3Count.innerText = p3Balloons.length;
+
 if (isDragging) {
 const dx = dragStart.x - dragCurrent.x;
 const dy = dragStart.y - dragCurrent.y;
@@ -1442,6 +1474,7 @@ ctx.lineWidth = 3.5;
 ctx.stroke();
 ctx.restore();
 }
+
 if (p3Balloons.length === 0) {
 p3Active = false;
 soundFX.playSuccess();
@@ -1456,8 +1489,9 @@ envelopeWrapper.classList.remove('hide-completely');
 }, 2800);
 return;
 }
-p3AnimId = requestAnimationFrame(p3Loop);
+requestAnimationFrame(p3Loop);
 }
+
 function handlePointerDown(e) {
 if (!p3Active) return;
 isDragging = true;
@@ -1483,6 +1517,7 @@ p3Arrows.push(new Arrow(dragStart.x, dragStart.y, vx, vy));
 soundFX.playTap();
 }
 }
+
 window.addEventListener('mousedown', handlePointerDown);
 window.addEventListener('mousemove', handlePointerMove);
 window.addEventListener('mouseup', handlePointerUp);
