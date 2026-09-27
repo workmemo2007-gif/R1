@@ -37,10 +37,7 @@ height: 100%;
 object-fit: cover;
 object-position: center;
 z-index: 1;
-transition: opacity .22s ease;
 }
-body.envelope-transition .bg-image,
-body.envelope-transition .cover-img { opacity: 0; }
 #petalsCanvas {
 position: absolute;
 top: 0;
@@ -90,27 +87,24 @@ transition: transform .8s ease, opacity .8s ease;
 position: absolute;
 z-index: 2;
 left: 4%;
-bottom: 64px;
+bottom: 94px;
 width: 92%;
-height: 248px;
-min-height: 0;
-max-height: min(248px, 48vh);
-padding: 11px 12px;
+height: clamp(240px, 43vh, 320px);
+padding: clamp(14px, 4vw, 22px);
 border-radius: 22px;
 overflow: hidden;
 display: flex;
 flex-direction: column;
-justify-content: flex-start;
-gap: 6px;
+justify-content: space-between;
 color: #263044;
 background:
 radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.98), transparent 40%),
 linear-gradient(145deg, #fffdf8 0%, #f8f0df 54%, #fffaf0 100%);
 border: 1px solid rgba(211,174,105,.72);
 box-shadow: 0 18px 40px rgba(12,20,40,.32), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
-transform: translateY(10px) scale(.96);
+transform: translateY(145px) scale(.94);
 opacity: 0;
-transition: transform 1500ms cubic-bezier(.22,.61,.36,1), opacity .8s ease, box-shadow .9s ease;
+transition: transform 900ms cubic-bezier(.16,1,.3,1), opacity .55s ease, box-shadow .7s ease;
 pointer-events: none;
 }
 .letter-card::before,
@@ -136,7 +130,7 @@ box-shadow: 0 0 0 12px rgba(190,151,80,.045), 0 0 0 25px rgba(190,151,80,.035);
 .envelope-container.is-open .letter-card {
 z-index: 6;
 opacity: 1;
-transform: translateY(-12px) scale(1);
+transform: translateY(-128px) scale(1);
 pointer-events: auto;
 box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
 }
@@ -144,9 +138,9 @@ box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48)
 .letter-heading {
 display: flex;
 align-items: center;
-justify-content: center;
+justify-content: space-between;
 gap: 8px;
-margin: 0 2px 4px;
+margin: 0 2px 10px;
 color: #9a7130;
 font-size: .66rem;
 font-weight: 900;
@@ -155,12 +149,10 @@ letter-spacing: .09em;
 .letter-heading span:last-child { color: #aa8b59; font-weight: 700; letter-spacing: 0; }
 .card-cover {
 width: 100%;
-height: clamp(68px, 10vh, 82px);
-flex: 0 0 auto;
+height: clamp(58px, 10vh, 78px);
 border-radius: 13px;
 overflow: hidden;
-margin-bottom: 4px;
-padding: 4px;
+margin-bottom: 10px;
 background: linear-gradient(135deg, #efe4cc, #fffaf0);
 border: 1px solid rgba(178,139,71,.34);
 box-shadow: 0 5px 14px rgba(113,83,34,.10);
@@ -168,11 +160,11 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-.cover-img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; transition: opacity .22s ease; }
+.cover-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
 .typing-container {
 padding: 0 2px;
-min-height: 0;
-max-height: 44px;
+min-height: 55px;
+max-height: 78px;
 overflow: auto;
 scrollbar-width: thin;
 scrollbar-color: rgba(163,126,62,.35) transparent;
@@ -195,7 +187,7 @@ width: 100%;
 display: flex;
 justify-content: space-between;
 gap: 7px;
-margin-top: 4px;
+margin-top: 12px;
 }
 .small-btn {
 flex: 1;
@@ -226,7 +218,7 @@ z-index: 4;
 left: 0;
 bottom: 64px;
 width: 100%;
-height: clamp(220px, 58vw, 285px);
+height: clamp(150px, 37vw, 235px);
 border-radius: 18px;
 background: linear-gradient(145deg, #203653 0%, #101d32 55%, #192b44 100%);
 border: 1px solid rgba(230,198,127,.72);
@@ -284,7 +276,7 @@ background: linear-gradient(160deg, #405b7a 0%, #243c5c 54%, #182c47 100%);
 clip-path: polygon(0 0, 100% 0, 50% 59%);
 transform-origin: 50% 0;
 transform: rotateX(0deg);
-transition: transform 1050ms cubic-bezier(.2,.75,.2,1), filter .9s ease;
+transition: transform 760ms cubic-bezier(.2,.75,.2,1), filter .7s ease;
 backface-visibility: visible;
 pointer-events: none;
 filter: drop-shadow(0 4px 6px rgba(2,8,20,.18));
@@ -349,17 +341,14 @@ animation: hintFloat 2.4s ease-in-out infinite;
 .hide-completely { opacity: 0 !important; pointer-events: none !important; transform: scale(.5) !important; }
 @media (max-height: 650px) {
 .envelope-stage { height: 82vh; min-height: 340px; }
-.letter-card { height: min(230px, 47vh); max-height: min(230px, 47vh); bottom: 42px; padding: 9px 10px; }
-.envelope-container.is-open .letter-card { transform: translateY(-10px) scale(1); }
-.card-cover { height: clamp(54px, 10vh, 68px); }
-.typing-container { max-height: 38px; }
-.envelope-shell { bottom: 42px; height: clamp(200px, 55vw, 260px); }
+.letter-card { height: clamp(220px, 48vh, 285px); bottom: 78px; }
+.envelope-container.is-open .letter-card { transform: translateY(-112px) scale(1); }
+.envelope-shell { bottom: 42px; height: clamp(138px, 34vw, 205px); }
 .envelope-shadow { bottom: 26px; }
 }
 @media (max-width: 380px) {
 .envelope-stage { min-height: 360px; }
-.letter-card { padding: 9px; }
-.card-cover { height: 62px; }
+.letter-card { padding: 13px; }
 .games-container { gap: 5px; }
 .small-btn { font-size: .59rem; padding-inline: 3px; }
 }
@@ -554,6 +543,7 @@ transform: scale(0.5) !important;
 <div class="letter-content">
 <div class="letter-heading">
 <span>✦ رسالة خاصة ✦</span>
+<span>إلى العلوية رتاج</span>
 </div>
 <div class="card-cover">
 <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الرسالة" class="cover-img">
@@ -841,14 +831,7 @@ const envelopeWrapper = document.getElementById("envelopeWrapper");
 const envelopeStage = document.getElementById("envelopeStage");
 const envelopeToggle = document.getElementById("envelopeToggle");
 const gestureHint = document.getElementById("gestureHint");
-let envelopeTransitionTimer = null;
-const ENVELOPE_TRANSITION_MS = 1600;
 function setEnvelopeOpen(open) {
-clearTimeout(envelopeTransitionTimer);
-document.body.classList.add('envelope-transition');
-envelopeTransitionTimer = setTimeout(() => {
-document.body.classList.remove('envelope-transition');
-}, ENVELOPE_TRANSITION_MS);
 envelopeIsOpen = open;
 envelopeWrapper.classList.toggle('is-open', open);
 envelopeToggle.setAttribute('aria-expanded', String(open));
@@ -879,17 +862,10 @@ if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
 const dy = event.clientY - gestureStart.y;
 if (Math.hypot(dx, dy) > 7) gestureMoved = true;
-rotateY = Math.max(-180, Math.min(180, gestureStart.rotateY + dx * 1.2));
-rotateX = Math.max(-180, Math.min(180, gestureStart.rotateX - dy * 1.2));
-envelopeStage.style.setProperty('--rotate-x', `${rotateX}deg`);
-envelopeStage.style.setProperty('--rotate-y', `${rotateY}deg`);
+rotateY = Math.max(-38, Math.min(38, gestureStart.rotateY + dx * 0.42));
+rotateX = Math.max(-24, Math.min(24, gestureStart.rotateX - dy * 0.22));
+envelopeStage.style.setProperty('--rotate-x', `<LaTex>{rotateX}deg`); envelopeStage.style.setProperty('--rotate-y', `</LaTex>{rotateY}deg`);
 });
-function resetEnvelopeRotation() {
-rotateX = 0;
-rotateY = 0;
-envelopeStage.style.setProperty('--rotate-x', '0deg');
-envelopeStage.style.setProperty('--rotate-y', '0deg');
-}
 function finishEnvelopeGesture(event) {
 if (!gestureStart) return;
 const dx = event.clientX - gestureStart.x;
@@ -902,18 +878,15 @@ soundFX.playTap();
 setEnvelopeOpen(!envelopeIsOpen);
 soundFX.playTap();
 }
-resetEnvelopeRotation();
 gestureStart = null;
 }
 envelopeWrapper.addEventListener('pointerup', finishEnvelopeGesture);
-envelopeWrapper.addEventListener('pointercancel', () => {
+envelopeWrapper.addEventListener('pointercancel', (event) => {
 envelopeWrapper.classList.remove('is-dragging');
-resetEnvelopeRotation();
 gestureStart = null;
 });
 envelopeWrapper.addEventListener('lostpointercapture', () => {
 envelopeWrapper.classList.remove('is-dragging');
-resetEnvelopeRotation();
 gestureStart = null;
 });
 const puzzle1Btn = document.getElementById('puzzle1Btn');
@@ -969,7 +942,7 @@ function initP1Game() {
 currentWord1 = new Array(6).fill(null);
 currentWord2 = new Array(4).fill(null);
 availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
-id: `char-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+id: `char-<LaTex>{index}-</LaTex>{Date.now()}`,
 char: char
 }));
 setP1RobotState('neutral');
@@ -991,7 +964,6 @@ p1_word2Container.appendChild(slot);
 p1_lettersBank.innerHTML = '';
 availablePool.forEach((item) => {
 const btn = document.createElement('button');
-btn.type = 'button';
 btn.className = 'letter-btn font-extrabold text-xs w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer shadow-sm';
 btn.innerText = item.char;
 btn.onclick = () => {
@@ -1006,7 +978,6 @@ const slot = document.createElement('div');
 slot.className = 'letter-slot-mini';
 if (item) {
 const letterBtn = document.createElement('button');
-letterBtn.type = 'button';
 letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
 letterBtn.innerText = item.char;
 letterBtn.onclick = () => {
@@ -1021,14 +992,14 @@ function addLetterToNextAvailable(item) {
 const emptyW1Index = currentWord1.findIndex(slot => slot === null);
 if (emptyW1Index !== -1) {
 currentWord1[emptyW1Index] = item;
-availablePool = availablePool.filter(p => p !== item);
+availablePool = availablePool.filter(p => p.id !== item.id);
 renderP1Board();
 return;
 }
 const emptyW2Index = currentWord2.findIndex(slot => slot === null);
 if (emptyW2Index !== -1) {
 currentWord2[emptyW2Index] = item;
-availablePool = availablePool.filter(p => p !== item);
+availablePool = availablePool.filter(p => p.id !== item.id);
 renderP1Board();
 return;
 }
@@ -1108,7 +1079,7 @@ p1_resetBtn.addEventListener('click', () => {
 soundFX.playTap();
 initP1Game();
 });
-const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/1929d167d0681025f67a2fa9cde3be5a9a52daf9/IMG_2540.jpeg';
+const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/8cdc86bc9d87047114af81f2a2f85f77cb6e33b4/IMG_2540.jpeg';
 const GRID_SIZE = 3;
 const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
 const TARGET_BOARD = [2, 1, 0, 5, 4, 3, 8, 7, 6];
@@ -1142,22 +1113,15 @@ resetP2ButtonStyles();
 renderP2Board();
 }
 function renderP2Board() {
-puzzleBoard.style.gridTemplateColumns = `repeat(${GRID_SIZE}, minmax(0, 1fr))`;
-puzzleBoard.style.gridTemplateRows = `repeat(${GRID_SIZE}, minmax(0, 1fr))`;
 puzzleBoard.innerHTML = '';
 currentP2Board.forEach((originalIndex, boardPosition) => {
 const tile = document.createElement('div');
-tile.className = 'glass-tile rounded-xl cursor-pointer relative overflow-hidden select-none min-w-0 min-h-0';
+tile.className = 'glass-tile w-full h-full rounded-xl cursor-pointer relative overflow-hidden select-none';
 const row = Math.floor(originalIndex / GRID_SIZE);
 const col = originalIndex % GRID_SIZE;
-const posX = (col / (GRID_SIZE - 1)) * 100;
-const posY = (row / (GRID_SIZE - 1)) * 100;
-tile.style.width = '100%';
-tile.style.height = '100%';
-tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
-tile.style.backgroundSize = `${GRID_SIZE * 100}% ${GRID_SIZE * 100}%`;
-tile.style.backgroundPosition = `${posX}% ${posY}%`;
-tile.style.backgroundRepeat = 'no-repeat';
+const posX = col * 50;
+const posY = row * 50;
+tile.style.backgroundImage = `url('<LaTex>{PUZZLE_IMAGE_URL}')`; tile.style.backgroundSize = '300% 300%'; tile.style.backgroundPosition = `</LaTex>{posX}% ${posY}%`;
 if (selectedTileIndex === boardPosition) {
 tile.classList.add('selected-tile');
 }
