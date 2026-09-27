@@ -105,9 +105,11 @@ radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.98), transparent 40%),
 linear-gradient(145deg, #fffdf8 0%, #f8f0df 54%, #fffaf0 100%);
 border: 1px solid rgba(211,174,105,.72);
 box-shadow: 0 18px 40px rgba(12,20,40,.32), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
-transform: translateY(145px) scale(.94);
+transform: translateY(145px) scale(.92);
 opacity: 0;
-transition: transform 900ms cubic-bezier(.16,1,.3,1), opacity .55s ease, box-shadow .7s ease;
+transition: transform 1900ms cubic-bezier(.18,.82,.22,1), opacity .8s ease, box-shadow .9s ease;
+transform-origin: center center;
+will-change: transform, opacity;
 pointer-events: none;
 }
 .letter-card::before,
@@ -133,9 +135,29 @@ box-shadow: 0 0 0 12px rgba(190,151,80,.045), 0 0 0 25px rgba(190,151,80,.035);
 .envelope-container.is-open .letter-card {
 z-index: 6;
 opacity: 1;
-transform: translateY(-128px) scale(1);
+transform: translateY(var(--card-exit-y, -160px)) scale(1);
 pointer-events: auto;
 box-shadow: 0 24px 55px rgba(5,12,28,.38), inset 0 0 0 5px rgba(255,255,255,.48), inset 0 0 0 6px rgba(196,153,79,.16);
+}
+.envelope-container.is-revealed .letter-card {
+transform: translateY(var(--card-final-y, -50%)) scale(1.015);
+box-shadow: 0 32px 75px rgba(5,12,28,.48), inset 0 0 0 5px rgba(255,255,255,.52), inset 0 0 0 6px rgba(196,153,79,.18);
+}
+.envelope-shell, .envelope-shadow, .envelope-seal {
+transition: opacity 900ms ease, transform 1100ms cubic-bezier(.2,.8,.2,1), filter .8s ease;
+}
+.envelope-container.is-revealed .envelope-shell {
+opacity: 0;
+transform: translateY(24px) scale(.96);
+pointer-events: none;
+}
+.envelope-container.is-revealed .envelope-shadow {
+opacity: 0;
+transform: scale(.72);
+}
+.envelope-container.is-revealed .gesture-hint {
+opacity: 0;
+visibility: hidden;
 }
 .letter-content { position: relative; z-index: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
 
@@ -267,7 +289,7 @@ background: linear-gradient(160deg, #405b7a 0%, #243c5c 54%, #182c47 100%);
 clip-path: polygon(0 0, 100% 0, 50% 59%);
 transform-origin: 50% 0;
 transform: rotateX(0deg);
-transition: transform 760ms cubic-bezier(.2,.75,.2,1), filter .7s ease;
+transition: transform 1050ms cubic-bezier(.2,.75,.2,1), filter .9s ease;
 backface-visibility: visible;
 pointer-events: none;
 filter: drop-shadow(0 4px 6px rgba(2,8,20,.18));
@@ -348,7 +370,7 @@ opacity: 1;
 pointer-events: auto;
 }
 .glass-panel-white {
-background: rgba(255, 255, 255, 0.92);
+background: rgba(255, 255, 255, 0.95);
 backdrop-filter: blur(25px);
 -webkit-backdrop-filter: blur(25px);
 border-top: 2px solid #7dd3fc;
@@ -358,11 +380,13 @@ border-bottom: none;
 box-shadow: 0 -10px 40px rgba(2, 132, 199, 0.25), 0 -2px 15px rgba(245, 158, 11, 0.2);
 border-radius: 28px 28px 0 0;
 width: 100vw;
-height: 58vh;
-padding: 1.25rem 1rem 1rem 1rem;
+height: min(66vh, 580px);
+min-height: 0;
+padding: .8rem .75rem .65rem;
 display: flex;
 flex-direction: column;
-justify-content: space-between;
+justify-content: flex-start;
+gap: .45rem;
 align-items: center;
 transform: translateY(100%);
 transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
@@ -374,12 +398,21 @@ color: #0369a1;
 transform: translateY(0);
 }
 .holo-screen-white {
-background: rgba(224, 242, 254, 0.8);
-border: 1.5px solid #38bdf8;
-box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.2);
+background: #05070b;
+border: 2px solid #273244;
+box-shadow: inset 0 0 22px rgba(0, 0, 0, .95), 0 0 0 2px rgba(255,255,255,.035);
+color: #94a3b8;
+min-height: 76px;
+transition: background .55s ease, border-color .55s ease, box-shadow .55s ease, color .55s ease;
 position: relative;
 overflow: hidden;
-transition: all 0.5s ease;
+transition: background .55s ease, border-color .55s ease, box-shadow .55s ease, color .55s ease;
+}
+.holo-screen-white.active {
+background: linear-gradient(145deg, rgba(224,242,254,.98), rgba(186,230,253,.92));
+border-color: #38bdf8;
+color: #0369a1;
+box-shadow: inset 0 0 16px rgba(56,189,248,.28), 0 0 18px rgba(56,189,248,.16);
 }
 .pixel-robot-box {
 width: 44px;
@@ -554,10 +587,10 @@ opacity: 1;
 </svg>
 </div>
 <div class="flex-1">
-<div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-12 flex flex-col items-center justify-center p-1 text-center">
+<div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
 <div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
-<span class="text-[10px] font-bold tracking-wider text-sky-600 uppercase">الشاشة قيد الانتظار</span>
-<p class="text-sky-400 text-[8px] font-mono">=== WAITING ===</p>
+<span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الشاشة قيد الانتظار</span>
+<p class="text-slate-500 text-[7px] font-mono">=== WAITING ===</p>
 </div>
 <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
 <span class="floating-answer font-black text-sm tracking-widest">
@@ -567,25 +600,25 @@ opacity: 1;
 </div>
 </div>
 </div>
-<div id="p1_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12">
+<div id="p1_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
 رتب الحروف لإلغاء قفل الشاشة ✨
 </div>
-<div class="w-full flex flex-col items-center gap-2 px-2">
+<div class="w-full flex flex-col items-center gap-1 px-2">
 <div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-sky-50 rounded-2xl border border-sky-200 shadow-inner overflow-x-auto">
 <div id="word1Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
 <div class="w-0.5 h-6 bg-sky-300 rounded-full shrink-0 mx-0.5"></div>
 <div id="word2Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
 </div>
 <div class="flex flex-col items-center gap-1 w-full">
-<span class="text-[11px] font-bold text-sky-800">الحروف المبعثرة (انقر للترتيب):</span>
+<span class="text-[10px] font-bold text-sky-800">الحروف المبعثرة (انقر للترتيب):</span>
 <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-1.5 min-h-[36px] p-0.5"></div>
 </div>
 </div>
 <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
-<button id="p1_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+<button id="p1_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
 <span>تم الإنهاء</span>
 </button>
-<button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+<button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
 <span>إعادة</span>
 </button>
 </div>
@@ -609,10 +642,10 @@ opacity: 1;
 </svg>
 </div>
 <div class="flex-1">
-<div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-12 flex flex-col items-center justify-center p-1 text-center">
+<div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
 <div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
-<span class="text-[10px] font-bold tracking-wider text-sky-600 uppercase">الصورة مشفرة</span>
-<p class="text-sky-400 text-[8px] font-mono">=== REASSEMBLE TILES ===</p>
+<span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الصورة مشفرة</span>
+<p class="text-slate-500 text-[7px] font-mono">=== REASSEMBLE TILES ===</p>
 </div>
 <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
 <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
@@ -623,10 +656,10 @@ opacity: 1;
 </div>
 </div>
 </div>
-<div id="p2_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12">
+<div id="p2_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
 رتب أجزاء الصورة لإظهار الرسالة ✨
 </div>
-<div class="flex flex-col items-center gap-2 w-full px-2">
+<div class="flex flex-col items-center gap-1 w-full px-2">
 <div id="puzzleBoardWrapper" class="relative w-36 h-36">
 <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-sky-50 rounded-2xl border border-sky-200 w-full h-full shadow-inner"></div>
 <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-sky-400 shadow-xl">
@@ -635,10 +668,10 @@ opacity: 1;
 </div>
 </div>
 <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
-<button id="p2_finishBtn" class="glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+<button id="p2_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
 <span>تم الإنهاء</span>
 </button>
-<button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-2.5 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+<button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
 <span>إعادة</span>
 </button>
 </div>
@@ -804,11 +837,30 @@ setTimeout(typeWriter, speed);
 
 const envelopeWrapper = document.getElementById("envelopeWrapper");
 const envelopeStage = document.getElementById("envelopeStage");
-const envelopeToggle = document.getElementById("envelopeToggle");
+const envelopeToggle = document.getElementById('envelopeToggle');
+const letterCard = document.getElementById('letterCard');
+const envelopeShell = document.getElementById('envelopeShell');
 const gestureHint = document.getElementById("gestureHint");
 
 function setEnvelopeOpen(open) {
 envelopeIsOpen = open;
+if (open) {
+// Lift the card just beyond the envelope's top edge, while keeping it on-screen.
+const cardRect = letterCard.getBoundingClientRect();
+const shellRect = envelopeShell.getBoundingClientRect();
+const stageRect = envelopeStage.getBoundingClientRect();
+const currentTransform = getComputedStyle(letterCard).transform;
+const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
+const distanceToClear = cardRect.bottom - currentY - shellRect.top + 18;
+const maxOnScreen = Math.max(0, cardRect.top - currentY - 18);
+const exitY = -Math.min(Math.max(distanceToClear, 70), maxOnScreen);
+letterCard.style.setProperty('--card-exit-y', `${exitY}px`);
+envelopeWrapper.classList.remove('is-revealed');
+} else {
+envelopeWrapper.classList.remove('is-revealed');
+letterCard.style.removeProperty('--card-final-y');
+letterCard.style.removeProperty('--card-exit-y');
+}
 envelopeWrapper.classList.toggle('is-open', open);
 envelopeToggle.setAttribute('aria-expanded', String(open));
 envelopeToggle.setAttribute('aria-label', open ? 'أغلقي الظرف' : 'افتحي الظرف');
@@ -820,6 +872,19 @@ isOpened = true;
 setTimeout(typeWriter, 550);
 }
 }
+
+letterCard.addEventListener('transitionend', (event) => {
+if (event.propertyName !== 'transform' || !envelopeIsOpen || envelopeWrapper.classList.contains('is-revealed')) return;
+const cardRect = letterCard.getBoundingClientRect();
+const stageRect = envelopeStage.getBoundingClientRect();
+const currentTransform = getComputedStyle(letterCard).transform;
+const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
+const desiredCenterY = stageRect.top + stageRect.height / 2;
+const cardCenterY = cardRect.top + cardRect.height / 2;
+const finalY = currentY + desiredCenterY - cardCenterY;
+letterCard.style.setProperty('--card-final-y', `${finalY}px`);
+envelopeWrapper.classList.add('is-revealed');
+});
 
 envelopeToggle.addEventListener('click', (event) => {
 event.stopPropagation();
@@ -1049,7 +1114,7 @@ p1_screenOnContent.classList.add('hidden');
 }
 
 function resetP1ButtonStyles() {
-p1_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5";
+p1_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
 }
 
 p1_finishBtn.addEventListener('click', () => {
@@ -1088,7 +1153,7 @@ soundFX.playTap();
 initP1Game();
 });
 
-const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/5c2b467eaf755e06469004f8e8a4fa5b7ba38b4e/IMG_2565.jpeg';
+const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/main/IMG_2540.jpeg';
 const GRID_SIZE = 3;
 const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
 const TARGET_BOARD = [2, 1, 0, 5, 4, 3, 8, 7, 6];
@@ -1191,7 +1256,7 @@ p2_screenOnContent.classList.add('hidden');
 }
 
 function resetP2ButtonStyles() {
-p2_finishBtn.className = "glass-btn-primary flex-1 py-2.5 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5";
+p2_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
 }
 
 p2_finishBtn.addEventListener('click', () => {
