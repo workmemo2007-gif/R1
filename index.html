@@ -3,779 +3,1402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>واجهة الرسالة الإلكترونية والألغاز - علويتي رتاج</title>
+<meta name="theme-color" content="#080b16">
+<title>علويتي رتاج - الألغاز والهدية التفاعلية</title>
+
+<!-- الخطوط المستخدمة -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Aref+Ruqaa:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <style>
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Tajawal', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-body {
-width: 100vw;
-height: 100vh;
-overflow: hidden;
-display: flex;
-justify-content: center;
-align-items: center;
-background-color: #030712;
-user-select: none;
-touch-action: pan-y;
-position: relative;
+
+/* === نمط الصفحة الأولى (الألغاز) === */
+body.page1-mode {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #030712;
+  user-select: none;
+  touch-action: pan-y;
+  position: relative;
+  font-family: 'Tajawal', sans-serif;
 }
+
 .bg-image {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-object-fit: cover;
-object-position: center;
-z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
 }
+
 #petalsCanvas {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-z-index: 2;
-pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
 }
+
 .envelope-container {
-position: relative;
-z-index: 10;
-width: min(92vw, 440px);
-touch-action: none;
-user-select: none;
--webkit-user-select: none;
-transition: opacity 0.4s ease, transform 0.4s ease;
+  position: relative;
+  z-index: 10;
+  width: min(92vw, 440px);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
+
 .envelope-stage {
---rotate-x: 0deg;
---rotate-y: 0deg;
-position: relative;
-width: 100%;
-height: min(76vh, 550px);
-min-height: 390px;
-perspective: 1200px;
-transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
-transform-style: preserve-3d;
-transition: transform 500ms cubic-bezier(.15,.85,.25,1);
-filter: drop-shadow(0 30px 38px rgba(0,0,0,.38));
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  position: relative;
+  width: 100%;
+  height: min(76vh, 550px);
+  min-height: 390px;
+  perspective: 1200px;
+  transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(.15,.85,.25,1);
+  filter: drop-shadow(0 30px 38px rgba(0,0,0,.38));
 }
+
 .envelope-container.is-dragging .envelope-stage {
-transition: none;
-cursor: grabbing;
+  transition: none;
+  cursor: grabbing;
 }
+
 .envelope-shadow {
-position: absolute;
-left: 8%;
-right: 8%;
-bottom: 48px;
-height: 28px;
-border-radius: 50%;
-background: rgba(0,0,0,.42);
-filter: blur(15px);
-transition: transform .8s ease, opacity .8s ease;
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 48px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.42);
+  filter: blur(15px);
+  transition: transform .8s ease, opacity .8s ease;
 }
 
-/* التعديلات على الكارت: عمودي، شفاف 90%، إزاحة للأسفل ومؤثرات فخمة */
 .letter-card {
-position: absolute;
-z-index: 2;
-left: 7.5%;
-bottom: 40px; /* نزول إلى الأسفل أكثر */
-width: 85%;
-height: 380px; /* شكل عمودي / طولي */
-padding: 16px 18px;
-border-radius: 24px;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-gap: 10px;
-color: #ffffff;
-/* شفافية 90% (0.1 خلفية + زجاج) */
-background: rgba(15, 23, 42, 0.10);
-backdrop-filter: blur(16px);
--webkit-backdrop-filter: blur(16px);
-/* حدود وبريق فخم */
-border: 1.5px solid rgba(234, 179, 8, 0.45);
-box-shadow: 
-  0 20px 50px rgba(0, 0, 0, 0.5),
-  inset 0 0 25px rgba(253, 224, 71, 0.15),
-  inset 0 1px 2px rgba(255, 255, 255, 0.4);
-transform: translateY(180px) scale(.92);
-opacity: 0;
-transition: transform 1900ms cubic-bezier(.18,.82,.22,1), opacity .8s ease, box-shadow .9s ease;
-transform-origin: center center;
-will-change: transform, opacity;
-pointer-events: none;
+  position: absolute;
+  z-index: 2;
+  left: 7.5%;
+  bottom: 40px;
+  width: 85%;
+  height: 380px;
+  padding: 16px 18px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(234, 179, 8, 0.45);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 0 25px rgba(253, 224, 71, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  transform: translateY(180px) scale(.92);
+  opacity: 0;
+  transition: transform 1900ms cubic-bezier(.18,.82,.22,1), opacity .8s ease, box-shadow .9s ease;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 
-/* مؤثرات بريق إضافية للكارت */
 .letter-card::before {
-content: "";
-position: absolute;
-inset: 6px;
-border: 1px solid rgba(250, 204, 21, 0.25);
-border-radius: 18px;
-pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  border-radius: 18px;
+  pointer-events: none;
 }
+
 .letter-card::after {
-content: "";
-position: absolute;
-top: -50%;
-left: -50%;
-width: 200%;
-height: 200%;
-background: linear-gradient(
-  135deg,
-  transparent 42%,
-  rgba(255, 255, 255, 0.08) 50%,
-  transparent 58%
-);
-pointer-events: none;
-animation: luxuryShimmer 6s infinite linear;
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 58%
+  );
+  pointer-events: none;
+  animation: luxuryShimmer 6s infinite linear;
 }
+
 @keyframes luxuryShimmer {
-0% { transform: translate(-30%, -30%) rotate(0deg); }
-100% { transform: translate(30%, 30%) rotate(360deg); }
+  0% { transform: translate(-30%, -30%) rotate(0deg); }
+  100% { transform: translate(30%, 30%) rotate(360deg); }
 }
 
 .envelope-container.is-open .letter-card {
-z-index: 6;
-opacity: 1;
-transform: translateY(var(--card-exit-y, -120px)) scale(1);
-pointer-events: auto;
+  z-index: 6;
+  opacity: 1;
+  transform: translateY(var(--card-exit-y, -120px)) scale(1);
+  pointer-events: auto;
 }
+
 .envelope-container.is-revealed .letter-card {
-transform: translateY(var(--card-final-y, -42%)) scale(1.015);
-box-shadow: 
-  0 30px 60px rgba(0, 0, 0, 0.6),
-  inset 0 0 30px rgba(253, 224, 71, 0.25),
-  inset 0 1px 3px rgba(255, 255, 255, 0.6);
+  transform: translateY(var(--card-final-y, -42%)) scale(1.015);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(253, 224, 71, 0.25),
+    inset 0 1px 3px rgba(255, 255, 255, 0.6);
 }
+
 .envelope-shell, .envelope-shadow, .envelope-seal {
-transition: opacity 900ms ease, transform 1100ms cubic-bezier(.2,.8,.2,1), filter .8s ease;
+  transition: opacity 900ms ease, transform 1100ms cubic-bezier(.2,.8,.2,1), filter .8s ease;
 }
+
 .envelope-container.is-revealed .envelope-shell {
-opacity: 0;
-transform: translateY(24px) scale(.96);
-pointer-events: none;
+  opacity: 0;
+  transform: translateY(24px) scale(.96);
+  pointer-events: none;
 }
+
 .envelope-container.is-revealed .envelope-shadow {
-opacity: 0;
-transform: scale(.72);
+  opacity: 0;
+  transform: scale(.72);
 }
+
 .envelope-container.is-revealed .gesture-hint {
-opacity: 0;
-visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
 }
+
 .letter-content { position: relative; z-index: 2; width: 100%; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
 
 .card-cover {
-width: 100%;
-height: 120px;
-border-radius: 14px;
-overflow: hidden;
-background: rgba(255,255,255,0.05);
-border: 1px solid rgba(234, 179, 8, 0.3);
-box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
+  width: 100%;
+  height: 120px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
+
 .cover-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
 .typing-container {
-padding: 4px;
-max-height: 110px;
-overflow-y: auto;
-scrollbar-width: thin;
-scrollbar-color: rgba(234, 179, 8, 0.4) transparent;
+  padding: 4px;
+  max-height: 110px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(234, 179, 8, 0.4) transparent;
 }
+
 .typing-text {
-font-size: 0.8rem;
-font-weight: 700;
-line-height: 1.6;
-color: #f8fafc;
-text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-text-align: right;
-white-space: pre-wrap;
-border-left: 2px solid #eab308;
-animation: blink 0.75s step-end infinite;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #f8fafc;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  text-align: right;
+  white-space: pre-wrap;
+  border-left: 2px solid #eab308;
+  animation: blink 0.75s step-end infinite;
 }
+
 @keyframes blink { from, to { border-color: transparent } 50% { border-color: #eab308; } }
+
 .games-container {
-position: relative;
-z-index: 2;
-width: 100%;
-display: flex;
-justify-content: space-between;
-gap: 6px;
-margin-top: 4px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 4px;
 }
+
 .small-btn {
-flex: 1;
-min-height: 36px;
-padding: 6px 4px;
-font-size: 0.72rem;
-font-weight: 800;
-color: #fef08a;
-background: rgba(15, 23, 42, 0.6);
-border: 1px solid rgba(234, 179, 8, 0.5);
-backdrop-filter: blur(8px);
-border-radius: 12px;
-cursor: pointer;
-transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
-text-align: center;
-white-space: nowrap;
-box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  flex: 1;
+  min-height: 36px;
+  padding: 6px 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #fef08a;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
+
 .small-btn:hover, .small-btn:focus-visible {
-background: linear-gradient(135deg, #eab308, #ca8a04);
-color: #0f172a;
-box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
-transform: translateY(-2px);
-outline: none;
+  background: linear-gradient(135deg, #eab308, #ca8a04);
+  color: #0f172a;
+  box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
+  transform: translateY(-2px);
+  outline: none;
 }
+
 .envelope-shell {
-position: absolute;
-z-index: 4;
-left: 0;
-bottom: 64px;
-width: 100%;
-height: clamp(150px, 37vw, 235px);
-border-radius: 18px;
-background: linear-gradient(145deg, #203653 0%, #101d32 55%, #192b44 100%);
-border: 1px solid rgba(230,198,127,.72);
-box-shadow: 0 22px 38px rgba(4,12,26,.42), inset 0 0 0 5px rgba(255,255,255,.035), inset 0 1px 0 rgba(255,255,255,.24);
-transform-style: preserve-3d;
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  bottom: 64px;
+  width: 100%;
+  height: clamp(150px, 37vw, 235px);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #203653 0%, #101d32 55%, #192b44 100%);
+  border: 1px solid rgba(230,198,127,.72);
+  box-shadow: 0 22px 38px rgba(4,12,26,.42), inset 0 0 0 5px rgba(255,255,255,.035), inset 0 1px 0 rgba(255,255,255,.24);
+  transform-style: preserve-3d;
 }
+
 .envelope-shell::before {
-content: "";
-position: absolute;
-inset: 9px;
-border: 1px solid rgba(231,199,133,.28);
-border-radius: 12px;
-pointer-events: none;
-z-index: 5;
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(231,199,133,.28);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 5;
 }
+
 .envelope-shell::after {
-content: "";
-position: absolute;
-inset: 0;
-border-radius: inherit;
-background: linear-gradient(125deg, rgba(255,255,255,.12), transparent 30%, transparent 68%, rgba(255,255,255,.07));
-pointer-events: none;
-z-index: 5;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(125deg, rgba(255,255,255,.12), transparent 30%, transparent 68%, rgba(255,255,255,.07));
+  pointer-events: none;
+  z-index: 5;
 }
+
 .envelope-panel {
-position: absolute;
-inset: 0;
-border-radius: inherit;
-pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
 }
+
 .envelope-left {
-z-index: 2;
-background: linear-gradient(135deg, #263e5e, #182a43);
-clip-path: polygon(0 0, 53% 52%, 0 100%);
-border-radius: 18px;
+  z-index: 2;
+  background: linear-gradient(135deg, #263e5e, #182a43);
+  clip-path: polygon(0 0, 53% 52%, 0 100%);
+  border-radius: 18px;
 }
+
 .envelope-right {
-z-index: 2;
-background: linear-gradient(225deg, #304967, #182b45);
-clip-path: polygon(100% 0, 47% 52%, 100% 100%);
-border-radius: 18px;
+  z-index: 2;
+  background: linear-gradient(225deg, #304967, #182b45);
+  clip-path: polygon(100% 0, 47% 52%, 100% 100%);
+  border-radius: 18px;
 }
+
 .envelope-bottom {
-z-index: 3;
-background: linear-gradient(20deg, #14243b 8%, #263e5d 100%);
-clip-path: polygon(0 100%, 50% 45%, 100% 100%);
-border-radius: 0 0 18px 18px;
+  z-index: 3;
+  background: linear-gradient(20deg, #14243b 8%, #263e5d 100%);
+  clip-path: polygon(0 100%, 50% 45%, 100% 100%);
+  border-radius: 0 0 18px 18px;
 }
+
 .envelope-flap {
-position: absolute;
-z-index: 4;
-inset: 0;
-border-radius: 18px 18px 0 0;
-background: linear-gradient(160deg, #405b7a 0%, #243c5c 54%, #182c47 100%);
-clip-path: polygon(0 0, 100% 0, 50% 59%);
-transform-origin: 50% 0;
-transform: rotateX(0deg);
-transition: transform 1050ms cubic-bezier(.2,.75,.2,1), filter .9s ease;
-backface-visibility: visible;
-pointer-events: none;
-filter: drop-shadow(0 4px 6px rgba(2,8,20,.18));
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(160deg, #405b7a 0%, #243c5c 54%, #182c47 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 59%);
+  transform-origin: 50% 0;
+  transform: rotateX(0deg);
+  transition: transform 1050ms cubic-bezier(.2,.75,.2,1), filter .9s ease;
+  backface-visibility: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(2,8,20,.18));
 }
+
 .envelope-container.is-open .envelope-flap {
-transform: rotateX(180deg);
-filter: drop-shadow(0 9px 10px rgba(2,8,20,.18));
+  transform: rotateX(180deg);
+  filter: drop-shadow(0 9px 10px rgba(2,8,20,.18));
 }
+
 .envelope-seal {
-position: absolute;
-z-index: 8;
-left: 50%;
-top: auto;
-bottom: calc(64px + clamp(75px, 18.5vw, 117px));
-width: clamp(48px, 13vw, 62px);
-aspect-ratio: 1;
-transform: translate(-50%, 50%);
-display: grid;
-place-items: center;
-border-radius: 50%;
-border: 2px solid #f2d897;
-color: #fff5d9;
-background: radial-gradient(circle at 34% 28%, #f1d79a 0%, #bb914a 45%, #765329 100%);
-box-shadow: 0 5px 16px rgba(5,12,25,.4), inset 0 0 0 3px rgba(255,246,214,.22), 0 0 0 4px rgba(225,194,128,.12);
-font-size: 1.2rem;
-cursor: pointer;
-transition: opacity .45s ease, transform .55s cubic-bezier(.2,.8,.2,1), filter .3s ease;
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  top: auto;
+  bottom: calc(64px + clamp(75px, 18.5vw, 117px));
+  width: clamp(48px, 13vw, 62px);
+  aspect-ratio: 1;
+  transform: translate(-50%, 50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid #f2d897;
+  color: #fff5d9;
+  background: radial-gradient(circle at 34% 28%, #f1d79a 0%, #bb914a 45%, #765329 100%);
+  box-shadow: 0 5px 16px rgba(5,12,25,.4), inset 0 0 0 3px rgba(255,246,214,.22), 0 0 0 4px rgba(225,194,128,.12);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: opacity .45s ease, transform .55s cubic-bezier(.2,.8,.2,1), filter .3s ease;
 }
+
 .envelope-seal:hover { filter: brightness(1.12); }
+
 .envelope-container.is-open .envelope-seal {
-opacity: 0;
-pointer-events: none;
-transform: translate(-50%, 50%) scale(.35) rotate(150deg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 50%) scale(.35) rotate(150deg);
 }
+
 .envelope-brand {
-position: absolute;
-z-index: 6;
-left: 50%;
-bottom: 14px;
-transform: translateX(-50%);
-color: rgba(244,222,176,.86);
-font-size: .61rem;
-font-weight: 800;
-letter-spacing: .12em;
-white-space: nowrap;
-pointer-events: none;
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  color: rgba(244,222,176,.86);
+  font-size: .61rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  white-space: nowrap;
+  pointer-events: none;
 }
+
 .gesture-hint {
-position: absolute;
-left: 0;
-right: 0;
-bottom: 0;
-text-align: center;
-color: rgba(255,255,255,.9);
-font-size: .76rem;
-font-weight: 700;
-text-shadow: 0 2px 9px rgba(0,0,0,.65);
-pointer-events: none;
-animation: hintFloat 2.4s ease-in-out infinite;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  color: rgba(255,255,255,.9);
+  font-size: .76rem;
+  font-weight: 700;
+  text-shadow: 0 2px 9px rgba(0,0,0,.65);
+  pointer-events: none;
+  animation: hintFloat 2.4s ease-in-out infinite;
 }
+
 @keyframes hintFloat { 50% { transform: translateY(-4px); opacity: .72; } }
+
 .hide-completely { opacity: 0 !important; pointer-events: none !important; transform: scale(.5) !important; }
 
 .puzzle-modal {
-position: fixed;
-inset: 0;
-z-index: 50;
-display: flex;
-align-items: flex-end;
-justify-content: center;
-padding: 0;
-opacity: 0;
-pointer-events: none;
-transition: opacity 0.4s ease;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
+
 .puzzle-modal.active {
-opacity: 1;
-pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
+
 .glass-panel-white {
-background: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(25px);
--webkit-backdrop-filter: blur(25px);
-border-top: 2px solid #7dd3fc;
-border-left: 1.5px solid #bae6fd;
-border-right: 1.5px solid #bae6fd;
-border-bottom: none;
-box-shadow: 0 -10px 40px rgba(2, 132, 199, 0.25), 0 -2px 15px rgba(245, 158, 11, 0.2);
-border-radius: 28px 28px 0 0;
-width: 100vw;
-height: min(66vh, 580px);
-min-height: 0;
-padding: .8rem .75rem .65rem;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-gap: .45rem;
-align-items: center;
-transform: translateY(100%);
-transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-overflow-y: auto;
-scrollbar-width: none;
-color: #0369a1;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-top: 2px solid #7dd3fc;
+  border-left: 1.5px solid #bae6fd;
+  border-right: 1.5px solid #bae6fd;
+  border-bottom: none;
+  box-shadow: 0 -10px 40px rgba(2, 132, 199, 0.25), 0 -2px 15px rgba(245, 158, 11, 0.2);
+  border-radius: 28px 28px 0 0;
+  width: 100vw;
+  height: min(66vh, 580px);
+  min-height: 0;
+  padding: .8rem .75rem .65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: .45rem;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  scrollbar-width: none;
+  color: #0369a1;
 }
+
 .puzzle-modal.active .glass-panel-white {
-transform: translateY(0);
+  transform: translateY(0);
 }
+
 .holo-screen-white {
-background: #05070b;
-border: 2px solid #273244;
-box-shadow: inset 0 0 22px rgba(0, 0, 0, .95), 0 0 0 2px rgba(255,255,255,.035);
-color: #94a3b8;
-min-height: 76px;
-transition: background .55s ease, border-color .55s ease, box-shadow .55s ease, color .55s ease;
-position: relative;
-overflow: hidden;
+  background: #05070b;
+  border: 2px solid #273244;
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, .95), 0 0 0 2px rgba(255,255,255,.035);
+  color: #94a3b8;
+  min-height: 76px;
+  transition: background .55s ease, border-color .55s ease, box-shadow .55s ease, color .55s ease;
+  position: relative;
+  overflow: hidden;
 }
+
 .holo-screen-white.active {
-background: linear-gradient(145deg, rgba(224,242,254,.98), rgba(186,230,253,.92));
-border-color: #38bdf8;
-color: #0369a1;
-box-shadow: inset 0 0 16px rgba(56,189,248,.28), 0 0 18px rgba(56,189,248,.16);
+  background: linear-gradient(145deg, rgba(224,242,254,.98), rgba(186,230,253,.92));
+  border-color: #38bdf8;
+  color: #0369a1;
+  box-shadow: inset 0 0 16px rgba(56,189,248,.28), 0 0 18px rgba(56,189,248,.16);
 }
+
 .pixel-robot-box {
-width: 44px;
-height: 44px;
-background: rgba(255, 255, 255, 0.9);
-border: 1.5px solid #38bdf8;
-box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
-border-radius: 14px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid #38bdf8;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
-.pixel-art {
-image-rendering: pixelated;
-}
+
+.pixel-art { image-rendering: pixelated; }
+
 .floating-answer {
-display: inline-block;
-animation: bounceAndMove 4s ease-in-out infinite alternate;
-color: #0284c7;
-text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  display: inline-block;
+  animation: bounceAndMove 4s ease-in-out infinite alternate;
+  color: #0284c7;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
+
 @keyframes bounceAndMove {
-0% { transform: translate(-3%, -2%) scale(1); }
-100% { transform: translate(3%, 2%) scale(1.03); }
+  0% { transform: translate(-3%, -2%) scale(1); }
+  100% { transform: translate(3%, 2%) scale(1.03); }
 }
+
 .glass-btn-primary {
-background: linear-gradient(135deg, #0284c7, #0369a1);
-border: 1px solid #38bdf8;
-color: #ffffff;
-box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
-transition: all 0.3s ease;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border: 1px solid #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+  transition: all 0.3s ease;
 }
+
 .glass-btn-secondary {
-background: rgba(240, 249, 255, 0.9);
-border: 1.5px solid #7dd3fc;
-color: #0369a1;
-transition: all 0.3s ease;
+  background: rgba(240, 249, 255, 0.9);
+  border: 1.5px solid #7dd3fc;
+  color: #0369a1;
+  transition: all 0.3s ease;
 }
+
 .btn-shake-red {
-animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
-background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-color: #ffffff !important;
+  animation: shakeRed 0.6s cubic-bezier(.36,.07,.19,.97) both;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
 }
+
 @keyframes shakeRed {
-10%, 90% { transform: translate3d(-2px, 0, 0); }
-20%, 80% { transform: translate3d(4px, 0, 0); }
-30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-40%, 60% { transform: translate3d(6px, 0, 0); }
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
 }
+
 .btn-shake-green {
-animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
-background: linear-gradient(135deg, #10b981, #059669) !important;
-color: #ffffff !important;
+  animation: shakeGreen 0.6s cubic-bezier(.36,.07,.19,.97) both;
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
 }
+
 .letter-btn {
-background: #ffffff;
-border: 1.5px solid #7dd3fc;
-color: #0284c7;
-transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+  background: #ffffff;
+  border: 1.5px solid #7dd3fc;
+  color: #0284c7;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
 }
+
 .letter-slot-mini {
-width: 28px;
-height: 32px;
-background: rgba(224, 242, 254, 0.5);
-border: 1.5px dashed #38bdf8;
-border-radius: 8px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
+  width: 28px;
+  height: 32px;
+  background: rgba(224, 242, 254, 0.5);
+  border: 1.5px dashed #38bdf8;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
+
 .glass-tile {
-background: #ffffff;
-border: 1.5px solid #bae6fd;
-transition: all 0.25s ease;
+  background: #ffffff;
+  border: 1.5px solid #bae6fd;
+  transition: all 0.25s ease;
 }
+
 .selected-tile {
-border-color: #d97706 !important;
-box-shadow: 0 0 15px rgba(245, 158, 11, 0.8) !important;
-transform: scale(0.96);
+  border-color: #d97706 !important;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.8) !important;
+  transform: scale(0.96);
 }
+
 #puzzle3Canvas {
-touch-action: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100vw;
-height: 100vh;
-z-index: 40;
-pointer-events: none;
-opacity: 0;
-transition: opacity 0.5s ease;
+  touch-action: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
+
 #puzzle3Canvas.active {
-opacity: 1;
-pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
+
 .p3-instruction-badge {
-position: fixed;
-top: 25px;
-left: 50%;
-transform: translateX(-50%);
-z-index: 45;
-background: rgba(255, 255, 255, 0.9);
-backdrop-filter: blur(16px);
--webkit-backdrop-filter: blur(16px);
-border: 1.5px solid #38bdf8;
-color: #0369a1;
-padding: 8px 20px;
-border-radius: 30px;
-font-size: 0.85rem;
-font-weight: 800;
-box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
-pointer-events: none;
-opacity: 0;
-transition: opacity 0.5s ease;
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid #38bdf8;
+  color: #0369a1;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
-.p3-instruction-badge.active {
-opacity: 1;
+
+.p3-instruction-badge.active { opacity: 1; }
+
+
+/* === نمط الصفحة الثانية (الصورة التفاعلية) === */
+body.page2-mode {
+  position: relative;
+  background-color: #080b16;
+  background-image: url("https://raw.githubusercontent.com/workmemo2007-gif/R1/c4c2ac757d6fb303ea96a912e78dc58c420103f4/IMG_2572.png");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
+  display: block;
+  font-family: "Aref Ruqaa", serif;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body.page2-mode::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.30);
+  z-index: 0;
+  pointer-events: none;
+}
+
+:root {
+  --gold: #ffd66b;
+  --gold-bright: #fff1b8;
+  --pink-accent: #ff66a3;
+  --off-white-glow: rgba(255, 253, 245, 0.95);
+  --circle-size: clamp(40px, 5.8vw, 52px);
+}
+
+.section-container {
+  position: relative;
+  z-index: 1;
+  min-height: auto;
+  padding: 160px 0 20px 0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artwork {
+  position: relative;
+  width: min(72vw, 68vh, 560px);
+  aspect-ratio: 1;
+  transform: rotate(-6deg) translateY(20px); 
+  isolation: isolate;
+}
+
+.artwork-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 0 22px rgba(28, 69, 255, .2));
+}
+
+.glass-card-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin: 25px 0;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 20px 18px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.08);
+  color: #fff;
+  direction: rtl;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.card-title {
+  font-size: clamp(20px, 4vw, 24px);
+  color: var(--gold-bright);
+  margin: 0;
+  text-shadow: 0 0 10px rgba(255, 214, 107, 0.5);
+}
+
+.play-pause-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #080b16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.play-pause-btn:hover {
+  transform: scale(1.08);
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(255,255,255,0.6);
+}
+
+.play-pause-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.quotes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 110px;
+}
+
+.card-typed-text {
+  margin: 0;
+  font-size: clamp(14px, 3.2vw, 16px);
+  line-height: 1.6;
+  white-space: pre-line;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  color: var(--off-white-glow);
+  font-weight: 700;
+}
+
+.card-audio-waves-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  height: 22px;
+  margin-top: 18px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.card-wave-bar {
+  flex: 1;
+  margin: 0 1.5px;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: card-wave-bounce 0.8s ease-in-out infinite alternate;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.5);
+  opacity: 0.4;
+}
+
+.card-wave-bar.active { opacity: 1; }
+.card-wave-bar:nth-child(2n) { animation-delay: 0.12s; }
+.card-wave-bar:nth-child(3n) { animation-delay: 0.25s; }
+.card-wave-bar:nth-child(4n) { animation-delay: 0.38s; }
+.card-wave-bar:nth-child(5n) { animation-delay: 0.18s; }
+
+@keyframes card-wave-bounce {
+  0% { transform: scaleY(0.2); }
+  100% { transform: scaleY(1); }
+}
+
+.second-artwork-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 10px 10px 10px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.second-artwork {
+  width: min(95vw, 90vh, 1000px);
+  max-width: 100%;
+  height: auto;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+  opacity: 0;
+  transform: translateY(60px) scale(0.92);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.second-artwork.slide-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.letter-button {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  background: #fff;
+  color: #101a35;
+  font: 700 clamp(22px, 3vw, 32px)/1 "Aref Ruqaa", serif;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow:
+    0 0 13px 3px rgba(48, 126, 255, .78),
+    0 0 30px 8px rgba(34, 94, 255, .38),
+    inset 0 0 9px rgba(255, 255, 255, .95);
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  transition:
+    width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.4s ease,
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .25s ease,
+    transform .4s ease;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+.letter-button:hover,
+.letter-button:focus-visible {
+  outline: none;
+  border-color: #dbeaff;
+  box-shadow:
+    0 0 20px 5px rgba(67, 145, 255, .95),
+    0 0 38px 12px rgba(34, 94, 255, .52),
+    inset 0 0 10px rgba(255, 255, 255, .98);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.letter-button[aria-pressed="true"] {
+  border: 2px solid var(--gold-bright);
+  background: rgba(252, 249, 240, 0.16);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--gold-bright);
+  box-shadow:
+    0 0 20px 6px rgba(255, 214, 107, 0.45),
+    0 0 40px 14px rgba(255, 194, 54, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.25);
+  animation: golden-glow 1.8s ease-in-out infinite alternate;
+}
+
+.letter-button.letter-expandable[aria-pressed="true"] {
+  width: clamp(210px, 48vw, 260px);
+  height: auto;
+  min-height: 100px;
+  padding: 10px 14px 14px 14px;
+  border-radius: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.letter-button.letter-expandable[aria-pressed="true"] .letter-text {
+  display: none;
+}
+
+.typed-container {
+  display: none;
+  width: 100%;
+  text-align: right;
+  direction: rtl;
+}
+
+.letter-button.letter-expandable[aria-pressed="true"] .typed-container {
+  display: block;
+}
+
+.typed-text {
+  color: var(--off-white-glow);
+  font-size: clamp(13px, 1.9vw, 16px);
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 214, 107, 0.7);
+  font-weight: 700;
+}
+
+.audio-waves {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  height: 18px;
+  margin-top: 10px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 214, 107, 0.35);
+}
+
+.audio-wave-bar {
+  flex: 1;
+  margin: 0 1px;
+  height: 100%;
+  background-color: var(--gold-bright);
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: wave-bounce 0.8s ease-in-out infinite alternate;
+  box-shadow: 0 0 6px rgba(255, 214, 107, 0.7);
+}
+
+.audio-wave-bar:nth-child(2n) { animation-delay: 0.15s; }
+.audio-wave-bar:nth-child(3n) { animation-delay: 0.3s; }
+.audio-wave-bar:nth-child(4n) { animation-delay: 0.45s; }
+.audio-wave-bar:nth-child(5n) { animation-delay: 0.2s; }
+
+@keyframes wave-bounce {
+  0% { transform: scaleY(0.15); opacity: 0.4; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--gold-bright);
+  vertical-align: middle;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes golden-glow {
+  from {
+    box-shadow:
+      0 0 14px 4px rgba(255, 211, 94, .5),
+      0 0 28px 8px rgba(255, 194, 54, .3),
+      inset 0 0 14px rgba(255, 255, 255, .2);
+  }
+  to {
+    box-shadow:
+      0 0 22px 8px rgba(255, 231, 153, .8),
+      0 0 45px 18px rgba(255, 194, 54, .5),
+      inset 0 0 22px rgba(255, 255, 255, .35);
+  }
+}
+
+.letter-ra { left: 82%; top: 87%; }
+.letter-ta { left: 85%; top: 16%; }
+.letter-ta[aria-pressed="true"] {
+  transform: translate(-100%, -100%);
+  transform-origin: bottom right;
+}
+.letter-alif { left: 47%; top: 14%; }
+.letter-jeem { left: 13%; top: 88%; }
+.letter-jeem[aria-pressed="true"] {
+  transform: translate(0, 0);
+  transform-origin: top left;
+}
+
+.footer-controls {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px 140px 20px;
+  width: 100%;
+}
+
+.bottom-bar {
+  display: flex;
+  width: 95%;
+  max-width: 160px;
+  height: 75px; 
+  background: #ffffff;
+  border-radius: 50px;
+  box-shadow: 
+    0 0 25px rgba(255, 255, 255, 0.8), 
+    0 0 50px rgba(255, 255, 255, 0.5), 
+    inset 0 0 20px rgba(255, 255, 255, 1);
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #ff66a3, #db2777);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  user-select: none;
+}
+
+.heart-btn .btn-icon {
+  width: 38px;
+  height: 38px;
+  fill: currentColor;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  transition: transform 0.2s ease;
+}
+
+.heart-btn:hover { background: linear-gradient(145deg, #db2777, #be185d); }
+.heart-btn:hover .btn-icon { transform: scale(1.15); }
+.heart-btn:active .btn-icon { transform: scale(0.9); }
+
+.floating-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  user-select: none;
+  font-size: 24px;
+  animation: floatUp 1.8s ease-out forwards;
+  filter: drop-shadow(0 2px 6px rgba(236, 72, 153, 0.6));
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.5) rotate(0deg);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(var(--tx), -70px) scale(1.2) rotate(var(--rot));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx-end), -160px) scale(0.7) rotate(var(--rot-end));
+  }
+}
+
+@media (max-width: 520px) {
+  :root { --circle-size: 42px; }
+  .artwork { width: min(82vw, 64vh, 420px); }
+  .glass-card-wrapper { padding: 10px; }
+  .glass-card { padding: 16px 14px; max-width: 330px; }
+  .second-artwork { width: 100vw; }
+  .letter-button.letter-expandable[aria-pressed="true"] {
+    width: 200px;
+    min-height: 85px;
+    padding: 8px 10px 10px 10px;
+  }
+  .bottom-bar { height: 65px; max-width: 130px; }
+  .heart-btn .btn-icon { width: 30px; height: 30px; }
 }
 </style>
 </head>
-<body>
-<img class="bg-image" src="https://raw.githubusercontent.com/workmemo2007-gif/R1/6d8ea54afcd98fb07f341e79c9c4e77d5c0c4302/IMG_2565.jpeg" alt="الخلفية">
-<canvas id="petalsCanvas"></canvas>
-<div class="envelope-container" id="envelopeWrapper">
-<div class="envelope-stage" id="envelopeStage" aria-label="الظرف والرسالة">
-<div class="envelope-shadow" aria-hidden="true"></div>
-<article class="letter-card" id="letterCard" aria-label="رسالة إلى رتاج">
-<div class="letter-content">
-<div class="card-cover">
-<img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الرسالة" class="cover-img">
-</div>
-<div class="typing-container">
-<span class="typing-text" id="typewriter"></span>
-</div>
-</div>
-<div class="games-container" aria-label="مراحل الهدية">
-<button class="small-btn" id="puzzle1Btn">اللغز الأول</button>
-<button class="small-btn" id="puzzle2Btn">اللغز الثاني</button>
-<button class="small-btn" id="puzzle3Btn">اللغز الثالث</button>
-</div>
-</article>
-<div class="envelope-shell" id="envelopeShell" aria-hidden="true">
-<div class="envelope-panel envelope-left"></div>
-<div class="envelope-panel envelope-right"></div>
-<div class="envelope-panel envelope-bottom"></div>
-<div class="envelope-flap"></div>
-<div class="envelope-brand">رتاج · مع أطيب الأمنيات</div>
-</div>
-<button class="envelope-seal" id="envelopeToggle" type="button" aria-label="افتحي الظرف" aria-expanded="false">✦</button>
-</div>
-<p class="gesture-hint" id="gestureHint">اسحبي الظرف للتدوير · اسحبي للأعلى لفتحه</p>
+<body class="page1-mode">
+
+<!-- ===== الجزء الأول: واجهة الألغاز والظرف ===== -->
+<div id="page1">
+  <img class="bg-image" src="https://raw.githubusercontent.com/workmemo2007-gif/R1/6d8ea54afcd98fb07f341e79c9c4e77d5c0c4302/IMG_2565.jpeg" alt="الخلفية">
+  <canvas id="petalsCanvas"></canvas>
+  <div class="envelope-container" id="envelopeWrapper">
+    <div class="envelope-stage" id="envelopeStage" aria-label="الظرف والرسالة">
+      <div class="envelope-shadow" aria-hidden="true"></div>
+      <article class="letter-card" id="letterCard" aria-label="رسالة إلى رتاج">
+        <div class="letter-content">
+          <div class="card-cover">
+            <img src="https://raw.githubusercontent.com/workmemo2007-gif/R1/092a6042ee20ce4084bd4d0f9fd6887320b0bc23/IMG_2536.jpeg" alt="غلاف الرسالة" class="cover-img">
+          </div>
+          <div class="typing-container">
+            <span class="typing-text" id="typewriter"></span>
+          </div>
+        </div>
+        <div class="games-container" aria-label="مراحل الهدية">
+          <button class="small-btn" id="puzzle1Btn">اللغز الأول</button>
+          <button class="small-btn" id="puzzle2Btn">اللغز الثاني</button>
+          <button class="small-btn" id="puzzle3Btn">اللغز الثالث</button>
+        </div>
+      </article>
+      <div class="envelope-shell" id="envelopeShell" aria-hidden="true">
+        <div class="envelope-panel envelope-left"></div>
+        <div class="envelope-panel envelope-right"></div>
+        <div class="envelope-panel envelope-bottom"></div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-brand">رتاج · مع أطيب الأمنيات</div>
+      </div>
+      <button class="envelope-seal" id="envelopeToggle" type="button" aria-label="افتحي الظرف" aria-expanded="false">✦</button>
+    </div>
+    <p class="gesture-hint" id="gestureHint">اسحبي الظرف للتدوير · اسحبي للأعلى لفتحه</p>
+  </div>
+
+  <!-- مودال اللغز الأول -->
+  <div id="puzzle1Modal" class="puzzle-modal">
+    <div class="glass-panel-white relative max-w-md mx-auto">
+      <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
+        ✕ العودة
+      </button>
+      <div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
+        <div class="pixel-robot-box shrink-0">
+          <svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="3" width="10" height="9" fill="#0284c7" />
+            <rect x="4" y="4" width="8" height="7" fill="#e0f2fe" />
+            <rect x="7" y="1" width="2" height="2" fill="#d97706" />
+            <rect id="p1_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#0284c7" />
+            <rect id="p1_pxEyeRight" x="9" y="6" width="2" height="2" fill="#0284c7" />
+            <rect id="p1_pxMouth" x="6" y="9" width="4" height="1" fill="#0284c7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
+            <div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
+              <span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الشاشة قيد الانتظار</span>
+              <p class="text-slate-500 text-[7px] font-mono">=== WAITING ===</p>
+            </div>
+            <div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
+              <span class="floating-answer font-black text-sm tracking-widest">علويتي رتاج</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="p1_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
+        رتب الحروف لإلغاء قفل الشاشة ✨
+      </div>
+      <div class="w-full flex flex-col items-center gap-1 px-2">
+        <div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-sky-50 rounded-2xl border border-sky-200 shadow-inner overflow-x-auto">
+          <div id="word1Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
+          <div class="w-0.5 h-6 bg-sky-300 rounded-full shrink-0 mx-0.5"></div>
+          <div id="word2Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
+        </div>
+        <div class="flex flex-col items-center gap-1 w-full">
+          <span class="text-[10px] font-bold text-sky-800">الحروف المبعثرة (انقر للترتيب):</span>
+          <div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-1.5 min-h-[36px] p-0.5"></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
+        <button id="p1_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
+          <span>تم الإنهاء</span>
+        </button>
+        <button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
+          <span>إعادة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- مودال اللغز الثاني -->
+  <div id="puzzle2Modal" class="puzzle-modal">
+    <div class="glass-panel-white relative max-w-md mx-auto">
+      <button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
+        ✕ العودة
+      </button>
+      <div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
+        <div class="pixel-robot-box shrink-0">
+          <svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="3" width="10" height="9" fill="#0284c7" />
+            <rect x="4" y="4" width="8" height="7" fill="#e0f2fe" />
+            <rect x="7" y="1" width="2" height="2" fill="#d97706" />
+            <rect id="p2_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#0284c7" />
+            <rect id="p2_pxEyeRight" x="9" y="6" width="2" height="2" fill="#0284c7" />
+            <rect id="p2_pxMouth" x="6" y="9" width="4" height="1" fill="#0284c7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
+            <div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
+              <span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الصورة مشفرة</span>
+              <p class="text-slate-500 text-[7px] font-mono">=== REASSEMBLE TILES ===</p>
+            </div>
+            <div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
+              <img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
+              <div class="absolute bottom-0.5 bg-white/90 text-sky-800 text-[8px] px-2 py-0.5 rounded-full font-extrabold border border-sky-300">
+                علويتي رتاج ✨
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="p2_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
+        رتب أجزاء الصورة لإظهار الرسالة ✨
+      </div>
+      <div class="flex flex-col items-center gap-1 w-full px-2">
+        <div id="puzzleBoardWrapper" class="relative w-36 h-36">
+          <div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-sky-50 rounded-2xl border border-sky-200 w-full h-full shadow-inner"></div>
+          <div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-sky-400 shadow-xl">
+            <img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
+        <button id="p2_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
+          <span>تم الإنهاء</span>
+        </button>
+        <button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
+          <span>إعادة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- شريط اللغز الثالث وكانفاس السهام -->
+  <div id="p3Badge" class="p3-instruction-badge">
+    اخفقي 10 قلوب باسم "رتاج" بالسهم! (المتبقي: <span id="p3Count">10</span>) 🏹
+  </div>
+  <canvas id="puzzle3Canvas"></canvas>
 </div>
 
-<div id="puzzle1Modal" class="puzzle-modal">
-<div class="glass-panel-white relative max-w-md mx-auto">
-<button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
-✕ العودة
-</button>
-<div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
-<div class="pixel-robot-box shrink-0">
-<svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
-<rect x="3" y="3" width="10" height="9" fill="#0284c7" />
-<rect x="4" y="4" width="8" height="7" fill="#e0f2fe" />
-<rect x="7" y="1" width="2" height="2" fill="#d97706" />
-<rect id="p1_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#0284c7" />
-<rect id="p1_pxEyeRight" x="9" y="6" width="2" height="2" fill="#0284c7" />
-<rect id="p1_pxMouth" x="6" y="9" width="4" height="1" fill="#0284c7" />
-</svg>
-</div>
-<div class="flex-1">
-<div id="p1_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
-<div id="p1_screenOffContent" class="flex flex-col items-center gap-0.5">
-<span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الشاشة قيد الانتظار</span>
-<p class="text-slate-500 text-[7px] font-mono">=== WAITING ===</p>
-</div>
-<div id="p1_screenOnContent" class="hidden w-full h-full flex items-center justify-center">
-<span class="floating-answer font-black text-sm tracking-widest">
-علويتي رتاج
-</span>
-</div>
-</div>
-</div>
-</div>
-<div id="p1_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
-رتب الحروف لإلغاء قفل الشاشة ✨
-</div>
-<div class="w-full flex flex-col items-center gap-1 px-2">
-<div dir="rtl" class="w-full flex items-center justify-center gap-1 p-2 bg-sky-50 rounded-2xl border border-sky-200 shadow-inner overflow-x-auto">
-<div id="word1Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
-<div class="w-0.5 h-6 bg-sky-300 rounded-full shrink-0 mx-0.5"></div>
-<div id="word2Container" class="flex flex-row items-center gap-0.5 shrink-0"></div>
-</div>
-<div class="flex flex-col items-center gap-1 w-full">
-<span class="text-[10px] font-bold text-sky-800">الحروف المبعثرة (انقر للترتيب):</span>
-<div id="lettersBank" dir="rtl" class="flex flex-wrap justify-center gap-1.5 min-h-[36px] p-0.5"></div>
-</div>
-</div>
-<div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
-<button id="p1_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
-<span>تم الإنهاء</span>
-</button>
-<button id="p1_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
-<span>إعادة</span>
-</button>
-</div>
-</div>
+<!-- ===== الجزء الثاني: الموقع التفاعلي (يفتح عند فتح اللغز 3) ===== -->
+<div id="page2" style="display: none;">
+  <main aria-label="مساحة عرض الصورة الحرفية">
+    <!-- القسم الأول: اللوحة التفاعلية والأزرار -->
+    <div class="section-container">
+      <div class="artwork" aria-label="الصورة التفاعلية وحروفها">
+        <img class="artwork-image" src="https://raw.githubusercontent.com/workmemo2007-gif/M2/93d760cc9f33a21f2c0867fa02795531fd73a040/IMG_2573.png" alt="رسم عربي مزخرف" draggable="false">
+
+        <button class="letter-button letter-ra letter-expandable" type="button" aria-label="حرف الراء" aria-pressed="false" data-letter="ra">
+          <span class="letter-text">ر</span>
+          <div class="typed-container">
+            <p class="typed-text" id="typed-text-ra"></p><span class="cursor" id="cursor-ra" style="display:none;"></span>
+            <div class="audio-waves">
+              <div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="letter-button letter-ta letter-expandable" type="button" aria-label="حرف التاء" aria-pressed="false" data-letter="ta">
+          <span class="letter-text">ت</span>
+          <div class="typed-container">
+            <p class="typed-text" id="typed-text-ta"></p><span class="cursor" id="cursor-ta" style="display:none;"></span>
+            <div class="audio-waves">
+              <div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="letter-button letter-alif letter-expandable" type="button" aria-label="حرف الألف" aria-pressed="false" data-letter="alif">
+          <span class="letter-text">ا</span>
+          <div class="typed-container">
+            <p class="typed-text" id="typed-text-alif"></p><span class="cursor" id="cursor-alif" style="display:none;"></span>
+            <div class="audio-waves">
+              <div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div>
+            </div>
+          </div>
+        </button>
+
+        <button class="letter-button letter-jeem letter-expandable" type="button" aria-label="حرف الجيم" aria-pressed="false" data-letter="jeem">
+          <span class="letter-text">ج</span>
+          <div class="typed-container">
+            <p class="typed-text" id="typed-text-jeem"></p><span class="cursor" id="cursor-jeem" style="display:none;"></span>
+            <div class="audio-waves">
+              <div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div><div class="audio-wave-bar"></div>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- الكارت الزجاجي الموسيقي -->
+    <div class="glass-card-wrapper" id="card-trigger-zone">
+      <div class="glass-card">
+        <div class="card-header-bar">
+          <h2 class="card-title">لـ رتــاج</h2>
+          <button id="card-play-btn" class="play-pause-btn" aria-label="تشغيل الأغنية">
+            <svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        
+        <div class="quotes-list">
+          <p id="card-typed-box" class="card-typed-text"></p>
+        </div>
+
+        <div class="card-audio-waves-bottom" id="card-waves">
+          <div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div><div class="card-wave-bar"></div>
+        </div>
+
+        <audio id="card-audio-element" src="https://raw.githubusercontent.com/workmemo2007-gif/M2/cb5928cdcc51b2d01ad01d75c6ee1c3479a0b22c/telegram-cloud-document-4-5908886701551396122.mp4%202.mp3" preload="metadata"></audio>
+      </div>
+    </div>
+
+    <!-- القسم الثاني: الصورة العائمة -->
+    <div class="second-artwork-container">
+      <img id="second-img" class="second-artwork" src="https://raw.githubusercontent.com/workmemo2007-gif/M2/adadf85a0ca189e75ecac30f00924564fbb59352/IMG_2577.png" alt="صورة عائمة جديدة" draggable="false">
+    </div>
+
+    <!-- القسم الثالث: شريط القلب السفلي -->
+    <div class="footer-controls">
+      <div class="bottom-bar">
+        <button type="button" class="heart-btn" id="btn-heart" title="قلب حب">
+          <svg viewBox="0 0 24 24" class="btn-icon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- الأصوات التابعة للحروف -->
+  <audio id="audio-ra" preload="metadata">
+    <source src="https://raw.githubusercontent.com/workmemo2007-gif/M2/43ae8c0dcba605028e4de75ff57d79451060c899/%E2%80%8E%E2%81%A8%D8%AD%D8%B1%D9%81%20%D8%B1%E2%81%A9.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="audio-ta" preload="metadata">
+    <source src="https://raw.githubusercontent.com/workmemo2007-gif/J/3170a08c4916f27102b32cdacaca86335bb27383/%E2%80%8E%E2%81%A8%D8%AD%D8%B1%D9%81%20%D8%AA%E2%81%A9.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="audio-alif" preload="metadata">
+    <source src="https://raw.githubusercontent.com/workmemo2007-gif/M2/72ad2bf2d4691e866f88413a9f1bd6a809c2c125/%E2%80%8E%E2%81%A8%D8%AD%D8%B1%D9%81%20%D8%A7%E2%81%A9.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="audio-jeem" preload="metadata">
+    <source src="https://raw.githubusercontent.com/workmemo2007-gif/M2/8da0fced89cbc566d6cffe25fce5347ab6e10d22/telegram-cloud-document-2-5321499372058354999.mp4.mp3" type="audio/mpeg">
+  </audio>
 </div>
 
-<div id="puzzle2Modal" class="puzzle-modal">
-<div class="glass-panel-white relative max-w-md mx-auto">
-<button class="closeModalBtn absolute top-3 left-4 glass-btn-secondary px-3 py-1 rounded-full text-xs font-bold z-10 flex items-center gap-1 shadow-sm">
-✕ العودة
-</button>
-<div class="w-full flex items-center justify-center gap-2 pt-1 px-2">
-<div class="pixel-robot-box shrink-0">
-<svg class="pixel-art w-7 h-7" viewBox="0 0 16 16" fill="none">
-<rect x="3" y="3" width="10" height="9" fill="#0284c7" />
-<rect x="4" y="4" width="8" height="7" fill="#e0f2fe" />
-<rect x="7" y="1" width="2" height="2" fill="#d97706" />
-<rect id="p2_pxEyeLeft" x="5" y="6" width="2" height="2" fill="#0284c7" />
-<rect id="p2_pxEyeRight" x="9" y="6" width="2" height="2" fill="#0284c7" />
-<rect id="p2_pxMouth" x="6" y="9" width="4" height="1" fill="#0284c7" />
-</svg>
-</div>
-<div class="flex-1">
-<div id="p2_tvScreen" class="holo-screen-white rounded-2xl h-20 flex flex-col items-center justify-center p-1.5 text-center">
-<div id="p2_screenOffContent" class="flex flex-col items-center gap-0.5">
-<span class="text-[9px] font-bold tracking-wider text-slate-300 uppercase">الصورة مشفرة</span>
-<p class="text-slate-500 text-[7px] font-mono">=== REASSEMBLE TILES ===</p>
-</div>
-<div id="p2_screenOnContent" class="hidden w-full h-full flex flex-col items-center justify-center relative overflow-hidden rounded-xl">
-<img id="p2_fullPreviewImage" class="w-full h-full object-cover" alt="Completed Image" />
-<div class="absolute bottom-0.5 bg-white/90 text-sky-800 text-[8px] px-2 py-0.5 rounded-full font-extrabold border border-sky-300">
-علويتي رتاج ✨
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="p2_speech" class="bg-sky-100 border border-sky-300 text-sky-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm text-center my-0 w-11/12">
-رتب أجزاء الصورة لإظهار الرسالة ✨
-</div>
-<div class="flex flex-col items-center gap-1 w-full px-2">
-<div id="puzzleBoardWrapper" class="relative w-36 h-36">
-<div id="puzzleBoard" class="grid grid-cols-3 gap-1 p-1 bg-sky-50 rounded-2xl border border-sky-200 w-full h-full shadow-inner"></div>
-<div id="connectedBoard" class="hidden absolute inset-0 w-full h-full rounded-2xl overflow-hidden border-2 border-sky-400 shadow-xl">
-<img id="completedPuzzleImg" class="w-full h-full object-cover" alt="Connected Result" />
-</div>
-</div>
-</div>
-<div class="flex items-center justify-center gap-3 w-full max-w-xs pb-1 px-2">
-<button id="p2_finishBtn" class="glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
-<span>تم الإنهاء</span>
-</button>
-<button id="p2_resetBtn" class="glass-btn-secondary flex-1 py-1.5 font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5">
-<span>إعادة</span>
-</button>
-</div>
-</div>
-</div>
-
-<div id="p3Badge" class="p3-instruction-badge">
-اخفقي 10 قلوب باسم "رتاج" بالسهم! (المتبقي: <span id="p3Count">10</span>) 🏹
-</div>
-<canvas id="puzzle3Canvas"></canvas>
 
 <script>
+/* ==================== برمجة الصفحة الأولى (الألغاز) ==================== */
 const petalsCanvas = document.getElementById('petalsCanvas');
 const pCtx = petalsCanvas.getContext('2d');
 let petals = [];
+
 function resizePetalCanvas() {
-petalsCanvas.width = window.innerWidth;
-petalsCanvas.height = window.innerHeight;
+  petalsCanvas.width = window.innerWidth;
+  petalsCanvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizePetalCanvas);
 resizePetalCanvas();
 
 class Petal {
-constructor() {
-this.reset();
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * petalsCanvas.width;
+    this.y = -20;
+    this.size = Math.random() * 8 + 6;
+    this.speedY = Math.random() * 1.2 + 0.8;
+    this.speedX = Math.random() * 0.8 - 0.4;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotSpeed = (Math.random() - 0.5) * 0.02;
+    this.isBlue = Math.random() > 0.4;
+    this.color = this.isBlue ? 'rgba(186, 230, 253, 0.85)' : 'rgba(255, 255, 255, 0.9)';
+    this.glow = this.isBlue ? 'rgba(56, 189, 248, 0.6)' : 'rgba(255, 255, 255, 0.8)';
+  }
+  update() {
+    this.y += this.speedY;
+    this.x += Math.sin(this.y * 0.01) + this.speedX;
+    this.rotation += this.rotSpeed;
+    if (this.y > petalsCanvas.height + 20) this.reset();
+  }
+  draw() {
+    pCtx.save();
+    pCtx.translate(this.x, this.y);
+    pCtx.rotate(this.rotation);
+    pCtx.beginPath();
+    pCtx.moveTo(0, 0);
+    pCtx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size * 1.5);
+    pCtx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
+    pCtx.fillStyle = this.color;
+    pCtx.shadowColor = this.glow;
+    pCtx.shadowBlur = 10;
+    pCtx.fill();
+    pCtx.restore();
+  }
 }
-reset() {
-this.x = Math.random() * petalsCanvas.width;
-this.y = -20;
-this.size = Math.random() * 8 + 6;
-this.speedY = Math.random() * 1.2 + 0.8;
-this.speedX = Math.random() * 0.8 - 0.4;
-this.rotation = Math.random() * Math.PI * 2;
-this.rotSpeed = (Math.random() - 0.5) * 0.02;
-this.isBlue = Math.random() > 0.4;
-this.color = this.isBlue ? 'rgba(186, 230, 253, 0.85)' : 'rgba(255, 255, 255, 0.9)';
-this.glow = this.isBlue ? 'rgba(56, 189, 248, 0.6)' : 'rgba(255, 255, 255, 0.8)';
-}
-update() {
-this.y += this.speedY;
-this.x += Math.sin(this.y * 0.01) + this.speedX;
-this.rotation += this.rotSpeed;
-if (this.y > petalsCanvas.height + 20) {
-this.reset();
-}
-}
-draw() {
-pCtx.save();
-pCtx.translate(this.x, this.y);
-pCtx.rotate(this.rotation);
-pCtx.beginPath();
-pCtx.moveTo(0, 0);
-pCtx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size * 1.5);
-pCtx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
-pCtx.fillStyle = this.color;
-pCtx.shadowColor = this.glow;
-pCtx.shadowBlur = 10;
-pCtx.fill();
-pCtx.restore();
-}
-}
-for (let i = 0; i < 40; i++) {
-petals.push(new Petal());
-}
+for (let i = 0; i < 40; i++) petals.push(new Petal());
+
 function animatePetals() {
-pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
-petals.forEach(p => {
-p.update();
-p.draw();
-});
-requestAnimationFrame(animatePetals);
+  pCtx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+  petals.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animatePetals);
 }
 animatePetals();
-
-// تم تعطيل جميع المؤثرات الصوتية بناءً على الطلب
-class SoundFX {
-constructor() { this.ctx = null; }
-init() {}
-playTap() {}
-playPop() {}
-playError() {}
-playSuccess() {}
-}
-const soundFX = new SoundFX();
 
 const text = "أهلاً بالعلوية رتاج، هناك هدية بانتظارك، ولكن حتى تصلين إلى الهدية يجب اجتياز ثلاث مراحل صعبة وخيرة حتى تصل الأميرة إلى قصرها...";
 let index = 0;
@@ -788,11 +1411,11 @@ let gestureStart = null;
 let gestureMoved = false;
 
 function typeWriter() {
-if (index < text.length) {
-document.getElementById("typewriter").textContent += text.charAt(index);
-index++;
-setTimeout(typeWriter, speed);
-}
+  if (index < text.length) {
+    document.getElementById("typewriter").textContent += text.charAt(index);
+    index++;
+    setTimeout(typeWriter, speed);
+  }
 }
 
 const envelopeWrapper = document.getElementById("envelopeWrapper");
@@ -803,109 +1426,95 @@ const envelopeShell = document.getElementById('envelopeShell');
 const gestureHint = document.getElementById("gestureHint");
 
 function setEnvelopeOpen(open) {
-envelopeIsOpen = open;
-if (open) {
-const cardRect = letterCard.getBoundingClientRect();
-const shellRect = envelopeShell.getBoundingClientRect();
-const currentTransform = getComputedStyle(letterCard).transform;
-const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
-const distanceToClear = cardRect.bottom - currentY - shellRect.top + 18;
-const maxOnScreen = Math.max(0, cardRect.top - currentY - 18);
-const exitY = -Math.min(Math.max(distanceToClear, 70), maxOnScreen);
-letterCard.style.setProperty('--card-exit-y', `${exitY}px`);
-envelopeWrapper.classList.remove('is-revealed');
-} else {
-envelopeWrapper.classList.remove('is-revealed');
-letterCard.style.removeProperty('--card-final-y');
-letterCard.style.removeProperty('--card-exit-y');
-}
-envelopeWrapper.classList.toggle('is-open', open);
-envelopeToggle.setAttribute('aria-expanded', String(open));
-envelopeToggle.setAttribute('aria-label', open ? 'أغلقي الظرف' : 'افتحي الظرف');
-gestureHint.textContent = open
-? 'اسحبي الظرف للتدوير · اسحبي للأسفل لطيّه'
-: 'اسحبي الظرف للتدوير · اسحبي للأعلى لفتحه';
-if (open && !isOpened) {
-isOpened = true;
-setTimeout(typeWriter, 550);
-}
+  envelopeIsOpen = open;
+  if (open) {
+    const cardRect = letterCard.getBoundingClientRect();
+    const shellRect = envelopeShell.getBoundingClientRect();
+    const currentTransform = getComputedStyle(letterCard).transform;
+    const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
+    const distanceToClear = cardRect.bottom - currentY - shellRect.top + 18;
+    const maxOnScreen = Math.max(0, cardRect.top - currentY - 18);
+    const exitY = -Math.min(Math.max(distanceToClear, 70), maxOnScreen);
+    letterCard.style.setProperty('--card-exit-y', `${exitY}px`);
+    envelopeWrapper.classList.remove('is-revealed');
+  } else {
+    envelopeWrapper.classList.remove('is-revealed');
+    letterCard.style.removeProperty('--card-final-y');
+    letterCard.style.removeProperty('--card-exit-y');
+  }
+  envelopeWrapper.classList.toggle('is-open', open);
+  envelopeToggle.setAttribute('aria-expanded', String(open));
+  envelopeToggle.setAttribute('aria-label', open ? 'أغلقي الظرف' : 'افتحي الظرف');
+  gestureHint.textContent = open
+    ? 'اسحبي الظرف للتدوير · اسحبي للأسفل لطيّه'
+    : 'اسحبي الظرف للتدوير · اسحبي للأعلى لفتحه';
+  if (open && !isOpened) {
+    isOpened = true;
+    setTimeout(typeWriter, 550);
+  }
 }
 
 letterCard.addEventListener('transitionend', (event) => {
-if (event.propertyName !== 'transform' || !envelopeIsOpen || envelopeWrapper.classList.contains('is-revealed')) return;
-const cardRect = letterCard.getBoundingClientRect();
-const stageRect = envelopeStage.getBoundingClientRect();
-const currentTransform = getComputedStyle(letterCard).transform;
-const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
-const desiredCenterY = stageRect.top + stageRect.height / 2;
-const cardCenterY = cardRect.top + cardRect.height / 2;
-const finalY = currentY + desiredCenterY - cardCenterY;
-letterCard.style.setProperty('--card-final-y', `${finalY}px`);
-envelopeWrapper.classList.add('is-revealed');
+  if (event.propertyName !== 'transform' || !envelopeIsOpen || envelopeWrapper.classList.contains('is-revealed')) return;
+  const cardRect = letterCard.getBoundingClientRect();
+  const stageRect = envelopeStage.getBoundingClientRect();
+  const currentTransform = getComputedStyle(letterCard).transform;
+  const currentY = currentTransform === 'none' ? 0 : new DOMMatrixReadOnly(currentTransform).m42;
+  const desiredCenterY = stageRect.top + stageRect.height / 2;
+  const cardCenterY = cardRect.top + cardRect.height / 2;
+  const finalY = currentY + desiredCenterY - cardCenterY;
+  letterCard.style.setProperty('--card-final-y', `${finalY}px`);
+  envelopeWrapper.classList.add('is-revealed');
 });
 
 envelopeToggle.addEventListener('click', (event) => {
-event.stopPropagation();
-setEnvelopeOpen(!envelopeIsOpen);
+  event.stopPropagation();
+  setEnvelopeOpen(!envelopeIsOpen);
 });
 
-/* السحب والتدوير بزاوية تصل إلى 180 درجة */
 envelopeWrapper.addEventListener('pointerdown', (event) => {
-if (event.target.closest('button')) return;
-if (event.pointerType === 'mouse' && event.button !== 0) return;
-gestureStart = { x: event.clientX, y: event.clientY, rotateX, rotateY };
-gestureMoved = false;
-envelopeWrapper.classList.add('is-dragging');
-envelopeWrapper.setPointerCapture?.(event.pointerId);
+  if (event.target.closest('button')) return;
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+  gestureStart = { x: event.clientX, y: event.clientY, rotateX, rotateY };
+  gestureMoved = false;
+  envelopeWrapper.classList.add('is-dragging');
+  envelopeWrapper.setPointerCapture?.(event.pointerId);
 });
 
 envelopeWrapper.addEventListener('pointermove', (event) => {
-if (!gestureStart) return;
-const dx = event.clientX - gestureStart.x;
-const dy = event.clientY - gestureStart.y;
-if (Math.hypot(dx, dy) > 7) gestureMoved = true;
-
-// سماح التدوير بمدى يصل إلى 180 درجة أثناء الحركة
-rotateY = Math.max(-180, Math.min(180, gestureStart.rotateY + dx * 0.9));
-rotateX = Math.max(-90, Math.min(90, gestureStart.rotateX - dy * 0.6));
-envelopeStage.style.setProperty('--rotate-x', `${rotateX}deg`);
-envelopeStage.style.setProperty('--rotate-y', `${rotateY}deg`);
+  if (!gestureStart) return;
+  const dx = event.clientX - gestureStart.x;
+  const dy = event.clientY - gestureStart.y;
+  if (Math.hypot(dx, dy) > 7) gestureMoved = true;
+  rotateY = Math.max(-180, Math.min(180, gestureStart.rotateY + dx * 0.9));
+  rotateX = Math.max(-90, Math.min(90, gestureStart.rotateX - dy * 0.6));
+  envelopeStage.style.setProperty('--rotate-x', `${rotateX}deg`);
+  envelopeStage.style.setProperty('--rotate-y', `${rotateY}deg`);
 });
 
 function finishEnvelopeGesture(event) {
-if (!gestureStart) return;
-const dx = event.clientX - gestureStart.x;
-const dy = event.clientY - gestureStart.y;
-envelopeWrapper.classList.remove('is-dragging');
-
-// العودة التلقائية للوضع الطبيعي (0 درجة) عند ترك الأصبع
-rotateX = 0;
-rotateY = 0;
-envelopeStage.style.setProperty('--rotate-x', `0deg`);
-envelopeStage.style.setProperty('--rotate-y', `0deg`);
-
-if (Math.abs(dy) > 58 && Math.abs(dy) > Math.abs(dx) * 1.05) {
-setEnvelopeOpen(dy < 0);
-} else if (!gestureMoved) {
-setEnvelopeOpen(!envelopeIsOpen);
-}
-gestureStart = null;
+  if (!gestureStart) return;
+  const dx = event.clientX - gestureStart.x;
+  const dy = event.clientY - gestureStart.y;
+  envelopeWrapper.classList.remove('is-dragging');
+  rotateX = 0; rotateY = 0;
+  envelopeStage.style.setProperty('--rotate-x', `0deg`);
+  envelopeStage.style.setProperty('--rotate-y', `0deg`);
+  if (Math.abs(dy) > 58 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+    setEnvelopeOpen(dy < 0);
+  } else if (!gestureMoved) {
+    setEnvelopeOpen(!envelopeIsOpen);
+  }
+  gestureStart = null;
 }
 
 envelopeWrapper.addEventListener('pointerup', finishEnvelopeGesture);
 envelopeWrapper.addEventListener('pointercancel', () => {
-envelopeWrapper.classList.remove('is-dragging');
-rotateX = 0; rotateY = 0;
-envelopeStage.style.setProperty('--rotate-x', `0deg`);
-envelopeStage.style.setProperty('--rotate-y', `0deg`);
-gestureStart = null;
-});
-envelopeWrapper.addEventListener('lostpointercapture', () => {
-envelopeWrapper.classList.remove('is-dragging');
-rotateX = 0; rotateY = 0;
-envelopeStage.style.setProperty('--rotate-x', `0deg`);
-envelopeStage.style.setProperty('--rotate-y', `0deg`);
-gestureStart = null;
+  envelopeWrapper.classList.remove('is-dragging');
+  rotateX = 0; rotateY = 0;
+  envelopeStage.style.setProperty('--rotate-x', `0deg`);
+  envelopeStage.style.setProperty('--rotate-y', `0deg`);
+  gestureStart = null;
 });
 
 const puzzle1Btn = document.getElementById('puzzle1Btn');
@@ -916,32 +1525,33 @@ const puzzle2Modal = document.getElementById('puzzle2Modal');
 const closeBtns = document.querySelectorAll('.closeModalBtn');
 
 puzzle1Btn.addEventListener('click', (e) => {
-e.stopPropagation();
-envelopeWrapper.classList.add('hide-completely');
-initP1Game();
-puzzle1Modal.classList.add('active');
+  e.stopPropagation();
+  envelopeWrapper.classList.add('hide-completely');
+  initP1Game();
+  puzzle1Modal.classList.add('active');
 });
 
 puzzle2Btn.addEventListener('click', (e) => {
-e.stopPropagation();
-envelopeWrapper.classList.add('hide-completely');
-initP2Game();
-puzzle2Modal.classList.add('active');
+  e.stopPropagation();
+  envelopeWrapper.classList.add('hide-completely');
+  initP2Game();
+  puzzle2Modal.classList.add('active');
 });
 
 puzzle3Btn.addEventListener('click', (e) => {
-e.stopPropagation();
-startPuzzle3Game();
+  e.stopPropagation();
+  startPuzzle3Game();
 });
 
 closeBtns.forEach(btn => {
-btn.addEventListener('click', () => {
-puzzle1Modal.classList.remove('active');
-puzzle2Modal.classList.remove('active');
-envelopeWrapper.classList.remove('hide-completely');
-});
+  btn.addEventListener('click', () => {
+    puzzle1Modal.classList.remove('active');
+    puzzle2Modal.classList.remove('active');
+    envelopeWrapper.classList.remove('hide-completely');
+  });
 });
 
+/* اللغز الأول */
 const WORD1_TARGET = ['ع', 'ل', 'و', 'ي', 'ت', 'ي'];
 const WORD2_TARGET = ['ر', 'ت', 'ا', 'ج'];
 const ALL_LETTERS = [...WORD1_TARGET, ...WORD2_TARGET];
@@ -960,165 +1570,154 @@ const p1_screenOnContent = document.getElementById('p1_screenOnContent');
 const p1_speech = document.getElementById('p1_speech');
 
 function shuffleArray(array) {
-const arr = [...array];
-for (let i = arr.length - 1; i > 0; i--) {
-const j = Math.floor(Math.random() * (i + 1));
-[arr[i], arr[j]] = [arr[j], arr[i]];
-}
-return arr;
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function initP1Game() {
-currentWord1 = new Array(6).fill(null);
-currentWord2 = new Array(4).fill(null);
-availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
-id: `char-${index}-${Date.now()}-${Math.random()}`,
-char: char
-}));
-setP1RobotState('neutral');
-resetP1Screen();
-resetP1ButtonStyles();
-renderP1Board();
+  currentWord1 = new Array(6).fill(null);
+  currentWord2 = new Array(4).fill(null);
+  availablePool = shuffleArray(ALL_LETTERS).map((char, index) => ({
+    id: `char-${index}-${Date.now()}-${Math.random()}`,
+    char: char
+  }));
+  setP1RobotState('neutral');
+  resetP1Screen();
+  resetP1ButtonStyles();
+  renderP1Board();
 }
 
 function renderP1Board() {
-p1_word1Container.innerHTML = '';
-currentWord1.forEach((item, index) => {
-const slot = createSlotElement(item, () => removeLetterFromWord(1, index));
-p1_word1Container.appendChild(slot);
-});
-
-p1_word2Container.innerHTML = '';
-currentWord2.forEach((item, index) => {
-const slot = createSlotElement(item, () => removeLetterFromWord(2, index));
-p1_word2Container.appendChild(slot);
-});
-
-p1_lettersBank.innerHTML = '';
-availablePool.forEach((item) => {
-const btn = document.createElement('button');
-btn.className = 'letter-btn font-extrabold text-xs w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer shadow-sm';
-btn.innerText = item.char;
-btn.onclick = () => {
-addLetterToNextAvailable(item);
-};
-p1_lettersBank.appendChild(btn);
-});
+  p1_word1Container.innerHTML = '';
+  currentWord1.forEach((item, index) => {
+    const slot = createSlotElement(item, () => removeLetterFromWord(1, index));
+    p1_word1Container.appendChild(slot);
+  });
+  p1_word2Container.innerHTML = '';
+  currentWord2.forEach((item, index) => {
+    const slot = createSlotElement(item, () => removeLetterFromWord(2, index));
+    p1_word2Container.appendChild(slot);
+  });
+  p1_lettersBank.innerHTML = '';
+  availablePool.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-btn font-extrabold text-xs w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer shadow-sm';
+    btn.innerText = item.char;
+    btn.onclick = () => addLetterToNextAvailable(item);
+    p1_lettersBank.appendChild(btn);
+  });
 }
 
 function createSlotElement(item, onClick) {
-const slot = document.createElement('div');
-slot.className = 'letter-slot-mini';
-if (item) {
-const letterBtn = document.createElement('button');
-letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
-letterBtn.innerText = item.char;
-letterBtn.onclick = () => {
-onClick();
-};
-slot.appendChild(letterBtn);
-}
-return slot;
+  const slot = document.createElement('div');
+  slot.className = 'letter-slot-mini';
+  if (item) {
+    const letterBtn = document.createElement('button');
+    letterBtn.className = 'letter-btn bg-sky-500 text-white font-extrabold text-xs w-full h-full rounded-md shadow-sm flex items-center justify-center cursor-pointer';
+    letterBtn.innerText = item.char;
+    letterBtn.onclick = () => onClick();
+    slot.appendChild(letterBtn);
+  }
+  return slot;
 }
 
 function addLetterToNextAvailable(item) {
-const emptyW1Index = currentWord1.findIndex(slot => slot === null);
-if (emptyW1Index !== -1) {
-currentWord1[emptyW1Index] = item;
-availablePool = availablePool.filter(p => p.id !== item.id);
-renderP1Board();
-return;
-}
-const emptyW2Index = currentWord2.findIndex(slot => slot === null);
-if (emptyW2Index !== -1) {
-currentWord2[emptyW2Index] = item;
-availablePool = availablePool.filter(p => p.id !== item.id);
-renderP1Board();
-return;
-}
+  const emptyW1Index = currentWord1.findIndex(slot => slot === null);
+  if (emptyW1Index !== -1) {
+    currentWord1[emptyW1Index] = item;
+    availablePool = availablePool.filter(p => p.id !== item.id);
+    renderP1Board();
+    return;
+  }
+  const emptyW2Index = currentWord2.findIndex(slot => slot === null);
+  if (emptyW2Index !== -1) {
+    currentWord2[emptyW2Index] = item;
+    availablePool = availablePool.filter(p => p.id !== item.id);
+    renderP1Board();
+    return;
+  }
 }
 
 function removeLetterFromWord(wordNumber, index) {
-let item = null;
-if (wordNumber === 1) {
-item = currentWord1[index];
-currentWord1[index] = null;
-} else {
-item = currentWord2[index];
-currentWord2[index] = null;
-}
-if (item) {
-availablePool.push(item);
-renderP1Board();
-}
+  let item = null;
+  if (wordNumber === 1) {
+    item = currentWord1[index];
+    currentWord1[index] = null;
+  } else {
+    item = currentWord2[index];
+    currentWord2[index] = null;
+  }
+  if (item) {
+    availablePool.push(item);
+    renderP1Board();
+  }
 }
 
 function setP1RobotState(state) {
-const pxMouth = document.getElementById('p1_pxMouth');
-if (state === 'sad') {
-pxMouth.setAttribute('fill', '#ef4444');
-p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
-p1_speech.className = "bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
-} else if (state === 'happy') {
-pxMouth.setAttribute('fill', '#10b981');
-p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
-p1_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
-} else {
-pxMouth.setAttribute('fill', '#0284c7');
-p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨";
-p1_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
-}
+  const pxMouth = document.getElementById('p1_pxMouth');
+  if (state === 'sad') {
+    pxMouth.setAttribute('fill', '#ef4444');
+    p1_speech.innerText = "الترتيب غير صحيح 🥀 حاولي مرة أخرى!";
+    p1_speech.className = "bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
+  } else if (state === 'happy') {
+    pxMouth.setAttribute('fill', '#10b981');
+    p1_speech.innerText = "رائع جداً! تم فك القفل بنجاح ✨";
+    p1_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+  } else {
+    pxMouth.setAttribute('fill', '#0284c7');
+    p1_speech.innerText = "رتب الحروف لإلغاء قفل الشاشة ✨";
+    p1_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+  }
 }
 
 function activateP1Screen() {
-p1_tvScreen.classList.add('active');
-p1_screenOffContent.classList.add('hidden');
-p1_screenOnContent.classList.remove('hidden');
+  p1_tvScreen.classList.add('active');
+  p1_screenOffContent.classList.add('hidden');
+  p1_screenOnContent.classList.remove('hidden');
 }
 
 function resetP1Screen() {
-p1_tvScreen.classList.remove('active');
-p1_screenOffContent.classList.remove('hidden');
-p1_screenOnContent.classList.add('hidden');
+  p1_tvScreen.classList.remove('active');
+  p1_screenOffContent.classList.remove('hidden');
+  p1_screenOnContent.classList.add('hidden');
 }
 
 function resetP1ButtonStyles() {
-p1_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
+  p1_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
 }
 
 p1_finishBtn.addEventListener('click', () => {
-resetP1ButtonStyles();
-const userWord1 = currentWord1.map(i => i ? i.char : '').join('');
-const userWord2 = currentWord2.map(i => i ? i.char : '').join('');
-const target1 = WORD1_TARGET.join('');
-const target2 = WORD2_TARGET.join('');
-const isCorrect = (userWord1 === target1) && (userWord2 === target2);
+  resetP1ButtonStyles();
+  const userWord1 = currentWord1.map(i => i ? i.char : '').join('');
+  const userWord2 = currentWord2.map(i => i ? i.char : '').join('');
+  const target1 = WORD1_TARGET.join('');
+  const target2 = WORD2_TARGET.join('');
+  const isCorrect = (userWord1 === target1) && (userWord2 === target2);
 
-if (isCorrect) {
-setP1RobotState('happy');
-activateP1Screen();
-p1_finishBtn.classList.add('btn-shake-green');
-if (window.confetti) {
-confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
-}
-setTimeout(() => {
-puzzle1Modal.classList.remove('active');
-envelopeWrapper.classList.remove('hide-completely');
-}, 3000);
-} else {
-setP1RobotState('sad');
-resetP1Screen();
-p1_finishBtn.classList.add('btn-shake-red');
-setTimeout(() => {
-p1_finishBtn.classList.remove('btn-shake-red');
-}, 700);
-}
+  if (isCorrect) {
+    setP1RobotState('happy');
+    activateP1Screen();
+    p1_finishBtn.classList.add('btn-shake-green');
+    if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+    setTimeout(() => {
+      puzzle1Modal.classList.remove('active');
+      envelopeWrapper.classList.remove('hide-completely');
+    }, 3000);
+  } else {
+    setP1RobotState('sad');
+    resetP1Screen();
+    p1_finishBtn.classList.add('btn-shake-red');
+    setTimeout(() => p1_finishBtn.classList.remove('btn-shake-red'), 700);
+  }
 });
 
-p1_resetBtn.addEventListener('click', () => {
-initP1Game();
-});
+p1_resetBtn.addEventListener('click', () => initP1Game());
 
+/* اللغز الثاني */
 const PUZZLE_IMAGE_URL = 'https://raw.githubusercontent.com/workmemo2007-gif/R1/main/IMG_2540.jpeg';
 const GRID_SIZE = 3;
 const TOTAL_TILES = GRID_SIZE * GRID_SIZE;
@@ -1141,119 +1740,109 @@ p2_fullPreviewImage.src = PUZZLE_IMAGE_URL;
 completedPuzzleImg.src = PUZZLE_IMAGE_URL;
 
 function initP2Game() {
-selectedTileIndex = null;
-let solved = true;
-while (solved) {
-const indexes = Array.from({ length: TOTAL_TILES }, (_, i) => i);
-currentP2Board = shuffleArray(indexes);
-solved = currentP2Board.every((val, idx) => val === TARGET_BOARD[idx]);
-}
-puzzleBoard.classList.remove('hidden');
-connectedBoard.classList.add('hidden');
-setP2SpeechState('neutral');
-resetP2Screen();
-resetP2ButtonStyles();
-renderP2Board();
+  selectedTileIndex = null;
+  let solved = true;
+  while (solved) {
+    const indexes = Array.from({ length: TOTAL_TILES }, (_, i) => i);
+    currentP2Board = shuffleArray(indexes);
+    solved = currentP2Board.every((val, idx) => val === TARGET_BOARD[idx]);
+  }
+  puzzleBoard.classList.remove('hidden');
+  connectedBoard.classList.add('hidden');
+  setP2SpeechState('neutral');
+  resetP2Screen();
+  resetP2ButtonStyles();
+  renderP2Board();
 }
 
 function renderP2Board() {
-puzzleBoard.innerHTML = '';
-currentP2Board.forEach((originalIndex, boardPosition) => {
-const tile = document.createElement('div');
-tile.className = 'glass-tile w-full h-full rounded-xl cursor-pointer relative overflow-hidden select-none';
-const row = Math.floor(originalIndex / GRID_SIZE);
-const col = originalIndex % GRID_SIZE;
-const posX = col * 50;
-const posY = row * 50;
-tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
-tile.style.backgroundSize = '300% 300%';
-tile.style.backgroundPosition = `${posX}% ${posY}%`;
-
-if (selectedTileIndex === boardPosition) {
-tile.classList.add('selected-tile');
-}
-tile.onclick = () => handleP2TileClick(boardPosition);
-puzzleBoard.appendChild(tile);
-});
+  puzzleBoard.innerHTML = '';
+  currentP2Board.forEach((originalIndex, boardPosition) => {
+    const tile = document.createElement('div');
+    tile.className = 'glass-tile w-full h-full rounded-xl cursor-pointer relative overflow-hidden select-none';
+    const row = Math.floor(originalIndex / GRID_SIZE);
+    const col = originalIndex % GRID_SIZE;
+    tile.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
+    tile.style.backgroundSize = '300% 300%';
+    tile.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+    if (selectedTileIndex === boardPosition) tile.classList.add('selected-tile');
+    tile.onclick = () => handleP2TileClick(boardPosition);
+    puzzleBoard.appendChild(tile);
+  });
 }
 
 function handleP2TileClick(position) {
-if (selectedTileIndex === null) {
-selectedTileIndex = position;
-} else if (selectedTileIndex === position) {
-selectedTileIndex = null;
-} else {
-const temp = currentP2Board[selectedTileIndex];
-currentP2Board[selectedTileIndex] = currentP2Board[position];
-currentP2Board[position] = temp;
-selectedTileIndex = null;
-}
-renderP2Board();
+  if (selectedTileIndex === null) {
+    selectedTileIndex = position;
+  } else if (selectedTileIndex === position) {
+    selectedTileIndex = null;
+  } else {
+    const temp = currentP2Board[selectedTileIndex];
+    currentP2Board[selectedTileIndex] = currentP2Board[position];
+    currentP2Board[position] = temp;
+    selectedTileIndex = null;
+  }
+  renderP2Board();
 }
 
 function setP2SpeechState(state) {
-const pxMouth = document.getElementById('p2_pxMouth');
-if (state === 'sad') {
-pxMouth.setAttribute('fill', '#ef4444');
-p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
-p2_speech.className = "bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
-} else if (state === 'happy') {
-pxMouth.setAttribute('fill', '#10b981');
-p2_speech.innerText = "مذهل! اكتملت الصورة واشتغل الشاشة ✨";
-p2_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
-} else {
-pxMouth.setAttribute('fill', '#0284c7');
-p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة ✨";
-p2_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
-}
+  const pxMouth = document.getElementById('p2_pxMouth');
+  if (state === 'sad') {
+    pxMouth.setAttribute('fill', '#ef4444');
+    p2_speech.innerText = "ترتيب القطع غير صحيح 🥀 حاولي مجدداً!";
+    p2_speech.className = "bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-bounce text-center my-1 w-11/12";
+  } else if (state === 'happy') {
+    pxMouth.setAttribute('fill', '#10b981');
+    p2_speech.innerText = "مذهل! اكتملت الصورة واشتغل الشاشة ✨";
+    p2_speech.className = "bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+  } else {
+    pxMouth.setAttribute('fill', '#0284c7');
+    p2_speech.innerText = "رتب أجزاء الصورة لإظهار الرسالة ✨";
+    p2_speech.className = "bg-sky-100 border border-sky-300 text-sky-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm text-center my-1 w-11/12";
+  }
 }
 
 function activateP2Screen() {
-p2_tvScreen.classList.add('active');
-p2_screenOffContent.classList.add('hidden');
-p2_screenOnContent.classList.remove('hidden');
+  p2_tvScreen.classList.add('active');
+  p2_screenOffContent.classList.add('hidden');
+  p2_screenOnContent.classList.remove('hidden');
 }
 
 function resetP2Screen() {
-p2_tvScreen.classList.remove('active');
-p2_screenOffContent.classList.remove('hidden');
-p2_screenOnContent.classList.add('hidden');
+  p2_tvScreen.classList.remove('active');
+  p2_screenOffContent.classList.remove('hidden');
+  p2_screenOnContent.classList.add('hidden');
 }
 
 function resetP2ButtonStyles() {
-p2_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
+  p2_finishBtn.className = "glass-btn-primary flex-1 py-1.5 text-white font-bold text-[11px] rounded-xl flex items-center justify-center gap-1.5";
 }
 
 p2_finishBtn.addEventListener('click', () => {
-resetP2ButtonStyles();
-const isCorrect = currentP2Board.every((val, index) => val === TARGET_BOARD[index]);
-if (isCorrect) {
-setP2SpeechState('happy');
-activateP2Screen();
-p2_finishBtn.classList.add('btn-shake-green');
-puzzleBoard.classList.add('hidden');
-connectedBoard.classList.remove('hidden');
-if (window.confetti) {
-confetti({ particleCount: 130, spread: 85, origin: { y: 0.5 } });
-}
-setTimeout(() => {
-puzzle2Modal.classList.remove('active');
-envelopeWrapper.classList.remove('hide-completely');
-}, 3000);
-} else {
-setP2SpeechState('sad');
-resetP2Screen();
-p2_finishBtn.classList.add('btn-shake-red');
-setTimeout(() => {
-p2_finishBtn.classList.remove('btn-shake-red');
-}, 700);
-}
+  resetP2ButtonStyles();
+  const isCorrect = currentP2Board.every((val, index) => val === TARGET_BOARD[index]);
+  if (isCorrect) {
+    setP2SpeechState('happy');
+    activateP2Screen();
+    p2_finishBtn.classList.add('btn-shake-green');
+    puzzleBoard.classList.add('hidden');
+    connectedBoard.classList.remove('hidden');
+    if (window.confetti) confetti({ particleCount: 130, spread: 85, origin: { y: 0.5 } });
+    setTimeout(() => {
+      puzzle2Modal.classList.remove('active');
+      envelopeWrapper.classList.remove('hide-completely');
+    }, 3000);
+  } else {
+    setP2SpeechState('sad');
+    resetP2Screen();
+    p2_finishBtn.classList.add('btn-shake-red');
+    setTimeout(() => p2_finishBtn.classList.remove('btn-shake-red'), 700);
+  }
 });
 
-p2_resetBtn.addEventListener('click', () => {
-initP2Game();
-});
+p2_resetBtn.addEventListener('click', () => initP2Game());
 
+/* اللغز الثالث كانفاس القلوب والسهام */
 const canvas = document.getElementById('puzzle3Canvas');
 const ctx = canvas.getContext('2d');
 const p3Badge = document.getElementById('p3Badge');
@@ -1267,281 +1856,267 @@ let dragStart = { x: 0, y: 0 };
 let dragCurrent = { x: 0, y: 0 };
 
 function resizeCanvas() {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 
 class HeartBalloon {
-constructor() {
-this.x = Math.random() * (canvas.width - 100) + 50;
-this.y = canvas.height + Math.random() * 200 + 50;
-this.size = Math.random() * 12 + 28;
-this.speedY = Math.random() * 1.5 + 1.2;
-this.floatAmp = Math.random() * 2 + 1;
-this.floatAngle = Math.random() * Math.PI * 2;
-this.hue = 190 + Math.random() * 30;
-this.color = `hsla(${this.hue}, 90%, 65%, 0.8)`;
-this.popped = false;
-}
-update() {
-this.y -= this.speedY;
-this.floatAngle += 0.03;
-this.x += Math.sin(this.floatAngle) * this.floatAmp;
-if (this.y < -80) {
-this.y = canvas.height + 60;
-this.x = Math.random() * (canvas.width - 100) + 50;
-}
-}
-draw() {
-if (this.popped) return;
-ctx.save();
-ctx.translate(this.x, this.y);
-ctx.beginPath();
-ctx.moveTo(0, this.size);
-ctx.quadraticCurveTo(5, this.size + 15, 0, this.size + 30);
-ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-ctx.lineWidth = 1.5;
-ctx.stroke();
-ctx.beginPath();
-const topCurveHeight = this.size * 0.3;
-ctx.moveTo(0, topCurveHeight);
-ctx.bezierCurveTo(0, 0, -this.size, 0, -this.size, topCurveHeight);
-ctx.bezierCurveTo(-this.size, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size * 1.25);
-ctx.bezierCurveTo(0, this.size, this.size, (this.size + topCurveHeight) / 2, this.size, topCurveHeight);
-ctx.bezierCurveTo(this.size, 0, 0, 0, 0, topCurveHeight);
-ctx.closePath();
-ctx.fillStyle = this.color;
-ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
-ctx.shadowBlur = 15;
-ctx.fill();
-ctx.strokeStyle = '#ffffff';
-ctx.lineWidth = 1.5;
-ctx.stroke();
-ctx.beginPath();
-ctx.arc(-this.size * 0.35, topCurveHeight * 0.8, this.size * 0.22, 0, Math.PI * 2);
-ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-ctx.fill();
-ctx.shadowBlur = 0;
-ctx.fillStyle = '#ffffff';
-ctx.font = `900 ${Math.floor(this.size * 0.55)}px Tajawal`;
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.fillText('رتاج', 0, this.size * 0.5);
-ctx.restore();
-}
+  constructor() {
+    this.x = Math.random() * (canvas.width - 100) + 50;
+    this.y = canvas.height + Math.random() * 200 + 50;
+    this.size = Math.random() * 12 + 28;
+    this.speedY = Math.random() * 1.5 + 1.2;
+    this.floatAmp = Math.random() * 2 + 1;
+    this.floatAngle = Math.random() * Math.PI * 2;
+    this.hue = 190 + Math.random() * 30;
+    this.color = `hsla(${this.hue}, 90%, 65%, 0.8)`;
+    this.popped = false;
+  }
+  update() {
+    this.y -= this.speedY;
+    this.floatAngle += 0.03;
+    this.x += Math.sin(this.floatAngle) * this.floatAmp;
+    if (this.y < -80) {
+      this.y = canvas.height + 60;
+      this.x = Math.random() * (canvas.width - 100) + 50;
+    }
+  }
+  draw() {
+    if (this.popped) return;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.beginPath();
+    ctx.moveTo(0, this.size);
+    ctx.quadraticCurveTo(5, this.size + 15, 0, this.size + 30);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    const topCurveHeight = this.size * 0.3;
+    ctx.moveTo(0, topCurveHeight);
+    ctx.bezierCurveTo(0, 0, -this.size, 0, -this.size, topCurveHeight);
+    ctx.bezierCurveTo(-this.size, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size * 1.25);
+    ctx.bezierCurveTo(0, this.size, this.size, (this.size + topCurveHeight) / 2, this.size, topCurveHeight);
+    ctx.bezierCurveTo(this.size, 0, 0, 0, 0, topCurveHeight);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
+    ctx.shadowBlur = 15;
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-this.size * 0.35, topCurveHeight * 0.8, this.size * 0.22, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `900 ${Math.floor(this.size * 0.55)}px Tajawal`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('رتاج', 0, this.size * 0.5);
+    ctx.restore();
+  }
 }
 
 class Arrow {
-constructor(x, y, vx, vy) {
-this.x = x;
-this.y = y;
-this.vx = vx;
-this.vy = vy;
-this.length = 45;
-this.angle = Math.atan2(vy, vx);
-this.active = true;
-}
-update() {
-this.x += this.vx;
-this.y += this.vy;
-this.angle = Math.atan2(this.vy, this.vx);
-if (this.x < -100 || this.x > canvas.width + 100 || this.y < -100 || this.y > canvas.height + 100) {
-this.active = false;
-}
-}
-draw() {
-if (!this.active) return;
-ctx.save();
-ctx.translate(this.x, this.y);
-ctx.rotate(this.angle);
-ctx.beginPath();
-ctx.moveTo(-this.length, 0);
-ctx.lineTo(0, 0);
-ctx.strokeStyle = '#0284c7';
-ctx.lineWidth = 3.5;
-ctx.lineCap = 'round';
-ctx.shadowColor = '#38bdf8';
-ctx.shadowBlur = 8;
-ctx.stroke();
-ctx.beginPath();
-ctx.moveTo(0, 0);
-ctx.lineTo(-12, -7);
-ctx.lineTo(-8, 0);
-ctx.lineTo(-12, 7);
-ctx.closePath();
-ctx.fillStyle = '#d97706';
-ctx.shadowColor = '#f59e0b';
-ctx.shadowBlur = 10;
-ctx.fill();
-ctx.beginPath();
-ctx.moveTo(-this.length, 0);
-ctx.lineTo(-this.length - 8, -6);
-ctx.lineTo(-this.length - 4, 0);
-ctx.lineTo(-this.length - 8, 6);
-ctx.closePath();
-ctx.fillStyle = '#38bdf8';
-ctx.fill();
-ctx.restore();
-}
+  constructor(x, y, vx, vy) {
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.length = 45;
+    this.angle = Math.atan2(vy, vx);
+    this.active = true;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.angle = Math.atan2(this.vy, this.vx);
+    if (this.x < -100 || this.x > canvas.width + 100 || this.y < -100 || this.y > canvas.height + 100) {
+      this.active = false;
+    }
+  }
+  draw() {
+    if (!this.active) return;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.beginPath();
+    ctx.moveTo(-this.length, 0);
+    ctx.lineTo(0, 0);
+    ctx.strokeStyle = '#0284c7';
+    ctx.lineWidth = 3.5;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = '#38bdf8';
+    ctx.shadowBlur = 8;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-12, -7);
+    ctx.lineTo(-8, 0);
+    ctx.lineTo(-12, 7);
+    ctx.closePath();
+    ctx.fillStyle = '#d97706';
+    ctx.shadowColor = '#f59e0b';
+    ctx.shadowBlur = 10;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-this.length, 0);
+    ctx.lineTo(-this.length - 8, -6);
+    ctx.lineTo(-this.length - 4, 0);
+    ctx.lineTo(-this.length - 8, 6);
+    ctx.closePath();
+    ctx.fillStyle = '#38bdf8';
+    ctx.fill();
+    ctx.restore();
+  }
 }
 
 class PopParticle {
-constructor(x, y, isGold = false) {
-this.x = x;
-this.y = y;
-this.vx = (Math.random() - 0.5) * 8;
-this.vy = (Math.random() - 0.5) * 8;
-this.size = Math.random() * 4 + 2;
-this.color = isGold ? '#f59e0b' : `hsla(${190 + Math.random() * 30}, 100%, 65%, 0.9)`;
-this.alpha = 1;
-}
-update() {
-this.x += this.vx;
-this.y += this.vy;
-this.alpha -= 0.03;
-}
-draw() {
-if (this.alpha <= 0) return;
-ctx.save();
-ctx.globalAlpha = this.alpha;
-ctx.beginPath();
-ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-ctx.fillStyle = this.color;
-ctx.shadowColor = this.color;
-ctx.shadowBlur = 6;
-ctx.fill();
-ctx.restore();
-}
+  constructor(x, y, isGold = false) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 8;
+    this.vy = (Math.random() - 0.5) * 8;
+    this.size = Math.random() * 4 + 2;
+    this.color = isGold ? '#f59e0b' : `hsla(${190 + Math.random() * 30}, 100%, 65%, 0.9)`;
+    this.alpha = 1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= 0.03;
+  }
+  draw() {
+    if (this.alpha <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 6;
+    ctx.fill();
+    ctx.restore();
+  }
 }
 
 function startPuzzle3Game() {
-resizeCanvas();
-p3Active = true;
-envelopeWrapper.classList.add('hide-completely');
-canvas.classList.add('active');
-p3Badge.classList.add('active');
-p3Balloons = [];
-p3Arrows = [];
-p3Particles = [];
-for (let i = 0; i < 10; i++) {
-p3Balloons.push(new HeartBalloon());
-}
-p3Count.innerText = p3Balloons.length;
-p3Loop();
+  resizeCanvas();
+  p3Active = true;
+  envelopeWrapper.classList.add('hide-completely');
+  canvas.classList.add('active');
+  p3Badge.classList.add('active');
+  p3Balloons = [];
+  p3Arrows = [];
+  p3Particles = [];
+  for (let i = 0; i < 10; i++) p3Balloons.push(new HeartBalloon());
+  p3Count.innerText = p3Balloons.length;
+  p3Loop();
 }
 
 function createPopParticles(x, y) {
-for (let i = 0; i < 15; i++) {
-p3Particles.push(new PopParticle(x, y, false));
-}
-for (let i = 0; i < 8; i++) {
-p3Particles.push(new PopParticle(x, y, true));
-}
+  for (let i = 0; i < 15; i++) p3Particles.push(new PopParticle(x, y, false));
+  for (let i = 0; i < 8; i++) p3Particles.push(new PopParticle(x, y, true));
 }
 
 function p3Loop() {
-if (!p3Active) return;
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-p3Balloons.forEach(b => {
-b.update();
-b.draw();
-});
-p3Arrows.forEach(a => {
-a.update();
-a.draw();
-p3Balloons.forEach(b => {
-if (!b.popped && a.active) {
-const dist = Math.hypot(a.x - b.x, a.y - (b.y + b.size * 0.5));
-if (dist < b.size * 1.1) {
-b.popped = true;
-a.active = false;
-createPopParticles(b.x, b.y + b.size * 0.5);
-}
-}
-});
-});
-p3Balloons = p3Balloons.filter(b => !b.popped);
-p3Arrows = p3Arrows.filter(a => a.active);
-p3Particles.forEach(p => {
-p.update();
-p.draw();
-});
-p3Particles = p3Particles.filter(p => p.alpha > 0);
-p3Count.innerText = p3Balloons.length;
+  if (!p3Active) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  p3Balloons.forEach(b => { b.update(); b.draw(); });
+  p3Arrows.forEach(a => {
+    a.update();
+    a.draw();
+    p3Balloons.forEach(b => {
+      if (!b.popped && a.active) {
+        const dist = Math.hypot(a.x - b.x, a.y - (b.y + b.size * 0.5));
+        if (dist < b.size * 1.1) {
+          b.popped = true;
+          a.active = false;
+          createPopParticles(b.x, b.y + b.size * 0.5);
+        }
+      }
+    });
+  });
+  p3Balloons = p3Balloons.filter(b => !b.popped);
+  p3Arrows = p3Arrows.filter(a => a.active);
+  p3Particles.forEach(p => { p.update(); p.draw(); });
+  p3Particles = p3Particles.filter(p => p.alpha > 0);
+  p3Count.innerText = p3Balloons.length;
 
-if (isDragging) {
-const dx = dragStart.x - dragCurrent.x;
-const dy = dragStart.y - dragCurrent.y;
-const angle = Math.atan2(dy, dx);
-const power = Math.min(Math.hypot(dx, dy), 120);
-ctx.save();
-ctx.translate(dragStart.x, dragStart.y);
-ctx.rotate(angle);
-ctx.beginPath();
-ctx.arc(0, 0, 35, -Math.PI / 2, Math.PI / 2);
-ctx.strokeStyle = '#f59e0b';
-ctx.lineWidth = 3;
-ctx.shadowColor = '#f59e0b';
-ctx.shadowBlur = 8;
-ctx.stroke();
-ctx.beginPath();
-ctx.moveTo(0, -35);
-ctx.lineTo(-power * 0.5, 0);
-ctx.lineTo(0, 35);
-ctx.strokeStyle = '#38bdf8';
-ctx.lineWidth = 2;
-ctx.stroke();
-ctx.beginPath();
-ctx.moveTo(-power * 0.5, 0);
-ctx.lineTo(40, 0);
-ctx.strokeStyle = '#0284c7';
-ctx.lineWidth = 3.5;
-ctx.stroke();
-ctx.restore();
-}
+  if (isDragging) {
+    const dx = dragStart.x - dragCurrent.x;
+    const dy = dragStart.y - dragCurrent.y;
+    const angle = Math.atan2(dy, dx);
+    const power = Math.min(Math.hypot(dx, dy), 120);
+    ctx.save();
+    ctx.translate(dragStart.x, dragStart.y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.arc(0, 0, 35, -Math.PI / 2, Math.PI / 2);
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 3;
+    ctx.shadowColor = '#f59e0b';
+    ctx.shadowBlur = 8;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, -35);
+    ctx.lineTo(-power * 0.5, 0);
+    ctx.lineTo(0, 35);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-power * 0.5, 0);
+    ctx.lineTo(40, 0);
+    ctx.strokeStyle = '#0284c7';
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
+    ctx.restore();
+  }
 
-if (p3Balloons.length === 0) {
-p3Active = false;
-p3Badge.innerText = "مبروك! خرقتِ القلوب العشرة بنجاح ✨👑";
-if (window.confetti) {
-confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
-}
-setTimeout(() => {
-canvas.classList.remove('active');
-p3Badge.classList.remove('active');
-envelopeWrapper.classList.remove('hide-completely');
-// هنا تمت إضافة كود الانتقال إلى الصفحة الجديدة
-window.location.href = "https://github.com/workmemo2007-gif/M2/blob/6d6e2d68538551fc486c5642def2000f7c7d16c1/index.html";
-}, 2800);
-return;
-}
-requestAnimationFrame(p3Loop);
+  /* عند الفوز في اللغز الثالث: الانتقال التلقائي للحدث التالي */
+  if (p3Balloons.length === 0) {
+    p3Active = false;
+    p3Badge.innerText = "مبروك! خرقتِ القلوب العشرة بنجاح ✨👑";
+    if (window.confetti) confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+    
+    setTimeout(() => {
+      canvas.classList.remove('active');
+      p3Badge.classList.remove('active');
+      
+      // فتح واجهة الصفحة الثانية مباشرة وبسلاسة
+      switchToPage2();
+    }, 2800);
+    return;
+  }
+  requestAnimationFrame(p3Loop);
 }
 
 function handlePointerDown(e) {
-if (!p3Active) return;
-isDragging = true;
-dragStart = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
-dragCurrent = { ...dragStart };
+  if (!p3Active) return;
+  isDragging = true;
+  dragStart = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
+  dragCurrent = { ...dragStart };
 }
 function handlePointerMove(e) {
-if (!isDragging) return;
-dragCurrent = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
+  if (!isDragging) return;
+  dragCurrent = { x: e.clientX || (e.touches && e.touches[0].clientX), y: e.clientY || (e.touches && e.touches[0].clientY) };
 }
 function handlePointerUp() {
-if (!isDragging) return;
-isDragging = false;
-const dx = dragStart.x - dragCurrent.x;
-const dy = dragStart.y - dragCurrent.y;
-const dist = Math.hypot(dx, dy);
-if (dist > 15) {
-const speed = Math.min(dist * 0.22, 28);
-const angle = Math.atan2(dy, dx);
-const vx = Math.cos(angle) * speed;
-const vy = Math.sin(angle) * speed;
-p3Arrows.push(new Arrow(dragStart.x, dragStart.y, vx, vy));
-}
+  if (!isDragging) return;
+  isDragging = false;
+  const dx = dragStart.x - dragCurrent.x;
+  const dy = dragStart.y - dragCurrent.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist > 15) {
+    const speed = Math.min(dist * 0.22, 28);
+    const angle = Math.atan2(dy, dx);
+    p3Arrows.push(new Arrow(dragStart.x, dragStart.y, Math.cos(angle) * speed, Math.sin(angle) * speed));
+  }
 }
 
 window.addEventListener('mousedown', handlePointerDown);
@@ -1550,6 +2125,235 @@ window.addEventListener('mouseup', handlePointerUp);
 window.addEventListener('touchstart', handlePointerDown);
 window.addEventListener('touchmove', handlePointerMove);
 window.addEventListener('touchend', handlePointerUp);
+
+
+/* ==================== الانتقال وبرمجة الصفحة الثانية ==================== */
+function switchToPage2() {
+  document.getElementById('page1').style.display = 'none';
+  document.body.classList.remove('page1-mode');
+  document.body.classList.add('page2-mode');
+  
+  const page2 = document.getElementById('page2');
+  page2.style.display = 'block';
+  
+  window.scrollTo(0, 0);
+  initPage2Logic();
+}
+
+function initPage2Logic() {
+  // التمرير والتأثيرات
+  function updateBackgroundOnScroll() {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll > 0) {
+      const scrollPercent = (scrollY / maxScroll) * 100;
+      document.body.style.backgroundPositionY = `${scrollPercent}%`;
+    }
+  }
+
+  window.addEventListener("scroll", updateBackgroundOnScroll);
+  window.addEventListener("resize", updateBackgroundOnScroll);
+
+  // الحروف والتسجيلات
+  const buttons = document.querySelectorAll(".letter-button");
+  const audioMap = {
+    ra: document.getElementById("audio-ra"),
+    ta: document.getElementById("audio-ta"),
+    alif: document.getElementById("audio-alif"),
+    jeem: document.getElementById("audio-jeem")
+  };
+
+  const textMap = {
+    ra: `رسمتك بالخيال والله جابك
+وصلت لمرحلة أرتاح بعذابك
+هو العنده مثلك يزعل شبيك
+ومنو غيرك يسوى بقلبي أخليه
+منو يزعل بشر يسوى لـ مية
+يلوموني وقلبهم مو عليك`,
+
+    ta: `تعرف غلاتك لو بعد؟
+محتاج أبينها أكثر؟
+يل بيك لهاني العمر.. ما ركزت بيه من مر
+يمكن إذا قتلي شكثر تهواني راح أتحير
+الليلة أعد محبتك.. بس باجر تزود أكثر`,
+
+    alif: `أنتِ.. أنتِ روحي
+أنتِ روحي وراحتي
+وآخر ندى على الورد ينزل
+أنتِ ليلي ولادتي ودفاي
+اللي جمع حلاوة الشمس والظل`,
+
+    jeem: `جمالك جمال.. جمالك جمال مو عادي
+كلامك كلام.. كلامك كلام مو عادي
+شو بدك دلال.. على صوت الدلال غفيلي
+شو بدك غرام.. ليل الغرام هنيلي`
+  };
+
+  function stopAllAudios() {
+    Object.values(audioMap).forEach(a => {
+      if (a) {
+        a.pause();
+        a.currentTime = 0;
+      }
+    });
+    const cardAudio = document.getElementById("card-audio-element");
+    if (cardAudio) {
+      cardAudio.pause();
+      const playIcon = document.getElementById("play-icon");
+      if (playIcon) playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+      document.querySelectorAll("#card-waves .card-wave-bar").forEach(w => w.classList.remove("active"));
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const letter = btn.getAttribute("data-letter");
+      const isPressed = btn.getAttribute("aria-pressed") === "true";
+
+      buttons.forEach(b => {
+        if (b !== btn) {
+          b.setAttribute("aria-pressed", "false");
+          const l = b.getAttribute("data-letter");
+          const txtEl = document.getElementById(`typed-text-${l}`);
+          const curEl = document.getElementById(`cursor-${l}`);
+          if (txtEl) txtEl.textContent = "";
+          if (curEl) curEl.style.display = "none";
+          if (b._typingTimer) clearInterval(b._typingTimer);
+        }
+      });
+
+      if (isPressed) {
+        btn.setAttribute("aria-pressed", "false");
+        const txtEl = document.getElementById(`typed-text-${letter}`);
+        const curEl = document.getElementById(`cursor-${letter}`);
+        if (txtEl) txtEl.textContent = "";
+        if (curEl) curEl.style.display = "none";
+        if (btn._typingTimer) clearInterval(btn._typingTimer);
+        if (audioMap[letter]) {
+          audioMap[letter].pause();
+          audioMap[letter].currentTime = 0;
+        }
+      } else {
+        btn.setAttribute("aria-pressed", "true");
+        stopAllAudios();
+        
+        const audio = audioMap[letter];
+        if (audio) {
+          audio.play().catch(() => {});
+        }
+
+        const txtEl = document.getElementById(`typed-text-${letter}`);
+        const curEl = document.getElementById(`cursor-${letter}`);
+        if (txtEl && textMap[letter]) {
+          txtEl.textContent = "";
+          if (curEl) curEl.style.display = "inline-block";
+          
+          let idx = 0;
+          const str = textMap[letter];
+          if (btn._typingTimer) clearInterval(btn._typingTimer);
+          btn._typingTimer = setInterval(() => {
+            if (idx < str.length) {
+              txtEl.textContent += str.charAt(idx);
+              idx++;
+            } else {
+              clearInterval(btn._typingTimer);
+              if (curEl) curEl.style.display = "none";
+            }
+          }, 45);
+        }
+      }
+    });
+  });
+
+  // الكارت الموسيقي
+  const cardPlayBtn = document.getElementById("card-play-btn");
+  const cardAudio = document.getElementById("card-audio-element");
+  const playIcon = document.getElementById("play-icon");
+  const cardWaves = document.querySelectorAll("#card-waves .card-wave-bar");
+  const cardTypedBox = document.getElementById("card-typed-box");
+
+  const cardText = `إلى علويتي رتاج..
+دمتِ لي حباً لا ينتهي، وجمالاً يزهو به عمري ✨`;
+
+  let cardTyped = false;
+
+  function typeCardText() {
+    if (cardTyped) return;
+    cardTyped = true;
+    let idx = 0;
+    cardTypedBox.textContent = "";
+    const timer = setInterval(() => {
+      if (idx < cardText.length) {
+        cardTypedBox.textContent += cardText.charAt(idx);
+        idx++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 55);
+  }
+
+  if (cardPlayBtn && cardAudio) {
+    cardPlayBtn.addEventListener("click", () => {
+      if (cardAudio.paused) {
+        stopAllAudios();
+        cardAudio.play().catch(() => {});
+        playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        cardWaves.forEach(w => w.classList.add("active"));
+      } else {
+        cardAudio.pause();
+        playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        cardWaves.forEach(w => w.classList.remove("active"));
+      }
+    });
+
+    cardAudio.addEventListener("ended", () => {
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+      cardWaves.forEach(w => w.classList.remove("active"));
+    });
+  }
+
+  // مراقبة التمرير لإظهار الصورة والكتابة الكارت
+  const secondImg = document.getElementById("second-img");
+  const cardZone = document.getElementById("card-trigger-zone");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target === secondImg) secondImg.classList.add("slide-in");
+        if (entry.target === cardZone) typeCardText();
+      }
+    });
+  }, { threshold: 0.25 });
+
+  if (secondImg) observer.observe(secondImg);
+  if (cardZone) observer.observe(cardZone);
+
+  // زر القلوب التفاعلي بالأسفل
+  const btnHeart = document.getElementById("btn-heart");
+  if (btnHeart) {
+    btnHeart.addEventListener("click", (e) => {
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.innerHTML = "❤️";
+      const rect = btnHeart.getBoundingClientRect();
+      heart.style.left = `${rect.left + rect.width / 2 - 12}px`;
+      heart.style.top = `${rect.top}px`;
+      
+      const tx = (Math.random() - 0.5) * 80;
+      const txEnd = (Math.random() - 0.5) * 160;
+      const rot = (Math.random() - 0.5) * 60;
+      const rotEnd = (Math.random() - 0.5) * 120;
+      
+      heart.style.setProperty("--tx", `${tx}px`);
+      heart.style.setProperty("--tx-end", `${txEnd}px`);
+      heart.style.setProperty("--rot", `${rot}deg`);
+      heart.style.setProperty("--rot-end", `${rotEnd}deg`);
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1800);
+    });
+  }
+}
 </script>
 </body>
 </html>
