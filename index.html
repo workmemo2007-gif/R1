@@ -1,444 +1,206 @@
-import 'package:flutter/material.dart';
-import 'dart:ui';
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة ممثل الدفعة - الدراسية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-slate-100 to-sky-100 dark:from-slate-950 dark:via-gray-900 dark:to-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300">
 
-void main() {
-  runApp(const MomathilyApp());
-}
+    <!-- App Container -->
+    <div class="flex h-screen overflow-hidden">
 
-class MomathilyApp extends StatelessWidget {
-  const MomathilyApp({super.key});
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 glass-card border-l border-slate-200 dark:border-slate-800 flex flex-col justify-between hidden md:flex z-20">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">م</div>
+                    <div>
+                        <h1 class="font-bold text-base leading-tight">منصة الدفعة</h1>
+                        <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold">الفرع العلمي / السادس</span>
+                    </div>
+                </div>
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ممثلي - Momathily',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0F172A),
-        fontFamily: 'Cairo',
-      ),
-      home: const MainGlassNavigation(),
-    );
-  }
-}
+                <nav class="space-y-2">
+                    <button onclick="switchTab('announcements')" id="btn-announcements" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                        📢 لوحة التبليغات
+                    </button>
+                    <button onclick="switchTab('library')" id="btn-library" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                        📚 مكتبة الملازم
+                    </button>
+                    <button onclick="switchTab('chats')" id="btn-chats" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                        💬 ساحة النقاش والجروبات
+                    </button>
+                    <button onclick="switchTab('schedule')" id="btn-schedule" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                        📅 جدول المحاضرات
+                    </button>
+                    <button onclick="switchTab('profile')" id="btn-profile" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                        👤 الملف الشخصي
+                    </button>
+                </nav>
+            </div>
 
-// عنصر الزجاج المصنفر الأساسي (Glassmorphism Container)
-class GlassContainer extends StatelessWidget {
-  final Widget child;
-  final double? width;
-  final double? height;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
+            <!-- Footer / Dark Mode Toggle -->
+            <div class="p-6 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between">
+                <span class="text-xs text-slate-500">الوضع الليلي</span>
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:scale-105 transition-transform">
+                    🌓
+                </button>
+            </div>
+        </aside>
 
-  const GlassContainer({
-    super.key,
-    required this.child,
-    this.width,
-    this.height,
-    this.padding,
-    this.margin,
-  });
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+            
+            <!-- Top Header -->
+            <header class="glass-card sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-4">
+                    <h2 id="page-title" class="text-xl font-bold">لوحة التبليغات الرسمية</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="user-role-badge" class="px-3 py-1 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full border border-indigo-200 dark:border-indigo-800">طالب (تزامن حي 🟢)</span>
+                </div>
+            </header>
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      margin: margin,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 16.0, sigmaY: 16.0),
-          child: Container(
-            padding: padding ?? const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.07),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: Colors.white.withOpacity(0.15),
-                width: 1.5,
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white.withOpacity(0.12),
-                  Colors.white.withOpacity(0.03),
-                ],
-              ),
-            ),
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
-}
+            <!-- Dynamic Views Container -->
+            <div class="p-6 max-w-5xl w-full mx-auto flex-1 pb-20">
 
-// الهيكل الرئيسي مع خلفية متدرجة وشريط تنقل زجاجي
-class MainGlassNavigation extends StatefulWidget {
-  const MainGlassNavigation({super.key});
+                <!-- 1. Announcements View -->
+                <div id="view-announcements" class="tab-view space-y-6">
+                    <div class="glass-card p-6 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60">
+                        <h3 class="font-bold text-lg mb-4">نشر تبليغ جديد (خاص بممثل الدفعة)</h3>
+                        <form id="announcement-form" class="space-y-4">
+                            <input type="text" id="ann-title" placeholder="عنوان التبليغ (مثال: تأجيل محاضرة الفيزياء)" required class="w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <textarea id="ann-content" placeholder="تفاصيل التبليغ..." rows="3" required class="w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition-all">نشر التبليغ فوراً</button>
+                        </form>
+                    </div>
 
-  @override
-  State<MainGlassNavigation> createState() => _MainGlassNavigationState();
-}
+                    <div class="space-y-4" id="announcements-list">
+                        <!-- Dynamic items will load here -->
+                        <div class="text-center py-8 text-slate-400">جاري تحميل التبليغات لحظياً...</div>
+                    </div>
+                </div>
 
-class _MainGlassNavigationState extends State<MainGlassNavigation> {
-  int _currentIndex = 0;
+                <!-- 2. Library View -->
+                <div id="view-library" class="tab-view hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg">أرشيف الملازم والمصادر الدراسية</h3>
+                        <button onclick="openUploadModal()" class="px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md">➕ إضافة رابط ملزمة</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="library-list">
+                        <!-- Dynamic library items -->
+                    </div>
+                </div>
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const MaterialsScreen(),
-    const ChatScreen(),
-    const ProfileScreen(),
-  ];
+                <!-- 3. Chats & Discussions View -->
+                <div id="view-chats" class="tab-view hidden flex flex-col h-[calc(100vh-180px)]">
+                    <div class="glass-card flex-1 rounded-2xl flex flex-col overflow-hidden border border-slate-200/60 dark:border-slate-800/60">
+                        <div class="p-4 bg-slate-100/50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                            <span class="font-bold">💬 ساحة النقاش العامة للدفعة</span>
+                            <span class="text-xs text-emerald-600 font-semibold">متصل الآن</span>
+                        </div>
+                        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3">
+                            <!-- Messages rendered here -->
+                        </div>
+                        <form id="chat-form" class="p-3 bg-slate-100/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 flex gap-2">
+                            <input type="text" id="chat-input" placeholder="اكتب رسالتك أو استفسارك هنا..." required class="flex-1 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            <button type="submit" class="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl text-sm">إرسال</button>
+                        </form>
+                    </div>
+                </div>
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF1E1B4B), // أزرق ليلي عميق
-              Color(0xFF0F172A), // كحلي غامق
-              Color(0xFF090D16), // أسود زجاجي
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: _screens[_currentIndex],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.15),
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavIcon(Icons.home_rounded, 'الرئيسية', 0),
-                  _buildNavIcon(Icons.menu_book_rounded, 'الملازم', 1),
-                  _buildNavIcon(Icons.chat_bubble_rounded, 'النقاش', 2),
-                  _buildNavIcon(Icons.person_rounded, 'حسابي', 3),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+                <!-- 4. Schedule View -->
+                <div id="view-schedule" class="tab-view hidden space-y-4">
+                    <h3 class="font-bold text-lg">الجدول الأسبوعي للمحاضرات</h3>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="space-y-4" id="schedule-container">
+                            <!-- Schedule items -->
+                            <div class="p-4 rounded-xl bg-white/40 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-indigo-600 dark:text-indigo-400">الفيزياء (الفصل الثامن - الفيزياء الحديثة)</h4>
+                                    <p class="text-xs text-slate-500 mt-1">الأحد | 08:00 صباحاً - القاعة الرئيسية</p>
+                                </div>
+                                <span class="px-3 py-1 bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 text-xs rounded-lg font-bold">مؤكد</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  Widget _buildNavIcon(IconData icon, String label, int index) {
-    bool isSelected = _currentIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blueAccent.withOpacity(0.3) : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: isSelected ? Colors.cyanAccent : Colors.white70),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.cyanAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
+                <!-- 5. Profile View -->
+                <div id="view-profile" class="tab-view hidden space-y-6">
+                    <div class="glass-card p-8 rounded-2xl text-center max-w-md mx-auto">
+                        <div class="w-20 h-20 bg-indigo-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">م</div>
+                        <h3 class="text-xl font-bold" id="profile-name">مؤتمن سامي</h3>
+                        <p class="text-sm text-slate-500 mt-1">فرع علمي - السادس الإعدادي</p>
+                        <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-4 text-center">
+                            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/50">
+                                <span class="block text-xl font-bold text-indigo-600">14</span>
+                                <span class="text-xs text-slate-500">المساهمات والرسائل</span>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900/50">
+                                <span class="block text-xl font-bold text-emerald-600">نشط</span>
+                                <span class="text-xs text-slate-500">حالة الحساب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-// 1. شاشة الرئيسية (الجداول والتبليغات)
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+            </div>
+        </main>
+    </div>
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('مرحباً بك، الزميل 👋', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            CircleAvatar(backgroundColor: Colors.blueAccent, child: Text('م')),
-          ],
-        ),
-        const SizedBox(height: 20),
-        GlassContainer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: const [
-                  Icon(Icons.campaign_rounded, color: Colors.amberAccent),
-                  SizedBox(width: 8),
-                  Text('تبليغ عاجل من ممثل الدفعة', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.amberAccent)),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Text('تم تأجيل محاضرة البرمجة العملية ليوم الغد ليتم تعويضها الأسبوع القادم.', style: TextStyle(color: Colors.white70)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        const Text('محاضرات اليوم الدراسي', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
-        _buildLectureCard('هياكل البيانات (Data Structures)', '08:30 ص - 10:30 ص', 'قاعة 4'),
-        _buildLectureCard('الشبكات المتقدمة (Networks)', '11:00 ص - 01:00 م', 'مختبر الحاسوب'),
-      ],
-    );
-  }
+    <!-- Firebase SDK & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        // ملاحظة: قم بوضع إعدادات مشروعك الحقيقي هنا عند ربط الفايربيس
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-  Widget _buildLectureCard(String title, String time, String location) {
-    return GlassContainer(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 6),
-              Text(time, style: const TextStyle(color: Colors.cyanAccent, fontSize: 13)),
-            ],
-          ),
-          Chip(
-            label: Text(location, style: const TextStyle(color: Colors.white, fontSize: 12)),
-            backgroundColor: Colors.white.withOpacity(0.1),
-          ),
-        ],
-      ),
-    );
-  }
-}
+        // دالة تبديل التبويبات (SPA Navigation)
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+            });
+            document.getElementById(`btn-${tabId}`).classList.add('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+        };
 
-// 2. شاشة الملازم والملخصات (الأرشيف الدراسي)
-class MaterialsScreen extends StatelessWidget {
-  const MaterialsScreen({super.key});
+        // تبديل الوضع الليلي
+        window.toggleDarkMode = function() {
+            document.documentElement.classList.toggle('dark');
+        };
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: const Text('مكتبة الملازم والملخصات 📚'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildMaterialItem('ملزمة شبكات الحاسوب - الفصل الأول', 'PDF • 12 MB', 'رفع بواسطة: أحمد علي'),
-          _buildMaterialItem('ملخص أسئلة البرمجة سابقة', 'PDF • 4.5 MB', 'رفع بواسطة: سارة محمد'),
-          _buildMaterialItem('شرح قواعد البيانات العملي', 'PDF • 8 MB', 'رفع بواسطة: كرار حسن'),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        backgroundColor: Colors.cyanAccent,
-        icon: const Icon(Icons.add, color: Colors.black),
-        label: const Text('رفع ملزمة جديدة', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-      ),
-    );
-  }
-
-  Widget _buildMaterialItem(String title, String size, String uploader) {
-    return GlassContainer(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [
-          const Icon(Icons.picture_as_pdf_rounded, color: Colors.redAccent, size: 36),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                const SizedBox(height: 4),
-                Text('$uploader • $size', style: const TextStyle(color: Colors.white60, fontSize: 12)),
-              ],
-            ),
-          ),
-          const Icon(Icons.download_rounded, color: Colors.cyanAccent),
-        ],
-      ),
-    );
-  }
-}
-
-// 3. شاشة ساحة النقاش (مؤقتة 25 ساعة)
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: const Text('ساحة حوار الدفعة 💬 (تحذف بعد 25 ساعة)'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                _buildChatBubble('أحمد علي', 'شباب منو عرف واجب المادة العملية باجر؟', '10:15 ص', false),
-                _buildChatBubble('سارة محمد', 'الدكتور كال بس نكمل الفصل ونحل المثال الموجود بآخر الصفحة.', '10:18 ص', true),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GlassContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'اكتب رسالتك للدفعة...',
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.white54),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send_rounded, color: Colors.cyanAccent),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 60), // مساحة لشريط التنقل السفلي
-        ],
-      ),
-    );
-  }
-
-  Widget _buildChatBubble(String sender, String message, String time, bool isMe) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
-        constraints: const BoxConstraints(maxWidth: 280),
-        decoration: BoxDecoration(
-          color: isMe ? Colors.blue.withOpacity(0.3) : Colors.white.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withOpacity(0.1)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(sender, style: const TextStyle(color: Colors.cyanAccent, fontSize: 12, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 4),
-            Text(message, style: const TextStyle(fontSize: 14)),
-            const SizedBox(height: 4),
-            Text(time, style: const TextStyle(color: Colors.white54, fontSize: 10), textAlign: TextAlign.end),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// 4. شاشة الملف الشخصي والمساهمات (Profile & Gamification)
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const Center(
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 45,
-                backgroundColor: Colors.blueAccent,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
-              ),
-              SizedBox(height: 12),
-              Text('أحمد محمد العبيدي', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text('المرحلة الأولى - قسم علوم الحاسوب', style: TextStyle(color: Colors.white60)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        Row(
-          children: [
-            Expanded(child: _buildStatCard('عدد المساهمات', '14', Icons.cloud_upload_rounded)),
-            const SizedBox(width: 12),
-            Expanded(child: _buildStatCard('المتابعين', '48', Icons.people_alt_rounded)),
-          ],
-        ),
-        const SizedBox(height: 20),
-        GlassContainer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('🌟 الأوسمة والإنجازات', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amberAccent)),
-              SizedBox(height: 10),
-              ListTile(
-                leading: Icon(Icons.military_tech, color: Colors.amber, size: 32),
-                title: Text('طالب نشط جداً'),
-                subtitle: Text('قمت برفع أكثر من 10 ملازم لمساعدة زملائك بالدفعة.'),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatCard(String title, String count, IconData icon) {
-    return GlassContainer(
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.cyanAccent, size: 28),
-          const SizedBox(height: 8),
-          Text(count, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          Text(title, style: const TextStyle(color: Colors.white60, fontSize: 12)),
-        ],
-      ),
-    );
-  }
-}
+        // نموذج بيانات تجريبي يعمل محلياً أو يتم ربطه بـ Firestore مباشرة عبر onSnapshot
+        console.log("تم تحميل الهيكل بنجاح وجاهز للربط الفوري مع Firebase!");
+    </script>
+</body>
+</html>
