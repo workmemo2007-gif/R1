@@ -104,6 +104,10 @@ insert into storage.buckets (id, name, public)
 values ('university-cards', 'university-cards', false)
 on conflict (id) do nothing;
 
+insert into storage.buckets (id, name, public)
+values ('private-message-media', 'private-message-media', false)
+on conflict (id) do nothing;
+
 drop policy if exists university_cards_insert_own on storage.objects;
 create policy university_cards_insert_own on storage.objects
 for insert to authenticated
@@ -136,6 +140,31 @@ for delete to authenticated
 using (
   bucket_id = 'university-cards'
   and ((storage.foldername(name))[1] = auth.uid()::text or public.has_permission('manage_accounts'))
+);
+
+drop policy if exists private_message_media_insert_own on storage.objects;
+create policy private_message_media_insert_own on storage.objects
+for insert to authenticated
+with check (
+  bucket_id = 'private-message-media'
+  and public.is_active_user()
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+drop policy if exists private_message_media_select_member on storage.objects;
+create policy private_message_media_select_member on storage.objects
+for select to authenticated
+using (
+  bucket_id = 'private-message-media'
+  and (
+    (storage.foldername(name))[1] = auth.uid()::text
+    or exists (
+      select 1 from public.private_message_attachments a
+      join public.private_messages pm on pm.id = a.message_id
+      join public.conversation_members cm on cm.conversation_id = pm.conversation_id
+      where a.storage_path = name and cm.user_id = auth.uid()
+    )
+  )
 );
 
 create or replace function public.can_read_study_file(path text)
@@ -211,6 +240,8 @@ begin
     'conversations',
     'conversation_members',
     'private_messages',
+    'private_message_attachments',
+    'student_reminders',
     'notifications'
   ] loop
     if not exists (

@@ -298,6 +298,7 @@ create table if not exists public.conversation_members (
   conversation_id uuid not null references public.conversations(id) on delete cascade,
   user_id uuid not null references public.profiles(id) on delete cascade,
   last_read_at timestamptz,
+  delete_messages_after_24h boolean not null default false,
   joined_at timestamptz not null default now(),
   primary key (conversation_id, user_id)
 );
@@ -306,14 +307,42 @@ create table if not exists public.private_messages (
   id uuid primary key default gen_random_uuid(),
   conversation_id uuid not null references public.conversations(id) on delete cascade,
   sender_id uuid not null references public.profiles(id) on delete restrict,
-  body text not null,
+  body text,
   study_file_id uuid references public.study_files(id) on delete set null,
   created_at timestamptz not null default now(),
   edited_at timestamptz,
   deleted_at timestamptz,
-  constraint private_message_body_length check (char_length(body) between 1 and 4000)
+  constraint private_message_body_length check (body is null or char_length(body) between 0 and 4000)
 );
 create index if not exists private_messages_conversation_idx on public.private_messages(conversation_id, created_at);
+
+create table if not exists public.private_message_attachments (
+  id uuid primary key default gen_random_uuid(),
+  message_id uuid not null references public.private_messages(id) on delete cascade,
+  uploaded_by uuid not null references public.profiles(id) on delete restrict,
+  attachment_kind text not null check (attachment_kind in ('image', 'video', 'audio')),
+  storage_path text not null,
+  original_file_name text,
+  mime_type text,
+  file_size_bytes bigint,
+  duration_seconds numeric(8,2),
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.student_reminders (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  title text not null,
+  notes text,
+  remind_at timestamptz not null,
+  timezone text not null default 'Asia/Baghdad',
+  recurrence text not null default 'none' check (recurrence in ('none', 'daily', 'weekly')),
+  sound_name text not null default 'classic-bell',
+  is_enabled boolean not null default true,
+  last_triggered_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
 
 -- ---------- Notifications and Web Push ----------
 create table if not exists public.notifications (

@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "ممثلي",
+  "short_name": "ممثلي",
+  "description": "مساحة الشعبة للطلاب والملفات والتذكيرات",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "ar",
+  "theme_color": "#102A43",
+  "background_color": "#F8F4ED",
+  "icons": [{"src":"/momathili-mark.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
