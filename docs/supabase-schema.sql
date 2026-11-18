@@ -29,6 +29,10 @@ create table if not exists public.profiles (
   full_name text not null,
   phone text not null,
   avatar_url text,
+  university_card_path text,
+  university_card_original_name text,
+  university_card_mime_type text,
+  university_card_size_bytes bigint,
   role public.app_role not null default 'student',
   status public.account_status not null default 'pending',
   approval_note text,
@@ -303,6 +307,7 @@ create table if not exists public.private_messages (
   conversation_id uuid not null references public.conversations(id) on delete cascade,
   sender_id uuid not null references public.profiles(id) on delete restrict,
   body text not null,
+  study_file_id uuid references public.study_files(id) on delete set null,
   created_at timestamptz not null default now(),
   edited_at timestamptz,
   deleted_at timestamptz,
@@ -388,7 +393,7 @@ alter table public.user_permissions enable row level security;
 -- Profiles: active users can see basic profiles; users edit only their own basic data.
 drop policy if exists profiles_select_active on public.profiles;
 create policy profiles_select_active on public.profiles for select using (
-  public.is_active_user() and (status = 'active' or id = auth.uid() or public.has_role('representative'))
+  public.is_active_user() and (status = 'active' or id = auth.uid() or public.has_role('representative') or public.has_permission('approve_accounts') or public.has_permission('manage_accounts'))
 );
 drop policy if exists profiles_insert_self on public.profiles;
 create policy profiles_insert_self on public.profiles for insert with check (id = auth.uid() and role = 'student' and status = 'pending');
@@ -487,7 +492,9 @@ drop policy if exists private_messages_insert_member on public.private_messages;
 create policy private_messages_insert_member on public.private_messages for insert with check (
   public.is_active_user() and public.has_permission('private_messages') and sender_id = auth.uid() and exists (
     select 1 from public.conversation_members cm where cm.conversation_id = private_messages.conversation_id and cm.user_id = auth.uid()
-  )
+  ) and (study_file_id is null or exists (
+    select 1 from public.study_files sf where sf.id = private_messages.study_file_id and sf.status = 'published'
+  ))
 );
 
 -- Notifications: recipient only. Push subscriptions: owner only.

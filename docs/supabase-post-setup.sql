@@ -20,8 +20,24 @@ begin
     raise exception 'A valid phone number is required to create an application profile';
   end if;
 
-  insert into public.profiles (id, full_name, phone, role, status)
-  values (new.id, name_value, phone_value, 'student', 'pending')
+  insert into public.profiles (
+    id, full_name, phone, avatar_url,
+    university_card_path, university_card_original_name,
+    university_card_mime_type, university_card_size_bytes,
+    role, status
+  )
+  values (
+    new.id,
+    name_value,
+    phone_value,
+    new.raw_user_meta_data ->> 'avatar_url',
+    new.raw_user_meta_data ->> 'university_card_path',
+    new.raw_user_meta_data ->> 'university_card_original_name',
+    new.raw_user_meta_data ->> 'university_card_mime_type',
+    nullif(new.raw_user_meta_data ->> 'university_card_size_bytes', '')::bigint,
+    'student',
+    'pending'
+  )
   on conflict (id) do update set
     full_name = excluded.full_name,
     phone = excluded.phone,
@@ -83,6 +99,44 @@ on conflict (id) do nothing;
 insert into storage.buckets (id, name, public)
 values ('study-files', 'study-files', false)
 on conflict (id) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('university-cards', 'university-cards', false)
+on conflict (id) do nothing;
+
+drop policy if exists university_cards_insert_own on storage.objects;
+create policy university_cards_insert_own on storage.objects
+for insert to authenticated
+with check (
+  bucket_id = 'university-cards'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+drop policy if exists university_cards_select_allowed on storage.objects;
+create policy university_cards_select_allowed on storage.objects
+for select to authenticated
+using (
+  bucket_id = 'university-cards'
+  and (
+    (storage.foldername(name))[1] = auth.uid()::text
+    or public.has_permission('approve_accounts')
+    or public.has_permission('manage_accounts')
+  )
+);
+
+drop policy if exists university_cards_update_own on storage.objects;
+create policy university_cards_update_own on storage.objects
+for update to authenticated
+using (bucket_id = 'university-cards' and (storage.foldername(name))[1] = auth.uid()::text)
+with check (bucket_id = 'university-cards' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists university_cards_delete_allowed on storage.objects;
+create policy university_cards_delete_allowed on storage.objects
+for delete to authenticated
+using (
+  bucket_id = 'university-cards'
+  and ((storage.foldername(name))[1] = auth.uid()::text or public.has_permission('manage_accounts'))
+);
 
 create or replace function public.can_read_study_file(path text)
 returns boolean
