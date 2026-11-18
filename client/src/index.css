@@ -119,6 +119,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Tajawal", "Noto Sans Arabic", "Segoe UI", system-ui, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -130,6 +133,28 @@
   input[type="checkbox"]:not(:disabled),
   input[type="radio"]:not(:disabled) {
     @apply cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .app-shell button,
+  .app-shell input {
+    font-family: inherit;
+  }
+
+  .app-shell ::selection {
+    background: #f0a35b;
+    color: #102a43;
+  }
+
+  .app-shell ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .app-shell ::-webkit-scrollbar-thumb {
+    background: #d6d0c7;
+    border-radius: 999px;
   }
 }
 
