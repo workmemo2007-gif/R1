@@ -15,6 +15,16 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
+  app.get("/api/supabase/config", (_req, res) => {
+    const url = process.env.SUPABASE_URL ?? "";
+    const explicitPublicKey = process.env.SUPABASE_ANON_KEY ?? "";
+    const configuredKey = explicitPublicKey || process.env.SUPABASE_KEY || "";
+    const looksAdministrative = /service_role|sb_secret/i.test(configuredKey);
+    if (!url || !configuredKey || looksAdministrative) {
+      return res.status(503).json({ error: "Supabase public client is not configured" });
+    }
+    return res.json({ url, anonKey: configuredKey });
+  });
   app.get("/api/platform/config.js", (_req, res) => {
     res.set("Cache-Control", "no-store").type("application/javascript").send(publicPlatformScript());
   });
