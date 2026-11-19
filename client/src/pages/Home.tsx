@@ -21,10 +21,12 @@ import {
   MoreHorizontal,
   Paperclip,
   Plus,
+  Radio,
   Search,
   Send,
   ShieldCheck,
   SlidersHorizontal,
+  ListChecks,
   Video,
   UserRound,
   UsersRound,
@@ -85,7 +87,13 @@ function SectionHeading({ eyebrow, title, action }: { eyebrow?: string; title: s
   );
 }
 
-function HomeOverview({ setTab, onApproval, onReminder }: { setTab: (tab: Tab) => void; onApproval: () => void; onReminder: () => void }) {
+function HomeOverview({ setTab, onApproval, onReminder, canBroadcast }: { setTab: (tab: Tab) => void; onApproval: () => void; onReminder: () => void; canBroadcast: boolean }) {
+  const [tasks, setTasks] = useState([{ id: 1, title: "مراجعة محاضرة التشريح" }, { id: 2, title: "حل أسئلة الكيمياء الحيوية" }]);
+  const [newTask, setNewTask] = useState("");
+  const [removingTaskId, setRemovingTaskId] = useState<number | null>(null);
+  const [broadcastLive, setBroadcastLive] = useState(false);
+  const addTask = () => { if (!newTask.trim()) return; setTasks([...tasks, { id: Date.now(), title: newTask.trim() }]); setNewTask(""); };
+  const completeTask = (id: number) => { setRemovingTaskId(id); window.setTimeout(() => { setTasks((current) => current.filter((task) => task.id !== id)); setRemovingTaskId(null); }, 420); };
   return (
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-[2rem] bg-[#102a43] px-6 py-7 text-white shadow-[0_24px_70px_rgba(16,42,67,0.17)] sm:px-9 sm:py-9">
@@ -150,6 +158,10 @@ function HomeOverview({ setTab, onApproval, onReminder }: { setTab: (tab: Tab) =
           </button>
         </div>
       </section>
+
+      {canBroadcast && <section className="rounded-[1.75rem] border border-[#b8d7d1] bg-[#f7fbfa] p-5 shadow-sm sm:p-6"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center"><div className="flex items-start gap-4"><div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${broadcastLive ? "bg-[#b2544f]" : "bg-[#17665d]"} text-white`}><Radio className="h-6 w-6" /></div><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#17665d]">للممثل والمشرف المخوّل</p><h2 className="mt-1 text-xl font-black text-[#102a43]">بث جماعي مباشر للشعبة</h2><p className="mt-2 text-sm leading-6 text-[#748294]">{broadcastLive ? "البث مباشر الآن — يمكن للطلاب الانضمام من الصفحة الرئيسية." : "ابدأ لقاءً مباشراً يصل إلى الطلاب، مع التحكم في حالة البث والحضور."}</p></div></div><button onClick={() => setBroadcastLive(!broadcastLive)} className={`inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-extrabold text-white transition ${broadcastLive ? "bg-[#b2544f] hover:bg-[#963f3b]" : "bg-[#17665d] hover:bg-[#105149]"}`}><Radio className="h-4 w-4" />{broadcastLive ? "إنهاء البث" : "بدء بث مباشر"}</button></div></section>}
+
+      <section className="rounded-[1.75rem] border border-[#e6dfd5] bg-white p-5 shadow-sm sm:p-6"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#c6762a]">تنظيم اليوم</p><h2 className="mt-1 text-xl font-black text-[#102a43]">مهامي اليومية</h2></div><ListChecks className="h-6 w-6 text-[#17665d]" /></div><div className="mt-5 flex gap-2"><input value={newTask} onChange={(event) => setNewTask(event.target.value)} onKeyDown={(event) => event.key === "Enter" && addTask()} placeholder="اكتب مهمة جديدة..." className="min-w-0 flex-1 rounded-2xl bg-[#f8f4ed] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#b8d7d1]" /><button onClick={addTask} className="inline-flex items-center gap-2 rounded-2xl bg-[#102a43] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#17665d]"><Plus className="h-4 w-4" /> إضافة</button></div><div className="mt-4 space-y-2">{tasks.length === 0 ? <p className="rounded-2xl bg-[#f7fbfa] p-4 text-center text-sm text-[#57ae69]">أحسنت، أنجزت كل مهام اليوم.</p> : tasks.map((task) => <div key={task.id} className={`group flex items-center gap-3 rounded-2xl border border-[#eee8df] bg-[#fcfbf9] p-3 transition hover:border-[#b8d7d1] ${removingTaskId === task.id ? "task-complete-exit" : ""}`}><button onClick={() => completeTask(task.id)} aria-label={`إكمال ${task.title}`} className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#b8d7d1] text-transparent transition hover:border-[#17665d] hover:bg-[#e7f3f0] hover:text-[#17665d] ${removingTaskId === task.id ? "border-[#57ae69] bg-[#57ae69] text-white" : ""}`}><Check className="h-4 w-4" /></button><span className="flex-1 text-sm font-bold text-[#526273]">{task.title}</span><span className="text-[10px] text-[#9aa6b0]">اليوم</span></div>)}</div></section>
 
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <section className="rounded-[1.75rem] border border-[#e6dfd5] bg-white p-5 shadow-sm sm:p-6">
@@ -256,7 +268,7 @@ export default function Home() {
         </aside>
         <main className="min-w-0 flex-1 pb-24 lg:pb-8">
           <header className="sticky top-0 z-20 border-b border-[#e6dfd5]/80 bg-[#f8f4ed]/90 px-4 py-4 backdrop-blur-xl sm:px-8 lg:px-10"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4"><div className="flex items-center gap-3"><button onClick={() => setMobileMenu(!mobileMenu)} className="rounded-xl p-2 text-[#526273] hover:bg-white lg:hidden">{mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button><div className="lg:hidden"><p className="text-base font-black text-[#102a43]">ممثلي</p><p className="text-[9px] font-bold tracking-[0.14em] text-[#c6762a]">مساحة الشعبة</p></div><div className="hidden lg:block"><p className="text-xs font-bold text-[#9aa6b0]">مساء الخير، محمد</p><h1 className="mt-1 text-xl font-black text-[#102a43]">{pageTitle}</h1></div></div><div className="flex items-center gap-2"><button onClick={() => setRegistrationOpen(true)} className="hidden items-center gap-2 rounded-xl border border-[#e6dfd5] bg-white px-3 py-2 text-xs font-bold text-[#526273] transition hover:border-[#b8d7d1] hover:text-[#17665d] sm:inline-flex"><Plus className="h-3.5 w-3.5" /> طلب تسجيل تجريبي</button><button onClick={() => setActiveTab("notifications")} className="relative rounded-xl bg-white p-2.5 text-[#526273] shadow-sm hover:text-[#17665d]"><Bell className="h-5 w-5" /><span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#f8f4ed] bg-[#f0a35b]" /></button><Avatar initials="م" className="h-9 w-9 rounded-xl" /></div></div>{mobileMenu && <nav className="mx-auto mt-3 grid max-w-7xl gap-1 rounded-2xl border border-[#e6dfd5] bg-white p-2 lg:hidden">{navItems.map((item) => { const Icon = item.icon; return <button key={item.id} onClick={() => selectTab(item.id)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold ${activeTab === item.id ? "bg-[#102a43] text-white" : "text-[#748294]"}`}><Icon className="h-4 w-4" />{item.label}</button>; })}</nav>}</header>
-          <div className="mx-auto max-w-7xl px-4 py-7 sm:px-8 lg:px-10">{activeTab === "home" && <HomeOverview setTab={selectTab} onApproval={() => setApprovalOpen(true)} onReminder={() => setReminderOpen(true)} />}{activeTab === "library" && <LibraryView />}{activeTab === "chat" && <ChatView onLibrary={() => setLibraryOpen(true)} />}{activeTab === "notifications" && <NotificationsView />}{activeTab === "profile" && <ProfileView onApproval={() => setApprovalOpen(true)} />}</div>
+          <div className="mx-auto max-w-7xl px-4 py-7 sm:px-8 lg:px-10">{activeTab === "home" && <HomeOverview setTab={selectTab} onApproval={() => setApprovalOpen(true)} onReminder={() => setReminderOpen(true)} canBroadcast />}{activeTab === "library" && <LibraryView />}{activeTab === "chat" && <ChatView onLibrary={() => setLibraryOpen(true)} />}{activeTab === "notifications" && <NotificationsView />}{activeTab === "profile" && <ProfileView onApproval={() => setApprovalOpen(true)} />}</div>
         </main>
       </div>
       <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#e6dfd5] bg-[#fbfaf8]/95 px-2 py-2 backdrop-blur-xl lg:hidden"><div className="mx-auto flex max-w-md items-center justify-around">{navItems.map((item) => { const Icon = item.icon; const active = activeTab === item.id; return <button key={item.id} onClick={() => selectTab(item.id)} className={`relative flex min-w-[58px] flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold ${active ? "text-[#102a43]" : "text-[#9aa6b0]"}`}><Icon className={`h-5 w-5 ${active ? "text-[#17665d]" : ""}`} />{item.label}{item.id === "notifications" && <span className="absolute right-2 top-0 h-2 w-2 rounded-full bg-[#f0a35b]" />}</button>; })}</div></nav>

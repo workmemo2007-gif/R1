@@ -344,6 +344,39 @@ create table if not exists public.student_reminders (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.live_broadcasts (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  room_code text not null unique,
+  started_by uuid not null references public.profiles(id) on delete restrict,
+  status text not null default 'live' check (status in ('scheduled', 'live', 'ended')),
+  scheduled_at timestamptz,
+  started_at timestamptz,
+  ended_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.live_broadcast_viewers (
+  broadcast_id uuid not null references public.live_broadcasts(id) on delete cascade,
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  joined_at timestamptz not null default now(),
+  left_at timestamptz,
+  primary key (broadcast_id, user_id)
+);
+
+create table if not exists public.student_tasks (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  title text not null,
+  due_date date not null default current_date,
+  is_completed boolean not null default false,
+  completed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 -- ---------- Notifications and Web Push ----------
 create table if not exists public.notifications (
   id uuid primary key default gen_random_uuid(),
@@ -413,6 +446,9 @@ alter table public.public_chat_messages enable row level security;
 alter table public.conversations enable row level security;
 alter table public.conversation_members enable row level security;
 alter table public.private_messages enable row level security;
+alter table public.live_broadcasts enable row level security;
+alter table public.live_broadcast_viewers enable row level security;
+alter table public.student_tasks enable row level security;
 alter table public.notifications enable row level security;
 alter table public.push_subscriptions enable row level security;
 alter table public.audit_logs enable row level security;
@@ -526,6 +562,31 @@ create policy private_messages_insert_member on public.private_messages for inse
   ))
 );
 
+-- Group live broadcast: representatives, and supervisors explicitly granted the permission.
+create or replace function public.can_start_group_broadcast()
+returns boolean language sql stable security definer set search_path = public
+as $$ select public.has_role('representative') or (public.has_role('supervisor') and public.has_permission('group_broadcast')); $$;
+drop policy if exists live_broadcasts_select_active on public.live_broadcasts;
+create policy live_broadcasts_select_active on public.live_broadcasts for select using (public.is_active_user() and (status = 'live' or started_by = auth.uid() or public.can_start_group_broadcast()));
+drop policy if exists live_broadcasts_insert_allowed on public.live_broadcasts;
+create policy live_broadcasts_insert_allowed on public.live_broadcasts for insert with check (public.is_active_user() and public.can_start_group_broadcast() and started_by = auth.uid());
+drop policy if exists live_broadcasts_update_owner on public.live_broadcasts;
+create policy live_broadcasts_update_owner on public.live_broadcasts for update using (public.can_start_group_broadcast() and started_by = auth.uid()) with check (public.can_start_group_broadcast() and started_by = auth.uid());
+drop policy if exists live_broadcasts_delete_owner on public.live_broadcasts;
+create policy live_broadcasts_delete_owner on public.live_broadcasts for delete using (public.can_start_group_broadcast() and started_by = auth.uid());
+drop policy if exists live_broadcast_viewers_select_member on public.live_broadcast_viewers;
+create policy live_broadcast_viewers_select_member on public.live_broadcast_viewers for select using (user_id = auth.uid() or public.can_start_group_broadcast());
+drop policy if exists live_broadcast_viewers_insert_self on public.live_broadcast_viewers;
+create policy live_broadcast_viewers_insert_self on public.live_broadcast_viewers for insert with check (public.is_active_user() and user_id = auth.uid());
+drop policy if exists student_tasks_select_self on public.student_tasks;
+create policy student_tasks_select_self on public.student_tasks for select using (user_id = auth.uid());
+drop policy if exists student_tasks_insert_self on public.student_tasks;
+create policy student_tasks_insert_self on public.student_tasks for insert with check (public.is_active_user() and user_id = auth.uid());
+drop policy if exists student_tasks_update_self on public.student_tasks;
+create policy student_tasks_update_self on public.student_tasks for update using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists student_tasks_delete_self on public.student_tasks;
+create policy student_tasks_delete_self on public.student_tasks for delete using (user_id = auth.uid());
+
 -- Notifications: recipient only. Push subscriptions: owner only.
 drop policy if exists notifications_select_self on public.notifications;
 create policy notifications_select_self on public.notifications for select using (user_id = auth.uid());
@@ -553,6 +614,7 @@ values
   ('upload_files', 'رفع الملفات', 'رفع الملفات الدراسية'),
   ('public_chat', 'الدردشة العامة', 'قراءة وإرسال رسائل الدردشة العامة'),
   ('private_messages', 'الرسائل الخاصة', 'إرسال الرسائل الخاصة'),
+  ('group_broadcast', 'البث الجماعي المباشر', 'بدء وإدارة بث مباشر جماعي للشعبة'),
   ('like_announcements', 'الإعجاب بالتبليغات', 'الإعجاب بالتبليغات'),
   ('manage_accounts', 'إدارة الحسابات', 'تعديل وإيقاف الحسابات'),
   ('manage_subjects', 'إدارة المواد', 'إضافة وتعديل المواد'),

@@ -156,6 +156,17 @@
     background: #d6d0c7;
     border-radius: 999px;
   }
+
+  .task-complete-exit {
+    animation: task-complete-exit 420ms ease forwards;
+    pointer-events: none;
+  }
+
+  @keyframes task-complete-exit {
+    0% { opacity: 1; transform: translateX(0) scale(1); max-height: 72px; }
+    55% { opacity: 0.45; transform: translateX(-12px) scale(0.98); }
+    100% { opacity: 0; transform: translateX(-28px) scale(0.94); max-height: 0; margin-top: -0.5rem; padding-top: 0; padding-bottom: 0; overflow: hidden; }
+  }
 }
 
 @layer components {

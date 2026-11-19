@@ -242,6 +242,9 @@ begin
     'private_messages',
     'private_message_attachments',
     'student_reminders',
+    'live_broadcasts',
+    'live_broadcast_viewers',
+    'student_tasks',
     'notifications'
   ] loop
     if not exists (
